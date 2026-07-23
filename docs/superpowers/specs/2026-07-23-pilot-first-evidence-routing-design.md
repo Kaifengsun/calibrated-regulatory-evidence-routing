@@ -404,7 +404,7 @@ The first end-to-end Pilot phase is complete only after:
 - local corpus adapters with no committed source data;
 - implementation and successful execution of all six frozen paths on every frozen Pilot question;
 - blinded annotation export and reviewed-label import;
-- completion of the required primary annotations, at least 25% independent duplicate annotation, agreement analysis, adjudication, and preservation of original labels;
+- completion of the required primary annotations, independent duplicate annotation of exactly 30 frozen Pilot questions, agreement analysis, adjudication, and preservation of original labels;
 - Logistic Regression, XGBoost, fixed-rule, all-modules, BM25-only, and oracle policies;
 - grouped calibration and abstention-threshold fitting;
 - completed within-domain, pooled, and two-direction transfer Pilot runs;
