@@ -240,6 +240,8 @@ For each evaluation fold, the abstention threshold is the smallest candidate thr
 
 The paper will describe abstention as evidence-sufficiency abstention. It will not claim guaranteed answer correctness because generated answers are outside the study scope.
 
+Every learned router also has a frozen no-abstention variant for fair comparison with the non-abstaining heuristic. The no-abstention variant selects the lexicographically lowest-cost path among paths meeting the calibrated threshold. When no path meets the threshold, it selects the path with the highest calibrated success probability; ties are resolved by the lexicographic cost tuple in Section 10. This fallback is used only to define a route for every question and does not alter the calibrated abstention policy.
+
 ## 10. Cost and Selection Objective
 
 Each path will have a deterministic cost profile derived from:
@@ -319,8 +321,8 @@ Quantitative signals:
 1. At least 20% of pilot questions require a path beyond BM25 for complete evidence.
 2. At least two of the three downstream module types each provide independently attributable benefit on at least five unique Pilot questions. An independent benefit requires a matched comparison in which the path without the module fails and the otherwise corresponding path with the module succeeds: reranker uses `P1` versus `P0`; context uses either `P2` versus `P0` or `P4` versus `P1`; graph uses either `P3` versus `P0` or `P5` versus `P4`.
 3. Oracle routing satisfies at least one of the following minimum practical differences: (a) combined path success is at least 5 percentage points higher than `P0`; (b) combined path success is no more than 2 percentage points below `P5` while mean neural-model calls are at least 20% lower than `P5`; or (c) harmful expansion rate is at least 5 percentage points lower than `P5` while evidence completeness is no more than 2 percentage points lower.
-4. At least one lightweight learned router satisfies one of the following against the frozen heuristic router on pooled out-of-fold predictions: (a) combined path success is at least 5 percentage points higher and the fold-level difference has the same positive direction in at least three of five outer folds; or (b) combined path success is no more than 2 percentage points lower, mean neural-model calls are at least 20% lower, and the neural-call difference has the same favorable direction in at least three of five outer folds.
-5. Calibration yields at least one non-forced-abstention operating point with coverage of at least 20%, empirical failure rate among accepted decisions no greater than 10%, and accepted-decision failure rate at least 5 percentage points lower than the same learned router operated without abstention.
+4. At least one lightweight learned router, operated in the no-abstention mode defined in Section 9, satisfies one of the following against the frozen heuristic router on all Pilot questions using pooled out-of-fold predictions: (a) combined path success is at least 5 percentage points higher and the fold-level difference has the same positive direction in at least three of five outer folds; or (b) combined path success is no more than 2 percentage points lower, mean neural-model calls are at least 20% lower, and the neural-call difference has the same favorable direction in at least three of five outer folds. Abstentions do not enter Signal 4.
+5. Calibration yields at least one non-forced-abstention operating point with coverage of at least 20%, empirical failure rate among accepted decisions no greater than 10%, and accepted-decision failure rate at least 5 percentage points lower than the all-question failure rate of the same learned router operated in the no-abstention mode defined in Section 9. Coverage, accepted-decision risk, abstention rate, and the no-abstention all-question risk must be reported separately.
 
 If these conditions fail, the routing claim will not be expanded. The project will either publish a narrower negative/diagnostic result if defensible or stop and move to the separately scoped table-retrieval Plan B.
 
@@ -396,13 +398,14 @@ The first implementation plan will stop after:
 - reproducibility and privacy safeguards;
 - a versioned and frozen Pilot protocol, including the exact reranker identity and parameters;
 - query, evidence-specification, path-output, annotation, adjudication, split, and manifest schemas;
+- construction and freeze of all 120 new Pilot questions and their evidence specifications;
 - local corpus adapters with no committed source data;
-- fixed path execution interfaces;
+- implementation and successful execution of all retained fixed paths on every frozen Pilot question;
 - blinded annotation export and reviewed-label import;
-- duplicate-annotation agreement and adjudication tracking;
+- completion of the required primary annotations, at least 25% independent duplicate annotation, agreement analysis, adjudication, and preservation of original labels;
 - Logistic Regression, XGBoost, fixed-rule, all-modules, BM25-only, and oracle policies;
 - grouped calibration and abstention-threshold fitting;
-- within-domain, pooled, and two-direction transfer evaluation;
+- completed within-domain, pooled, and two-direction transfer Pilot runs;
 - automatic computation of every Pilot go/no-go signal;
 - a versioned Pilot feasibility report that records the decision and evidence for each criterion in Section 13.
 
