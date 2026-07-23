@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+configs/local.yaml
+configs/local.yml
+
+# Restricted and machine-local data
+data/raw/
+data/private/
+private/
+corpus/
+neo4j_docker_data/
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.backup
+*.bak
+*.faiss
+*.pkl
+*.7z
+*.zip
+*.tar
+*.tar.gz
+
+# Model and runtime caches
+.cache/
+model_cache/
+models/
+logs/
+*.log
+
+# Private annotation and temporary artifacts
+artifacts/**/private/
+artifacts/**/raw/
+artifacts/**/workbooks/
+work/
+tmp/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

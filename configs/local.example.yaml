@@ -1,0 +1,22 @@
+schema_version: "1.0"
+
+projects:
+  chemical:
+    root_env: CER_CHEMICAL_PROJECT_ROOT
+    adapter: chemical_neo4j
+    neo4j:
+      uri_env: CER_CHEMICAL_NEO4J_URI
+      user_env: CER_CHEMICAL_NEO4J_USER
+      password_env: CER_CHEMICAL_NEO4J_PASSWORD
+      database_env: CER_CHEMICAL_NEO4J_DATABASE
+  pharmaceutical:
+    root_env: CER_PHARMA_PROJECT_ROOT
+    adapter: pharma_snapshot
+    corpus_relative_path: data/staging/enrichment_full_2026-07-deepseek-v4-pro-v4
+    graph_relative_path: artifacts/regulatory_evidence_graph/deepseek-v4-pro-v4-build5-regulatory-fda
+    reranker_relative_path: models/Qwen3-Reranker-0.6B
+
+runtime:
+  artifact_root: artifacts
+  cache_root: .cache
+  model_cache_env: CER_MODEL_CACHE

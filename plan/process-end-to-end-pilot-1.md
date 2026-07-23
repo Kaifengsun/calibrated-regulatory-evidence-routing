@@ -4,13 +4,13 @@ version: 1.0
 date_created: 2026-07-23
 last_updated: 2026-07-23
 owner: Kaifeng Sun
-status: 'Planned'
+status: 'In progress'
 tags: [process, research, pilot, retrieval, calibration, reproducibility]
 ---
 
 # Introduction
 
-![Status: Planned](https://img.shields.io/badge/status-Planned-blue)
+![Status: In progress](https://img.shields.io/badge/status-In%20progress-yellow)
 
 This plan implements the approved Pilot-first design in `docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md`. Completion requires construction and freeze of 120 new questions, execution and annotation of all six frozen evidence paths, lightweight route modeling, calibration, abstention evaluation, cross-domain transfer analysis, and an automatically computed Go/No-Go report.
 
@@ -48,14 +48,14 @@ This plan implements the approved Pilot-first design in `docs/superpowers/specs/
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create `README.md` with the research question, Pilot scope, repository boundary, current phase, and links to the approved design and this plan. |  |  |
-| TASK-002 | Create `.gitignore` covering `.env`, `configs/local.yaml`, databases, indexes, model caches, raw corpora, private annotations, generated logs, and Python build artifacts. |  |  |
-| TASK-003 | Create `pyproject.toml` for Python 3.11 or later with runtime dependencies `pydantic`, `pyyaml`, `numpy`, `pandas`, `scikit-learn`, `xgboost`, `scipy`, `typer`, and development dependencies `pytest`, `pytest-cov`, and `ruff`. |  |  |
-| TASK-004 | Create `src/evidence_routing/__init__.py` and `src/evidence_routing/cli.py`; expose a Typer application with commands `validate-config`, `validate-data`, `run-paths`, `export-annotation`, `import-annotation`, `fit-router`, `evaluate`, and `go-no-go`. |  |  |
-| TASK-005 | Create `configs/local.example.yaml` with keys for both source-system roots, Neo4j connection placeholders, local export paths, model cache, artifact root, and secrets supplied through environment-variable names. |  |  |
-| TASK-006 | Inspect `D:\Projects\new-chemical-safety-graph` read-only and record available retrieval entry points, node identifiers, relation fields, table fields, corpus hashes, and required services in `docs/protocol/source-system-inventory.md`. |  |  |
-| TASK-007 | Inspect `D:\Projects\financial knowledge graph` read-only and record available retrieval entry points, source identifiers, hierarchy fields, graph-chain fields, corpus hashes, and required services in `docs/protocol/source-system-inventory.md`. |  |  |
-| TASK-008 | Implement `src/evidence_routing/privacy.py::scan_tracked_files` to fail on absolute developer paths, secret-like assignments, prohibited filename patterns, and files over the frozen size limit; add `tests/test_privacy.py`. |  |  |
+| TASK-001 | Create `README.md` with the research question, Pilot scope, repository boundary, current phase, and links to the approved design and this plan. | ✅ | 2026-07-23 |
+| TASK-002 | Create `.gitignore` covering `.env`, `configs/local.yaml`, databases, indexes, model caches, raw corpora, private annotations, generated logs, and Python build artifacts. | ✅ | 2026-07-23 |
+| TASK-003 | Create `pyproject.toml` for Python 3.11 or later with runtime dependencies `pydantic`, `pyyaml`, `numpy`, `pandas`, `scikit-learn`, `xgboost`, `scipy`, `typer`, and development dependencies `pytest`, `pytest-cov`, and `ruff`. | ✅ | 2026-07-23 |
+| TASK-004 | Create `src/evidence_routing/__init__.py` and `src/evidence_routing/cli.py`; expose a Typer application with commands `validate-config`, `validate-data`, `run-paths`, `export-annotation`, `import-annotation`, `fit-router`, `evaluate`, and `go-no-go`. | ✅ | 2026-07-23 |
+| TASK-005 | Create `configs/local.example.yaml` with keys for both source-system roots, Neo4j connection placeholders, local export paths, model cache, artifact root, and secrets supplied through environment-variable names. | ✅ | 2026-07-23 |
+| TASK-006 | Inspect the read-only project configured by `CER_CHEMICAL_PROJECT_ROOT` and record available retrieval entry points, node identifiers, relation fields, table fields, corpus hashes, and required services in `docs/protocol/source-system-inventory.md`. | ✅ | 2026-07-23 |
+| TASK-007 | Inspect the read-only project configured by `CER_PHARMA_PROJECT_ROOT` and record available retrieval entry points, source identifiers, hierarchy fields, graph-chain fields, corpus hashes, and required services in `docs/protocol/source-system-inventory.md`. | ✅ | 2026-07-23 |
+| TASK-008 | Implement `src/evidence_routing/privacy.py::scan_tracked_files` to fail on absolute developer paths, secret-like assignments, prohibited filename patterns, and files over the frozen size limit; add `tests/test_privacy.py`. | ✅ | 2026-07-23 |
 
 Completion criteria:
 
@@ -231,8 +231,8 @@ Completion criteria:
 
 ## 4. Dependencies
 
-- **DEP-001**: Read-only access to `D:\Projects\new-chemical-safety-graph`.
-- **DEP-002**: Read-only access to `D:\Projects\financial knowledge graph`.
+- **DEP-001**: Read-only access to the chemical-safety project referenced by `CER_CHEMICAL_PROJECT_ROOT`.
+- **DEP-002**: Read-only access to the pharmaceutical-regulatory project referenced by `CER_PHARMA_PROJECT_ROOT`.
 - **DEP-003**: Access to the frozen Neo4j or export state used by the chemical-safety study.
 - **DEP-004**: Access to the frozen pharmaceutical document and graph exports used by the second study.
 - **DEP-005**: Local availability of the frozen reranker checkpoint selected in `configs/reranker-v1.yaml`.
