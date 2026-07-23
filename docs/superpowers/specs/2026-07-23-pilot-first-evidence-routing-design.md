@@ -177,7 +177,7 @@ Each candidate evidence unit is assigned one of five labels:
 
 A path has complete evidence when every `REQUIRED` evidence identifier is present either in the first ten ranked units or in an eligible context sidecar attached to a top-five seed, or when at least one `SUFFICIENT` item satisfies a single-item evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` ranked item within the first ten or any `HARMFUL` attached context sidecar causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
 
-At least 25% of records must receive independent duplicate annotation. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
+At least 25% of Pilot questions, corresponding to exactly 30 of the 120 questions, must receive independent duplicate annotation. Duplicate annotation is assigned at the question level and covers all six path outputs and every evidence-unit and context-sidecar label associated with each selected question. The 30 questions are selected through a frozen stratified procedure covering both domains and all construction categories. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
 
 The annotation guideline must provide positive and negative examples for `HARMFUL` in the following decision order:
 
@@ -272,6 +272,8 @@ The pilot and full study will include:
 
 The oracle is an upper-bound diagnostic and must never be described as a deployable method.
 
+For a question with at least one successful candidate path, the oracle selects the lowest-cost successful path under the lexicographic cost tuple in Section 10. Such a question is `routable`. When no candidate path succeeds, the oracle abstains and receives combined path success zero. Non-routable questions remain in all-question completeness, combined-success, and coverage reporting, but are excluded from the route-cost and harmful-expansion comparisons used in Signals 3(b) and 3(c). Oracle abstention on a non-routable question therefore cannot create a route-cost or harm advantage over `P5`.
+
 ### 11.1 Frozen Heuristic Router
 
 The fixed heuristic router is frozen before Pilot path labels are inspected. Cue dictionaries are stored in a versioned protocol file. Let the normalized BM25 ambiguity gap be `(score_1 - score_2) / max(abs(score_1), epsilon)`, with `epsilon = 1e-9`.
@@ -318,11 +320,11 @@ Qualitative conditions:
 
 Quantitative signals:
 
-1. At least 20% of pilot questions require a path beyond BM25 for complete evidence.
-2. At least two of the three downstream module types each provide independently attributable benefit on at least five unique Pilot questions. An independent benefit requires a matched comparison in which the path without the module fails and the otherwise corresponding path with the module succeeds: reranker uses `P1` versus `P0`; context uses either `P2` versus `P0` or `P4` versus `P1`; graph uses either `P3` versus `P0` or `P5` versus `P4`.
-3. Oracle routing satisfies at least one of the following minimum practical differences: (a) combined path success is at least 5 percentage points higher than `P0`; (b) combined path success is no more than 2 percentage points below `P5` while mean neural-model calls are at least 20% lower than `P5`; or (c) harmful expansion rate is at least 5 percentage points lower than `P5` while evidence completeness is no more than 2 percentage points lower.
+1. Signal 1 is satisfied when at least 20% of all 120 Pilot questions have `P0` combined path success equal to zero and at least one of `P1` through `P5` combined path success equal to one. Corpus-insufficient questions remain in the denominator and cannot enter the numerator because no path succeeds.
+2. At least two of the three downstream module types each provide independently attributable path-stage benefit on at least five unique Pilot questions. A path-stage benefit requires a matched comparison in which the path without the stage fails and the otherwise corresponding path with the stage succeeds: the reranking stage uses `P1` versus `P0`; context uses either `P2` versus `P0` or `P4` versus `P1`; graph uses either `P3` versus `P0` or `P5` versus `P4`.
+3. Oracle routing satisfies at least one of the following minimum practical differences: (a) combined path success is at least 5 percentage points higher than `P0` across all 120 questions; (b) over routable questions only, combined path success is no more than 2 percentage points below `P5` while mean neural-model calls are at least 20% lower than `P5`; or (c) over routable questions only, harmful expansion rate is at least 5 percentage points lower than `P5` while evidence completeness is no more than 2 percentage points lower.
 4. At least one lightweight learned router, operated in the no-abstention mode defined in Section 9, satisfies one of the following against the frozen heuristic router on all Pilot questions using pooled out-of-fold predictions: (a) combined path success is at least 5 percentage points higher and the fold-level difference has the same positive direction in at least three of five outer folds; or (b) combined path success is no more than 2 percentage points lower, mean neural-model calls are at least 20% lower, and the neural-call difference has the same favorable direction in at least three of five outer folds. Abstentions do not enter Signal 4.
-5. Calibration yields at least one non-forced-abstention operating point with coverage of at least 20%, empirical failure rate among accepted decisions no greater than 10%, and accepted-decision failure rate at least 5 percentage points lower than the all-question failure rate of the same learned router operated in the no-abstention mode defined in Section 9. Coverage, accepted-decision risk, abstention rate, and the no-abstention all-question risk must be reported separately.
+5. The fold-specific abstention thresholds selected exclusively from the corresponding calibration partitions under Section 9, and applied unchanged to their outer test folds, collectively yield pooled out-of-fold coverage of at least 20%, empirical failure rate among accepted decisions no greater than 10%, and accepted-decision failure rate at least 5 percentage points lower than the all-question failure rate of the same learned router operated in the no-abstention mode defined in Section 9. Test-fold predictions must not be scanned to select or replace an operating point. Coverage, accepted-decision risk, abstention rate, and the no-abstention all-question risk must be reported separately.
 
 If these conditions fail, the routing claim will not be expanded. The project will either publish a narrower negative/diagnostic result if defensible or stop and move to the separately scoped table-retrieval Plan B.
 
@@ -392,7 +394,7 @@ This structure is a target for the implementation plan, not permission to add un
 
 ## 18. Completion Boundary for the First End-to-End Pilot Plan
 
-The first implementation plan will stop after:
+The first end-to-end Pilot phase is complete only after:
 
 - repository scaffolding;
 - reproducibility and privacy safeguards;
@@ -400,7 +402,7 @@ The first implementation plan will stop after:
 - query, evidence-specification, path-output, annotation, adjudication, split, and manifest schemas;
 - construction and freeze of all 120 new Pilot questions and their evidence specifications;
 - local corpus adapters with no committed source data;
-- implementation and successful execution of all retained fixed paths on every frozen Pilot question;
+- implementation and successful execution of all six frozen paths on every frozen Pilot question;
 - blinded annotation export and reviewed-label import;
 - completion of the required primary annotations, at least 25% independent duplicate annotation, agreement analysis, adjudication, and preservation of original labels;
 - Logistic Regression, XGBoost, fixed-rule, all-modules, BM25-only, and oracle policies;
