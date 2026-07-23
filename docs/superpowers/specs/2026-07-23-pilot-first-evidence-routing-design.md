@@ -1,7 +1,7 @@
 # Pilot-First Calibrated Evidence Routing Design
 
 Date: 2026-07-23  
-Status: Approved for specification review  
+Status: Frozen for Pilot implementation
 Repository: `calibrated-regulatory-evidence-routing`
 
 ## 1. Purpose
