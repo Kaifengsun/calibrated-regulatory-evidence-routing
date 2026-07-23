@@ -76,16 +76,32 @@ The pilot will begin with six frozen paths:
 
 | Path | Definition |
 |---|---|
-| P0 | BM25 only |
-| P1 | BM25 followed by the frozen neural reranker |
-| P2 | BM25 followed by parent, heading, or table-text context augmentation |
-| P3 | BM25 followed by one-hop `CITES` or `DEPENDS_ON` expansion |
-| P4 | BM25, neural reranking, then context augmentation |
-| P5 | BM25 with all eligible downstream modules enabled |
+| P0 | BM25 top 10 only |
+| P1 | BM25 top 50, followed by the frozen neural reranker, returning its top 10 |
+| P2 | BM25 top 10, with deterministic context augmentation applied to the first five results |
+| P3 | BM25 top 10, with deterministic graph expansion applied to the first five results |
+| P4 | BM25 top 50, neural reranking to top 10, then deterministic context augmentation of the first five results |
+| P5 | BM25 top 50, neural reranking to top 10, deterministic context augmentation of the first five results, then deterministic graph expansion from those five results |
 
 The pilot may remove a path before full-dataset construction when that path never provides independent utility. New paths may not be added after pilot evaluation unless the protocol is versioned and the pilot is rerun.
 
 Abstention is not a seventh retrieval path. The router abstains when every available path has calibrated success probability below a frozen threshold.
+
+### 5.1 Frozen Module Parameters
+
+The Pilot protocol must record the exact reranker model repository, revision, tokenizer revision, inference precision, maximum input length, prompt format, batch size, and tie-breaking rule before any Pilot path labels are inspected. The initial candidate is `Qwen/Qwen3-Reranker-0.6B`; a different model may be chosen only before the protocol freeze.
+
+Context augmentation is metadata-preserving and does not perform a new semantic search. For each of the first five ranked Sections, it may attach:
+
+1. the Section's own heading path;
+2. the immediate parent Section title and source text, when present;
+3. directly linked table title and table-text description when the query contains a table cue or the retrieved Section has a direct table attachment.
+
+Context items are ordered by source rank, then by context type in the order heading path, immediate parent, table, then by stable source identifier. A maximum of three context items may be attached to each seed. Context items retain their source identifiers and never replace the seed.
+
+Graph expansion starts from the first five ranked Section seeds. It follows only one outgoing `CITES` or `DEPENDS_ON` edge with stored confidence at least `0.85`. Eligible targets are ordered by source-seed rank, descending edge confidence, relation type, and stable target identifier. At most five unique targets are inserted after the five seeds and before the remaining direct results. A target already present in the direct list is not duplicated. Final evaluation uses the first ten evidence units.
+
+P5 uses the exact order stated in the table: rerank, select five seeds, attach context to those seeds, expand graph relations from the same five Section seeds, then assemble the final evidence package. Context items are attachments to ranked evidence units; graph targets are ranked evidence units.
 
 ## 6. Pilot Dataset
 
@@ -122,7 +138,13 @@ The pilot must include counter-cue cases so that routing cannot be solved by tri
 
 All train, calibration, validation, and test splits must be grouped by source document or standard. Questions derived from the same clause, table, relation, or document family must not cross split boundaries.
 
-The pilot is primarily a feasibility study and will use grouped cross-validation. A final untouched test set will be created only after the go decision and full-dataset expansion.
+The pilot is primarily a feasibility study and will use deterministic five-fold grouped cross-validation. Document groups are assigned to folds by a stable hash under a frozen seed, with stratification by domain and construction category when feasible.
+
+For pooled and within-domain evaluation, outer fold `i` is the test fold, fold `(i + 1) mod 5` is the calibration fold, and the remaining three folds are training folds. Hyperparameters are frozen before the five-fold run; the test fold is never used for model selection, probability calibration, or abstention-threshold selection.
+
+Cross-domain transfer is evaluated separately in both directions. The base model is fitted on all source-domain records. Its probability calibrator and abstention threshold are fitted from source-domain grouped out-of-fold predictions only. The complete target domain is then evaluated without target-domain fitting, calibration, threshold selection, or feature normalization. Cross-domain transfer is a descriptive Pilot diagnostic because each domain initially contains only 60 questions.
+
+A final untouched test set will be created only after the go decision and full-dataset expansion.
 
 ## 7. Evidence and Path Labels
 
@@ -130,7 +152,7 @@ The fundamental observation is a question-path pair, not a single best route ass
 
 For question `q` and path `p`:
 
-`success(q, p) = 1` only when path `p` retrieves all evidence required by the frozen evidence specification within the evaluated cutoff and does not introduce a predefined harmful expansion.
+`success(q, p) = 1` only when path `p` retrieves all evidence units required by the frozen evidence specification within the first ten ranked evidence units and does not introduce a harmful expansion in that evaluated package.
 
 Otherwise:
 
@@ -142,6 +164,16 @@ Annotations must distinguish:
 - retrieval failure: complete evidence exists but the path does not recover it;
 - harmful expansion: added evidence is unsupported, misleading, or materially distracts from the required evidence;
 - harmless extra context: additional attributable evidence that does not change or obscure the answer.
+
+Each candidate evidence unit is assigned one of five labels:
+
+- `REQUIRED`: necessary for the complete evidence specification;
+- `SUFFICIENT`: independently supports the information need without another required unit;
+- `CONTEXT`: attributable and useful but not required;
+- `IRRELEVANT`: does not support the information need but is not misleading;
+- `HARMFUL`: contradicts the applicable evidence, changes its scope incorrectly, refers to the wrong regulated object or version, or is sufficiently misleading that including it could change the interpretation.
+
+A path has complete evidence when every `REQUIRED` evidence identifier is present within the first ten units, or at least one `SUFFICIENT` unit satisfies a single-unit evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` item within the first ten causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
 
 At least 25% of records must receive independent duplicate annotation. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
 
@@ -181,11 +213,11 @@ Raw query embeddings are optional and must be evaluated separately. If used, the
 
 Calibration will be fitted only on the calibration partition within each grouped split. Candidate methods are:
 
-- Platt scaling for Logistic Regression where additional calibration is required;
-- isotonic regression only when calibration sample size is sufficient;
-- the corresponding calibrated-probability procedure selected for XGBoost before final testing.
+- unmodified Logistic Regression probability as the default Logistic Regression output;
+- Platt scaling applied to XGBoost scores;
+- isotonic regression only as a sensitivity analysis when the calibration partition contains at least 100 question-path pairs and both outcome classes.
 
-The abstention threshold must be selected on calibration data under a frozen evidence-risk constraint. Test data must not be used to choose the threshold.
+For each evaluation fold, the abstention threshold is the smallest candidate threshold on the calibration data for which the empirical failure rate among accepted route decisions is at most `0.10` and at least ten question decisions are accepted. Candidate thresholds are the distinct calibrated probabilities observed on the calibration partition. If no threshold satisfies both conditions, the threshold is set to `1.0`, and degenerate coverage is reported rather than repaired with test data.
 
 The paper will describe abstention as evidence-sufficiency abstention. It will not claim guaranteed answer correctness because generated answers are outside the study scope.
 
@@ -193,12 +225,18 @@ The paper will describe abstention as evidence-sufficiency abstention. It will n
 
 Each path will have a deterministic cost profile derived from:
 
-- measured median runtime;
-- number of downstream model calls;
-- number of graph expansions;
-- number of evidence items added.
+- number of neural-model calls;
+- number of graph targets inserted;
+- number of context items attached;
+- measured median runtime.
 
-Primary route selection will minimize path cost subject to a calibrated minimum probability of complete evidence. Weighted utility scores may be reported only as sensitivity analyses because arbitrary weights can obscure the quality-risk-cost trade-off.
+Primary route selection uses the following lexicographic cost tuple:
+
+`(neural_model_calls, graph_targets_inserted, context_items_attached, median_runtime_ms, path_id)`.
+
+Among paths meeting the calibrated success threshold, the router selects the lexicographically smallest tuple. Runtime is measured under the frozen Pilot environment and rounded to the nearest millisecond. `path_id` provides deterministic final tie-breaking. This ordering treats neural inference as the most expensive optional operation and avoids an arbitrary weighted sum.
+
+Weighted utility scores may be reported only as sensitivity analyses because arbitrary weights can obscure the quality-risk-cost trade-off.
 
 ## 11. Baselines
 
@@ -217,7 +255,7 @@ The oracle is an upper-bound diagnostic and must never be described as a deploya
 
 Primary metrics:
 
-- complete evidence retrieval at the frozen cutoff;
+- complete evidence retrieval within the first ten evidence units;
 - harmful expansion rate;
 - route cost at a fixed evidence-completeness constraint;
 - selective risk and coverage under abstention.
@@ -295,24 +333,24 @@ The implementation plan must include tests for:
 
 ```text
 .
-├── README.md
-├── LICENSE
-├── .gitignore
-├── configs/
-│   └── local.example.yaml
-├── data/
-│   ├── README.md
-│   ├── schemas/
-│   └── templates/
-├── docs/
-│   ├── annotation/
-│   ├── protocol/
-│   └── superpowers/specs/
-├── plan/
-├── src/
-│   └── evidence_routing/
-├── tests/
-└── pyproject.toml
+|-- README.md
+|-- LICENSE
+|-- .gitignore
+|-- configs/
+|   `-- local.example.yaml
+|-- data/
+|   |-- README.md
+|   |-- schemas/
+|   `-- templates/
+|-- docs/
+|   |-- annotation/
+|   |-- protocol/
+|   `-- superpowers/specs/
+|-- plan/
+|-- src/
+|   `-- evidence_routing/
+|-- tests/
+`-- pyproject.toml
 ```
 
 This structure is a target for the implementation plan, not permission to add unused modules during initial scaffolding.
@@ -323,9 +361,16 @@ The first implementation plan will stop after:
 
 - repository scaffolding;
 - reproducibility and privacy safeguards;
-- Pilot protocol and schemas;
+- a versioned and frozen Pilot protocol, including the exact reranker identity and parameters;
+- query, evidence-specification, path-output, annotation, adjudication, split, and manifest schemas;
 - local corpus adapters with no committed source data;
 - fixed path execution interfaces;
-- Pilot feasibility analysis.
+- blinded annotation export and reviewed-label import;
+- duplicate-annotation agreement and adjudication tracking;
+- Logistic Regression, XGBoost, fixed-rule, all-modules, BM25-only, and oracle policies;
+- grouped calibration and abstention-threshold fitting;
+- within-domain, pooled, and two-direction transfer evaluation;
+- automatic computation of every Pilot go/no-go signal;
+- a versioned Pilot feasibility report that records the decision and evidence for each criterion in Section 13.
 
 Full-dataset expansion, final model comparison, manuscript generation, and Plan B implementation require separate go decisions and plans.
