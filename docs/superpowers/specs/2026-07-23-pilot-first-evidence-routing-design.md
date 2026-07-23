@@ -165,6 +165,8 @@ Annotations must distinguish:
 - harmful expansion: added evidence is unsupported, misleading, or materially distracts from the required evidence;
 - harmless extra context: additional attributable evidence that does not change or obscure the answer.
 
+`corpus insufficiency` may be assigned only after an annotator performs a documented manual check of the frozen corpus and confirms that the complete evidence specification cannot be satisfied. Failure of all six candidate paths is not evidence of corpus insufficiency and must not be used to infer that label. When the manual check finds that evidence exists outside all six path outputs, the record is a retrieval failure.
+
 Each candidate evidence unit is assigned one of five labels:
 
 - `REQUIRED`: necessary for the complete evidence specification;
@@ -176,6 +178,22 @@ Each candidate evidence unit is assigned one of five labels:
 A path has complete evidence when every `REQUIRED` evidence identifier is present either in the first ten ranked units or in an eligible context sidecar attached to a top-five seed, or when at least one `SUFFICIENT` item satisfies a single-item evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` ranked item within the first ten or any `HARMFUL` attached context sidecar causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
 
 At least 25% of records must receive independent duplicate annotation. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
+
+The annotation guideline must provide positive and negative examples for `HARMFUL` in the following decision order:
+
+1. wrong regulatory document or standard version;
+2. wrong regulated object, product, substance, organization, or jurisdiction;
+3. incorrect scope, responsible party, condition, threshold, or exception;
+4. direct conflict with the applicable evidence;
+5. otherwise misleading evidence that could materially alter the regulatory interpretation.
+
+Ordinary background noise, redundant evidence, and weakly related material are `IRRELEVANT`, not `HARMFUL`, unless one of the five conditions above applies.
+
+The combined path-success definition is intentionally risk-averse for regulatory retrieval: complete evidence plus one `HARMFUL` item is still a failed path. Evaluation must therefore report three outcomes separately:
+
+- evidence completeness without applying the harm rule;
+- harmful expansion rate;
+- combined path success after applying both completeness and harm requirements.
 
 ## 8. Router Design
 
@@ -299,10 +317,10 @@ Qualitative conditions:
 Quantitative signals:
 
 1. At least 20% of pilot questions require a path beyond BM25 for complete evidence.
-2. At least two downstream module types provide independent benefit on multiple questions.
-3. Oracle routing improves completeness over BM25-only or reduces cost/harm relative to all-modules.
-4. At least one lightweight learned router outperforms the frozen heuristic router under grouped validation on the primary constrained-cost evaluation.
-5. Calibration produces a non-degenerate risk-coverage trade-off with meaningful abstention behavior.
+2. At least two of the three downstream module types each provide independently attributable benefit on at least five unique Pilot questions. An independent benefit requires a matched comparison in which the path without the module fails and the otherwise corresponding path with the module succeeds: reranker uses `P1` versus `P0`; context uses either `P2` versus `P0` or `P4` versus `P1`; graph uses either `P3` versus `P0` or `P5` versus `P4`.
+3. Oracle routing satisfies at least one of the following minimum practical differences: (a) combined path success is at least 5 percentage points higher than `P0`; (b) combined path success is no more than 2 percentage points below `P5` while mean neural-model calls are at least 20% lower than `P5`; or (c) harmful expansion rate is at least 5 percentage points lower than `P5` while evidence completeness is no more than 2 percentage points lower.
+4. At least one lightweight learned router satisfies one of the following against the frozen heuristic router on pooled out-of-fold predictions: (a) combined path success is at least 5 percentage points higher and the fold-level difference has the same positive direction in at least three of five outer folds; or (b) combined path success is no more than 2 percentage points lower, mean neural-model calls are at least 20% lower, and the neural-call difference has the same favorable direction in at least three of five outer folds.
+5. Calibration yields at least one non-forced-abstention operating point with coverage of at least 20%, empirical failure rate among accepted decisions no greater than 10%, and accepted-decision failure rate at least 5 percentage points lower than the same learned router operated without abstention.
 
 If these conditions fail, the routing claim will not be expanded. The project will either publish a narrower negative/diagnostic result if defensible or stop and move to the separately scoped table-retrieval Plan B.
 
@@ -370,7 +388,7 @@ The implementation plan must include tests for:
 
 This structure is a target for the implementation plan, not permission to add unused modules during initial scaffolding.
 
-## 18. Completion Boundary for the First Implementation Plan
+## 18. Completion Boundary for the First End-to-End Pilot Plan
 
 The first implementation plan will stop after:
 
