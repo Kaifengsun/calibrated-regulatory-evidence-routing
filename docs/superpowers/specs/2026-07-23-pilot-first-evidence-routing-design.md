@@ -97,11 +97,11 @@ Context augmentation is metadata-preserving and does not perform a new semantic 
 2. the immediate parent Section title and source text, when present;
 3. directly linked table title and table-text description when the query contains a table cue or the retrieved Section has a direct table attachment.
 
-Context items are ordered by source rank, then by context type in the order heading path, immediate parent, table, then by stable source identifier. A maximum of three context items may be attached to each seed. Context items retain their source identifiers and never replace the seed.
+Context items are ordered within each seed by context type in the order heading path, immediate parent, table, then by stable source identifier. A maximum of three context items may be attached to each seed. Context items retain their source identifiers and never replace the seed or occupy a ranked-result position. They are sidecar evidence attached to one of the first five ranked seeds.
 
 Graph expansion starts from the first five ranked Section seeds. It follows only one outgoing `CITES` or `DEPENDS_ON` edge with stored confidence at least `0.85`. Eligible targets are ordered by source-seed rank, descending edge confidence, relation type, and stable target identifier. At most five unique targets are inserted after the five seeds and before the remaining direct results. A target already present in the direct list is not duplicated. Final evaluation uses the first ten evidence units.
 
-P5 uses the exact order stated in the table: rerank, select five seeds, attach context to those seeds, expand graph relations from the same five Section seeds, then assemble the final evidence package. Context items are attachments to ranked evidence units; graph targets are ranked evidence units.
+P5 uses the exact order stated in the table: rerank, select five seeds, attach context to those seeds, expand graph relations from the same five Section seeds, then assemble the final evidence package. The final ranked list preserves the five seeds, inserts up to five graph targets, and then fills any unused positions from the reranked direct remainder. The evaluated ranked cutoff is ten. Context items remain sidecar evidence attached to the five seeds and are evaluated separately from ranked positions.
 
 ## 6. Pilot Dataset
 
@@ -152,7 +152,7 @@ The fundamental observation is a question-path pair, not a single best route ass
 
 For question `q` and path `p`:
 
-`success(q, p) = 1` only when path `p` retrieves all evidence units required by the frozen evidence specification within the first ten ranked evidence units and does not introduce a harmful expansion in that evaluated package.
+`success(q, p) = 1` only when path `p` retrieves all evidence required by the frozen evidence specification through either the first ten ranked evidence units or the context sidecars attached to the first five seeds, and does not introduce a harmful expansion in that evaluated package.
 
 Otherwise:
 
@@ -173,7 +173,7 @@ Each candidate evidence unit is assigned one of five labels:
 - `IRRELEVANT`: does not support the information need but is not misleading;
 - `HARMFUL`: contradicts the applicable evidence, changes its scope incorrectly, refers to the wrong regulated object or version, or is sufficiently misleading that including it could change the interpretation.
 
-A path has complete evidence when every `REQUIRED` evidence identifier is present within the first ten units, or at least one `SUFFICIENT` unit satisfies a single-unit evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` item within the first ten causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
+A path has complete evidence when every `REQUIRED` evidence identifier is present either in the first ten ranked units or in an eligible context sidecar attached to a top-five seed, or when at least one `SUFFICIENT` item satisfies a single-item evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` ranked item within the first ten or any `HARMFUL` attached context sidecar causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
 
 At least 25% of records must receive independent duplicate annotation. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
 
@@ -196,18 +196,19 @@ No neural router will be introduced during the pilot.
 
 ### 8.3 Initial Features
 
-Features should emphasize domain-portable retrieval behavior:
+Primary route-time features must be available after the single BM25 run and a bounded metadata-only lookup. Executing the reranker, fetching graph targets, or assembling a downstream path before route selection is prohibited. Primary features should emphasize domain-portable retrieval behavior:
 
 - BM25 top-score magnitude;
 - first-to-second and first-to-k score gaps;
 - top-k score entropy or dispersion;
 - query and candidate length;
 - explicit standard, section, table, identifier, and relation cues;
-- candidate overlap across retrieval methods;
-- graph degree, eligible edge count, relation type, and stored confidence;
-- agreement between lexical retrieval and the frozen reranker.
+- graph degree, count of eligible outgoing edges, available relation types, and maximum stored edge confidence obtained without fetching target text;
+- path identity and the path's static cost fields.
 
 Raw query embeddings are optional and must be evaluated separately. If used, they must come from one frozen multilingual model and must not become the only basis for the cross-domain claim.
+
+Reranker agreement, candidate overlap across executed methods, retrieved graph-target properties, and other post-execution values may be analyzed as oracle or diagnostic features only. They must not be inputs to the primary deployable router and their computation must not be included in claims of route-time cost savings.
 
 ## 9. Calibration and Abstention
 
@@ -217,7 +218,7 @@ Calibration will be fitted only on the calibration partition within each grouped
 - Platt scaling applied to XGBoost scores;
 - isotonic regression only as a sensitivity analysis when the calibration partition contains at least 100 question-path pairs and both outcome classes.
 
-For each evaluation fold, the abstention threshold is the smallest candidate threshold on the calibration data for which the empirical failure rate among accepted route decisions is at most `0.10` and at least ten question decisions are accepted. Candidate thresholds are the distinct calibrated probabilities observed on the calibration partition. If no threshold satisfies both conditions, the threshold is set to `1.0`, and degenerate coverage is reported rather than repaired with test data.
+For each evaluation fold, the abstention threshold is the smallest candidate threshold on the calibration data for which the empirical failure rate among accepted route decisions is at most `0.10` and at least ten question decisions are accepted. Candidate thresholds are the distinct calibrated probabilities observed on the calibration partition. If no threshold satisfies both conditions, the policy records `force_abstain = true` and abstains for every item in that evaluation fold regardless of predicted probability. Degenerate coverage is reported rather than repaired with test data.
 
 The paper will describe abstention as evidence-sufficiency abstention. It will not claim guaranteed answer correctness because generated answers are outside the study scope.
 
@@ -250,6 +251,20 @@ The pilot and full study will include:
 - oracle lowest-cost successful path.
 
 The oracle is an upper-bound diagnostic and must never be described as a deployable method.
+
+### 11.1 Frozen Heuristic Router
+
+The fixed heuristic router is frozen before Pilot path labels are inspected. Cue dictionaries are stored in a versioned protocol file. Let the normalized BM25 ambiguity gap be `(score_1 - score_2) / max(abs(score_1), epsilon)`, with `epsilon = 1e-9`.
+
+The heuristic selects:
+
+1. `P5` when both a frozen table/context cue and a frozen citation/dependency cue occur;
+2. `P3` when only a frozen citation/dependency cue occurs;
+3. `P2` when only a frozen table/context cue occurs;
+4. `P1` when neither cue class occurs and the normalized ambiguity gap is below `0.15`;
+5. `P0` otherwise.
+
+The heuristic does not abstain. The threshold `0.15`, cue dictionaries, cue precedence, and Unicode normalization procedure may be changed only before protocol freeze. No alternative heuristic may replace it after Pilot labels are observed. Post hoc heuristic variants may appear only as clearly labelled sensitivity analyses and cannot satisfy the go/no-go comparison.
 
 ## 12. Metrics
 
@@ -286,7 +301,7 @@ Quantitative signals:
 1. At least 20% of pilot questions require a path beyond BM25 for complete evidence.
 2. At least two downstream module types provide independent benefit on multiple questions.
 3. Oracle routing improves completeness over BM25-only or reduces cost/harm relative to all-modules.
-4. At least one lightweight learned router outperforms the best fixed rule under grouped validation on the primary constrained-cost evaluation.
+4. At least one lightweight learned router outperforms the frozen heuristic router under grouped validation on the primary constrained-cost evaluation.
 5. Calibration produces a non-degenerate risk-coverage trade-off with meaningful abstention behavior.
 
 If these conditions fail, the routing claim will not be expanded. The project will either publish a narrower negative/diagnostic result if defensible or stop and move to the separately scoped table-retrieval Plan B.
