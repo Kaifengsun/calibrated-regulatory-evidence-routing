@@ -270,7 +270,7 @@ The heuristic does not abstain. The threshold `0.15`, cue dictionaries, cue prec
 
 Primary metrics:
 
-- complete evidence retrieval within the first ten evidence units;
+- complete evidence retrieval over the first ten ranked units plus eligible context sidecars;
 - harmful expansion rate;
 - route cost at a fixed evidence-completeness constraint;
 - selective risk and coverage under abstention.
