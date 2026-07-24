@@ -45,6 +45,11 @@ def test_reranker_scoring_token_is_not_treated_as_a_secret(tmp_path: Path) -> No
     assert scan_tracked_files(tmp_path, tracked_files=["reranker.yaml"]) == []
 
 
+def test_python_type_annotation_and_token_list_are_not_secrets(tmp_path: Path) -> None:
+    _write(tmp_path, "adapter.py", "password: str,\ntokens = tokenize(text)\n")
+    assert scan_tracked_files(tmp_path, tracked_files=["adapter.py"]) == []
+
+
 def test_restricted_file_is_rejected(tmp_path: Path) -> None:
     _write(tmp_path, "data/raw/source.txt", "restricted source\n")
     findings = scan_tracked_files(tmp_path, tracked_files=["data/raw/source.txt"])

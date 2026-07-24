@@ -57,7 +57,7 @@ _ABSOLUTE_PATH_PATTERNS = (
 _SECRET_ASSIGNMENT = re.compile(
     r"""(?im)^\s*(?:export\s+)?"""
     r"""(?P<key>[A-Z0-9_]*(?:PASSWORD|API_KEY|SECRET|TOKEN)[A-Z0-9_]*)"""
-    r"""\s*[:=]\s*["']?(?P<value>[^\s#"'{}<>]+)"""
+    r"""\s*(?P<separator>[:=])\s*["']?(?P<value>[^\s#"'{}<>]+)"""
 )
 _SAFE_SECRET_VALUES = {
     "",
@@ -122,8 +122,13 @@ def _content_findings(relative: Path, text: str) -> list[PrivacyFinding]:
             break
     for match in _SECRET_ASSIGNMENT.finditer(text):
         key = match.group("key").strip().casefold()
+        separator = match.group("separator")
         value_raw = match.group("value").strip()
         value = value_raw.casefold()
+        if relative.suffix.casefold() == ".py" and separator == ":":
+            continue
+        if key.endswith("tokens"):
+            continue
         if key in _SAFE_NON_SECRET_KEYS:
             continue
         if key.startswith("_"):

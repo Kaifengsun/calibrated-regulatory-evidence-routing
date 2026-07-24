@@ -9,6 +9,7 @@ description = "Pilot-first calibrated evidence routing for regulatory retrieval"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "neo4j>=5.23,<7",
     "numpy>=1.26,<3",
     "pandas>=2.2,<4",
     "pydantic>=2.8,<3",

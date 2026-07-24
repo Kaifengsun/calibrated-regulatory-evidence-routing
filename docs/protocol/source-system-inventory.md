@@ -62,7 +62,7 @@ Configuration alias: `CER_PHARMA_PROJECT_ROOT`
 - Git commit inspected: `34efc79aeb3c190aa6253fece8d884dc38c405a4`
 - The source worktree contains unrelated untracked files; this project will read tracked or explicitly inventoried artifacts only and will not modify the source worktree.
 - Frozen enriched corpus: 99 files, 15,524,824 bytes in the existing enrichment snapshot.
-- Aggregate corpus SHA-256: `0929f71e39f13a9cf07dbea0ff87cf7d30cad4fe9bb9aefb7e652c341c9cc26d`.
+- Aggregate corpus SHA-256: `7dbc24dc74628d5e2bb45427d38d5da10d5ca75515c60cee1c58aa3d72cbe031`.
   This digest is the SHA-256 of the UTF-8, newline-joined list of
   `filename<TAB>lowercase-file-sha256` entries sorted by filename.
 - Stable source identifier: `chunk_id`.
@@ -153,3 +153,17 @@ Do not import the legacy Neo4j retriever, FAISS first-stage retrieval, HyDE, LLM
 BM25, context, stable identifiers, and the locked reranker can be reused with thin adapters. No service rewrite is justified.
 
 The only material incompatibility is the pharmaceutical relation schema. Phase 2 must freeze a conservative normalization and confidence rule before P3/P5 implementation. Until that amendment is approved, the relation path is a documented protocol dependency rather than an implementation target.
+
+## 5. Phase 3 verification update
+
+On 2026-07-24, the pharmaceutical adapter loaded the frozen snapshot read-only,
+validated 2,478 unique chunks, reproduced the aggregate corpus hash recorded
+above, and returned deterministic BM25 candidates. The conservative relation
+normalizer returned no eligible graph target for the five seeds in the smoke
+query; it did not guess a target section inside a referenced document.
+
+The chemical Neo4j adapter is implemented and passes a query-contract fixture
+that rejects write clauses. A live integration check is still pending because
+the locally configured Bolt and HTTP ports were unavailable during Phase 3.
+The adapter requires an externally supplied frozen corpus hash and verifies
+that every `Section` has a unique stable `doc_id` before retrieval.

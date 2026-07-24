@@ -94,12 +94,12 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-017 | Define `src/evidence_routing/adapters/base.py::RegulatoryCorpusAdapter` with methods `corpus_manifest`, `bm25_search`, `get_section`, `get_context_sidecars`, `get_graph_metadata`, `expand_graph`, and `manual_corpus_search`. |  |  |
-| TASK-018 | Implement `src/evidence_routing/adapters/chemical.py::ChemicalSafetyAdapter` using the read-only entry points recorded in the source-system inventory. |  |  |
-| TASK-019 | Implement `src/evidence_routing/adapters/pharma.py::PharmaceuticalRegulatoryAdapter` using the read-only entry points recorded in the source-system inventory. |  |  |
-| TASK-020 | Implement `src/evidence_routing/retrieval.py::run_bm25_once` to return a deterministic top-50 normalized candidate list with stable source identifiers and unmodified source scores. |  |  |
-| TASK-021 | Implement `src/evidence_routing/cache.py::ResultCache` keyed by domain, corpus hash, query hash, protocol hash, path ID, and code commit. |  |  |
-| TASK-022 | Add adapter contract tests in `tests/test_adapters.py` using redistribution-safe fixtures; verify stable ordering, provenance completeness, parent/table resolution, graph metadata lookup, and no source mutation. |  |  |
+| TASK-017 | Define `src/evidence_routing/adapters/base.py::RegulatoryCorpusAdapter` with methods `corpus_manifest`, `bm25_search`, `get_section`, `get_context_sidecars`, `get_graph_metadata`, `expand_graph`, and `manual_corpus_search`. | ✅ | 2026-07-24 |
+| TASK-018 | Implement `src/evidence_routing/adapters/chemical.py::ChemicalSafetyAdapter` using the read-only entry points recorded in the source-system inventory. | ✅ | 2026-07-24 |
+| TASK-019 | Implement `src/evidence_routing/adapters/pharma.py::PharmaceuticalRegulatoryAdapter` using the read-only entry points recorded in the source-system inventory. | ✅ | 2026-07-24 |
+| TASK-020 | Implement `src/evidence_routing/retrieval.py::run_bm25_once` to return a deterministic top-50 normalized candidate list with stable source identifiers and unmodified source scores. | ✅ | 2026-07-24 |
+| TASK-021 | Implement `src/evidence_routing/cache.py::ResultCache` keyed by domain, corpus hash, query hash, protocol hash, path ID, and code commit. | ✅ | 2026-07-24 |
+| TASK-022 | Add adapter contract tests in `tests/test_adapters.py` using redistribution-safe fixtures; verify stable ordering, provenance completeness, parent/table resolution, graph metadata lookup, and no source mutation. | ✅ | 2026-07-24 |
 
 Dependencies: TASK-017 precedes TASK-018 through TASK-022. Live integration tests require the local services recorded by TASK-006 and TASK-007.
 

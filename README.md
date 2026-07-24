@@ -16,11 +16,13 @@ The Pilot covers:
 
 ## Current status
 
-Phases 1 and 2 are complete: the repository boundary, read-only source
-inventory, machine-readable Pilot protocol, schemas, safe templates, and
-tracked-file privacy checks are in place. Phase 3 will implement the two
-read-only domain adapters and deterministic BM25 contract. No Pilot questions,
-path labels, or model results have been created.
+Phases 1 through 3 are implemented: the repository boundary, frozen Pilot
+protocol, schemas, two read-only domain adapters, deterministic BM25 contract,
+and immutable result cache are in place. The pharmaceutical adapter has passed
+a read-only check against the frozen 2,478-chunk snapshot. The chemical adapter
+has passed fixture contract tests; its live Neo4j integration check remains
+pending because the local service is not running. No Pilot questions, path
+labels, or model results have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)
