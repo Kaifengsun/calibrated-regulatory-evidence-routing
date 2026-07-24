@@ -20,9 +20,10 @@ Phases 1 through 3 are implemented: the repository boundary, frozen Pilot
 protocol, schemas, two read-only domain adapters, deterministic BM25 contract,
 and immutable result cache are in place. The pharmaceutical adapter has passed
 a read-only check against the frozen 2,478-chunk snapshot. The chemical adapter
-has passed fixture contract tests; its live Neo4j integration check remains
-pending because the local service is not running. No Pilot questions, path
-labels, or model results have been created.
+has passed fixture tests and live read-only checks against the 9,206-standard,
+991,453-Section Neo4j instance, using globally unique `Section.uid` values.
+The full chemical corpus fingerprint remains to be generated before Pilot
+execution. No Pilot questions, path labels, or model results have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)

@@ -100,16 +100,18 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
                     """
                     MATCH (section:Section)
                     RETURN count(section) AS record_count,
-                           count(DISTINCT section.doc_id) AS stable_id_count
+                           count(section.uid) AS stable_id_present,
+                           count(DISTINCT section.uid) AS stable_id_count
                     """
                 ).data()
             if len(rows) != 1:
                 raise RuntimeError("chemical corpus count query returned no unique result")
             count = int(rows[0]["record_count"])
+            stable_present = int(rows[0]["stable_id_present"])
             stable_count = int(rows[0]["stable_id_count"])
-            if count <= 0 or stable_count != count:
+            if count <= 0 or stable_present != count or stable_count != count:
                 raise RuntimeError(
-                    "chemical Section.doc_id values must be present and globally unique"
+                    "chemical Section.uid values must be present and globally unique"
                 )
             self._manifest = CorpusManifest(
                 domain=Domain.CHEMICAL,
@@ -159,11 +161,11 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
                 )
                 YIELD node, score
                 OPTIONAL MATCH (standard:Standard {uid: node.standard_uid})
-                RETURN node.doc_id AS source_id,
+                RETURN node.uid AS source_id,
                        elementId(node) AS runtime_locator,
                        coalesce(
                            standard.standard_id, standard.uid,
-                           node.raw_standard_id, node.standard_uid, node.doc_id
+                           node.standard_uid, node.raw_standard_id, node.doc_id
                        ) AS document_id,
                        node.section_number AS section_number,
                        node.title AS heading,
@@ -180,7 +182,7 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
             section = self._section_from_row(row)
             previous = seen.get(section.source_id)
             if previous is not None and previous != section.runtime_locator:
-                raise RuntimeError(f"duplicate chemical Section.doc_id: {section.source_id}")
+                raise RuntimeError(f"duplicate chemical Section.uid: {section.source_id}")
             if previous is not None:
                 continue
             seen[section.source_id] = section.runtime_locator
@@ -197,13 +199,13 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
         with self._driver.session(**self._session_parameters()) as session:
             rows = session.run(
                 """
-                MATCH (node:Section {doc_id: $source_id})
+                MATCH (node:Section {uid: $source_id})
                 OPTIONAL MATCH (standard:Standard {uid: node.standard_uid})
-                RETURN node.doc_id AS source_id,
+                RETURN node.uid AS source_id,
                        elementId(node) AS runtime_locator,
                        coalesce(
                            standard.standard_id, standard.uid,
-                           node.raw_standard_id, node.standard_uid, node.doc_id
+                           node.standard_uid, node.raw_standard_id, node.doc_id
                        ) AS document_id,
                        node.section_number AS section_number,
                        node.title AS heading,
@@ -236,9 +238,9 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
         with self._driver.session(**self._session_parameters()) as session:
             parent_rows = session.run(
                 """
-                MATCH (node:Section {doc_id: $source_id})
+                MATCH (node:Section {uid: $source_id})
                 OPTIONAL MATCH (parent:Section)-[:HAS_SUBSECTION]->(node)
-                RETURN parent.doc_id AS source_id,
+                RETURN parent.uid AS source_id,
                        elementId(parent) AS runtime_locator,
                        parent.section_number AS section_number,
                        parent.title AS heading,
@@ -250,7 +252,7 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
             if include_table:
                 table_rows = session.run(
                     """
-                    MATCH (node:Section {doc_id: $source_id})-[:HAS_TABLE]->(table:Table)
+                    MATCH (node:Section {uid: $source_id})-[:HAS_TABLE]->(table:Table)
                     RETURN elementId(table) AS runtime_locator,
                            table.title AS heading,
                            table.description AS content
@@ -318,11 +320,11 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
             rows = session.run(
                 """
                 UNWIND $source_ids AS source_id
-                MATCH (source:Section {doc_id: source_id})
+                MATCH (source:Section {uid: source_id})
                 OPTIONAL MATCH (source)-[rel:CITES|DEPENDS_ON]->(target:Section)
                 WHERE toFloat(rel.confidence) >= $minimum_confidence
                 RETURN source_id,
-                       count(DISTINCT target.doc_id) AS eligible_count,
+                       count(DISTINCT target.uid) AS eligible_count,
                        [value IN collect(DISTINCT type(rel)) WHERE value IS NOT NULL]
                            AS relation_types,
                        max(toFloat(rel.confidence)) AS maximum_confidence
@@ -358,16 +360,16 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
             rows = session.run(
                 """
                 UNWIND range(0, size($source_ids) - 1) AS seed_rank
-                MATCH (source:Section {doc_id: $source_ids[seed_rank]})
+                MATCH (source:Section {uid: $source_ids[seed_rank]})
                 MATCH (source)-[rel:CITES|DEPENDS_ON]->(target:Section)
                 WHERE toFloat(rel.confidence) >= $minimum_confidence
                 OPTIONAL MATCH (standard:Standard {uid: target.standard_uid})
-                RETURN source.doc_id AS seed_source_id,
-                       target.doc_id AS source_id,
+                RETURN source.uid AS seed_source_id,
+                       target.uid AS source_id,
                        elementId(target) AS runtime_locator,
                        coalesce(
                            standard.standard_id, standard.uid,
-                           target.raw_standard_id, target.standard_uid, target.doc_id
+                           target.standard_uid, target.raw_standard_id, target.doc_id
                        ) AS document_id,
                        target.section_number AS section_number,
                        target.title AS heading,

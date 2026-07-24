@@ -173,7 +173,15 @@ class _FakeSession:
         padded = f" {normalized.upper()} "
         assert not any(token in padded for token in forbidden)
         if "count(section) AS record_count" in query:
-            return _FakeResult([{"record_count": 2, "stable_id_count": 2}])
+            return _FakeResult(
+                [
+                    {
+                        "record_count": 2,
+                        "stable_id_present": 2,
+                        "stable_id_count": 2,
+                    }
+                ]
+            )
         if "db.index.fulltext.queryNodes" in query:
             return _FakeResult(
                 [
@@ -198,7 +206,7 @@ class _FakeSession:
                 ]
             )
         if (
-            "MATCH (node:Section {doc_id: $source_id})" in query
+            "MATCH (node:Section {uid: $source_id})" in query
             and "parent:" not in query
             and "HAS_TABLE" not in query
         ):
@@ -299,6 +307,8 @@ def test_chemical_adapter_contract_is_read_only() -> None:
     assert adapter.get_graph_metadata(["chem-sec-1"])["chem-sec-1"].maximum_confidence == 0.9
     assert adapter.expand_graph(["chem-sec-1"])[0].target.source_id == "chem-sec-2"
     assert driver.queries
+    assert any("node.uid AS source_id" in query for query in driver.queries)
+    assert not any("Section {doc_id: $source_id}" in query for query in driver.queries)
 
 
 def test_single_bm25_result_serializes_identically(

@@ -26,7 +26,9 @@ Primary reference implementation:
 - Existing query behavior: Lucene-special characters are replaced with spaces; results are ordered by score descending.
 - Existing experimental depth: configurable, with the new Pilot fixed at BM25 top 50 and presentation cutoff 10.
 - Existing result identity: Neo4j `elementId`.
-- Required adapter correction: expose `Section.doc_id` as the stable public source identifier and retain `elementId` only as a runtime locator. Duplicate or missing `doc_id` values must fail adapter validation.
+- Live verification correction: expose globally unique `Section.uid` as the
+  stable public source identifier and retain `elementId` only as a runtime
+  locator. `Section.doc_id` is a legacy, non-unique structural identifier.
 
 ### Available provenance and context
 
@@ -42,7 +44,7 @@ Primary reference implementation:
 Implement a thin Neo4j adapter that:
 
 1. runs one `section_fulltext_cjk` query and returns score-bearing top-50 Sections;
-2. resolves stable `doc_id` plus attributable Section fields in the same read transaction;
+2. resolves stable `uid` plus attributable Section fields in the same read transaction;
 3. loads heading path, immediate parent, and directly attached table metadata on demand;
 4. returns metadata-only counts and maximum confidence for outgoing `CITES` and `DEPENDS_ON`;
 5. expands only outgoing Section-to-Section relations with confidence at least `0.85`.
@@ -136,7 +138,7 @@ Do not import the legacy Neo4j retriever, FAISS first-stage retrieval, HyDE, LLM
 | Unified field | Chemical source | Pharmaceutical source |
 |---|---|---|
 | `domain` | constant `chemical` | constant `pharmaceutical` |
-| `source_id` | unique `Section.doc_id` | `chunk_id` |
+| `source_id` | unique `Section.uid` | `chunk_id` |
 | `runtime_locator` | Neo4j `elementId` | `chunk_id` |
 | `document_id` | Standard/Section document identifier | `doc_id` |
 | `heading` | Section title/number | `heading` |
@@ -163,7 +165,22 @@ normalizer returned no eligible graph target for the five seeds in the smoke
 query; it did not guess a target section inside a referenced document.
 
 The chemical Neo4j adapter is implemented and passes a query-contract fixture
-that rejects write clauses. A live integration check is still pending because
-the locally configured Bolt and HTTP ports were unavailable during Phase 3.
-The adapter requires an externally supplied frozen corpus hash and verifies
-that every `Section` has a unique stable `doc_id` before retrieval.
+that rejects write clauses. The live instance is available through its
+non-default local Browser and Bolt ports. Read-only verification found 9,206
+`Standard` nodes and 991,453 `Section` nodes. All Sections have globally unique
+`uid` values, while only 888,943 distinct legacy `doc_id` values exist. The
+adapter therefore verifies and queries `uid`; `standard_uid` supplies document
+grouping, and `doc_id` is not used as evidence identity.
+
+Live smoke tests then verified all of the following without returning or
+modifying source text:
+
+- BM25 results expose `uid` and resolve back to the same Section;
+- heading and immediate-parent context are available;
+- a Section with `HAS_TABLE` returns a table sidecar;
+- metadata lookup and one-hop expansion agree on an eligible `CITES` target
+  with stored confidence at least `0.85`.
+
+The live check used a placeholder corpus hash solely to exercise the adapter.
+A deterministic fingerprint of the complete chemical snapshot must be
+generated and frozen before Pilot questions or path outputs are created.
