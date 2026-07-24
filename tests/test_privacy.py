@@ -35,6 +35,16 @@ def test_environment_variable_name_is_not_treated_as_a_secret(tmp_path: Path) ->
     assert scan_tracked_files(tmp_path, tracked_files=["settings.yaml"]) == []
 
 
+def test_reranker_scoring_token_is_not_treated_as_a_secret(tmp_path: Path) -> None:
+    _write(
+        tmp_path,
+        "reranker.yaml",
+        "tokenizer_revision: same_snapshot\nmaximum_input_tokens: 1024\n"
+        'false_token: "no"\ntrue_token: "yes"\n',
+    )
+    assert scan_tracked_files(tmp_path, tracked_files=["reranker.yaml"]) == []
+
+
 def test_restricted_file_is_rejected(tmp_path: Path) -> None:
     _write(tmp_path, "data/raw/source.txt", "restricted source\n")
     findings = scan_tracked_files(tmp_path, tracked_files=["data/raw/source.txt"])

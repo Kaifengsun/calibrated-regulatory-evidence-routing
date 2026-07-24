@@ -1,0 +1,58 @@
+schema_version: "1.0"
+reranker_id: reranker-v1
+status: frozen_before_path_labels
+
+model:
+  repository: Qwen/Qwen3-Reranker-0.6B
+  provider: ModelScope
+  source_revision: master
+  snapshot_manifest_sha256: 9e345ac4f295b7fe6f9734e1d5c1c73625b7a01ef2217be1896bb608c13fa508
+  tokenizer_revision: same_snapshot
+  fine_tuned: false
+
+inference:
+  candidate_depth: 50
+  output_depth: 10
+  precision: bfloat16
+  maximum_input_tokens: 1024
+  batch_size: 8
+  padding_side: left
+  truncation: longest_first_formatted_pair
+  deterministic_algorithms: true
+  seed: 0
+  task_instruction: >-
+    Given a regulatory question, retrieve a source passage that directly
+    supports the answer.
+  system_prompt: >-
+    Judge whether the Document meets the requirements based on the Query and
+    the Instruct provided. Note that the answer can only be "yes" or "no".
+  user_format: |-
+    <Instruct>: {task_instruction}
+    <Query>: {query}
+    <Document>: {document}
+  assistant_prefix: |-
+    <think>
+
+    </think>
+
+  score: normalized_yes_probability_against_no
+  false_token: "no"
+  true_token: "yes"
+
+payload:
+  chemical:
+    fields: [heading_path, heading, content]
+    maximum_content_characters: 2000
+  pharmaceutical:
+    fields: [parents_context, heading, content]
+    maximum_content_characters: 2000
+  unicode_normalization: NFC
+
+tie_break:
+  - reranker_score_desc
+  - bm25_rank_asc
+  - source_id_asc
+
+provenance:
+  reference_lock_manifest_sha256: 57dd15c07f6874838ad9e685787745e7fe21ff25ab1eac55d054f20819dfb843
+  reference_runner_sha256: a3c494639b66edf3963ac448a2befaf19d8e9bfbfe2513a4876ac9232f85a5dc

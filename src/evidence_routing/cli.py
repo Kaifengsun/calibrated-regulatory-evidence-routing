@@ -2,19 +2,32 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
 import typer
 import yaml
+from pydantic import ValidationError
 
 from evidence_routing.privacy import scan_tracked_files
+from evidence_routing.schemas import (
+    SCHEMA_MODELS,
+    ExperimentManifest,
+    PathRun,
+    QuestionAnnotationBundle,
+)
+from evidence_routing.validation import (
+    DatasetValidationError,
+    validate_annotation_bundle,
+    validate_manifest,
+    validate_path_run,
+)
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
 _REQUIRED_PROJECTS = {"chemical", "pharmaceutical"}
 _PHASE_GATED_COMMANDS = {
-    "validate-data": 2,
     "run-paths": 4,
     "export-annotation": 5,
     "import-annotation": 5,
@@ -52,6 +65,31 @@ def validate_config(
         if not isinstance(project, dict) or not project.get("root_env"):
             raise typer.BadParameter(f"projects.{name}.root_env is required")
     typer.echo("configuration contract is valid")
+
+
+@app.command("validate-data")
+def validate_data(
+    model_name: str = typer.Option(..., "--model"),
+    input_path: Path = typer.Option(..., "--input", exists=True, dir_okay=False, readable=True),
+) -> None:
+    """Validate one JSON record against a public Pilot data contract."""
+    model = SCHEMA_MODELS.get(model_name)
+    if model is None:
+        choices = ", ".join(sorted(SCHEMA_MODELS))
+        raise typer.BadParameter(f"unknown model {model_name!r}; choose one of: {choices}")
+    try:
+        payload = json.loads(input_path.read_text(encoding="utf-8"))
+        record = model.model_validate(payload)
+        if isinstance(record, PathRun):
+            validate_path_run(record)
+        elif isinstance(record, QuestionAnnotationBundle):
+            validate_annotation_bundle(record)
+        elif isinstance(record, ExperimentManifest):
+            validate_manifest(record)
+    except (json.JSONDecodeError, ValidationError, DatasetValidationError) as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1) from error
+    typer.echo(f"{model_name} is valid")
 
 
 @app.command("privacy-scan")

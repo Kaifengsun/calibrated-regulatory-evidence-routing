@@ -1,0 +1,112 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code_commit": {
+      "pattern": "^[a-f0-9]{40}$",
+      "title": "Code Commit",
+      "type": "string"
+    },
+    "command": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Command",
+      "type": "string"
+    },
+    "configuration_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Configuration Hashes",
+      "type": "object"
+    },
+    "corpus_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Corpus Hash",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "experiment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Experiment Id",
+      "type": "string"
+    },
+    "input_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Input Hashes",
+      "type": "object"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Id"
+    },
+    "model_revision": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Revision"
+    },
+    "output_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Output Hashes",
+      "type": "object"
+    },
+    "protocol_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Protocol Hash",
+      "type": "string"
+    },
+    "runtime_environment": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Runtime Environment",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "experiment_id",
+    "created_at",
+    "code_commit",
+    "protocol_hash",
+    "configuration_hashes",
+    "corpus_hash",
+    "seed",
+    "command"
+  ],
+  "title": "ExperimentManifest",
+  "type": "object"
+}

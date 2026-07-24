@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "adjudication_id": "ADJ-CHEM-001-P0-01",
+  "question_id": "CHEM-PILOT-001",
+  "path_id": "P0",
+  "evidence_id": "CHEM-SECTION-DEMO-01",
+  "primary_annotation_id": "ANN-CHEM-001-P0-01",
+  "duplicate_annotation_id": "ANN2-CHEM-001-P0-01",
+  "primary_label": "SUFFICIENT",
+  "duplicate_label": "CONTEXT",
+  "adjudicated_label": "SUFFICIENT",
+  "adjudicator_code": "ADJUDICATOR-A",
+  "rationale_code": "complete_single_item_support",
+  "adjudicated_at": "2026-07-23T13:00:00+08:00"
+}

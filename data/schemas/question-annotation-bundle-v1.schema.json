@@ -1,0 +1,256 @@
+{
+  "$defs": {
+    "AnnotationRole": {
+      "enum": [
+        "primary",
+        "duplicate",
+        "adjudicated"
+      ],
+      "title": "AnnotationRole",
+      "type": "string"
+    },
+    "CorpusAssessment": {
+      "enum": [
+        "unchecked",
+        "sufficient",
+        "insufficient"
+      ],
+      "title": "CorpusAssessment",
+      "type": "string"
+    },
+    "EvidenceAnnotation": {
+      "additionalProperties": false,
+      "properties": {
+        "annotated_at": {
+          "format": "date-time",
+          "title": "Annotated At",
+          "type": "string"
+        },
+        "annotation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Annotation Id",
+          "type": "string"
+        },
+        "annotation_role": {
+          "$ref": "#/$defs/AnnotationRole"
+        },
+        "annotator_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Annotator Code",
+          "type": "string"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_kind": {
+          "enum": [
+            "ranked",
+            "sidecar"
+          ],
+          "title": "Evidence Kind",
+          "type": "string"
+        },
+        "harmful_reason_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "wrong_version",
+                "wrong_regulated_object",
+                "wrong_scope_condition_or_exception",
+                "direct_conflict",
+                "materially_misleading"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Harmful Reason Code"
+        },
+        "label": {
+          "$ref": "#/$defs/EvidenceLabel"
+        },
+        "path_id": {
+          "$ref": "#/$defs/PathId"
+        },
+        "question_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "annotation_id",
+        "question_id",
+        "path_id",
+        "evidence_id",
+        "evidence_kind",
+        "label",
+        "annotation_role",
+        "annotator_code",
+        "annotated_at"
+      ],
+      "title": "EvidenceAnnotation",
+      "type": "object"
+    },
+    "EvidenceLabel": {
+      "enum": [
+        "REQUIRED",
+        "SUFFICIENT",
+        "CONTEXT",
+        "IRRELEVANT",
+        "HARMFUL"
+      ],
+      "title": "EvidenceLabel",
+      "type": "string"
+    },
+    "ManualCorpusCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "checked": {
+          "title": "Checked",
+          "type": "boolean"
+        },
+        "checked_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checked At"
+        },
+        "checked_by": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checked By"
+        },
+        "evidence_found": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Found"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "search_scope": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Search Scope"
+        }
+      },
+      "required": [
+        "checked"
+      ],
+      "title": "ManualCorpusCheck",
+      "type": "object"
+    },
+    "PathId": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "title": "PathId",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "annotation_role": {
+      "$ref": "#/$defs/AnnotationRole"
+    },
+    "bundle_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "corpus_assessment": {
+      "$ref": "#/$defs/CorpusAssessment",
+      "default": "unchecked"
+    },
+    "evidence_annotations": {
+      "items": {
+        "$ref": "#/$defs/EvidenceAnnotation"
+      },
+      "title": "Evidence Annotations",
+      "type": "array"
+    },
+    "manual_corpus_check": {
+      "$ref": "#/$defs/ManualCorpusCheck"
+    },
+    "path_run_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 6,
+      "minItems": 6,
+      "title": "Path Run Ids",
+      "type": "array"
+    },
+    "question_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "question_id",
+    "annotation_role",
+    "path_run_ids",
+    "evidence_annotations"
+  ],
+  "title": "QuestionAnnotationBundle",
+  "type": "object"
+}

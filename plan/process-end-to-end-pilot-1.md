@@ -70,14 +70,14 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-009 | Create `configs/pilot-v1.yaml` with seed `20260723`, domains, exact question counts, path IDs, BM25 depths, output cutoff 10, top-five seed policy, graph confidence `0.85`, graph target cap 5, context sidecar cap 3 per seed, duplicate-question count 30, five-fold assignment, calibration rule, and all Section 13 thresholds. |  |  |
-| TASK-010 | Create `configs/cues-v1.yaml` containing versioned Chinese and English table/context and citation/dependency cue dictionaries plus Unicode normalization rules. |  |  |
-| TASK-011 | Create `configs/reranker-v1.yaml` with the selected reranker repository, immutable revision, tokenizer revision, prompt format, precision, maximum input length, batch size, score interpretation, and stable tie-breaking rule. |  |  |
-| TASK-012 | Create Pydantic models in `src/evidence_routing/schemas.py` for `QueryRecord`, `EvidenceSpecification`, `RankedEvidenceUnit`, `ContextSidecar`, `PathRun`, `EvidenceAnnotation`, `QuestionAnnotationBundle`, `AdjudicationRecord`, `SplitAssignment`, and `ExperimentManifest`. |  |  |
-| TASK-013 | Create JSON Schemas under `data/schemas/` from the Pydantic models and create redistribution-safe examples under `data/templates/`. |  |  |
-| TASK-014 | Implement `src/evidence_routing/validation.py::validate_dataset`, `validate_path_run`, `validate_annotation_bundle`, and `validate_manifest`; reject unknown schema versions and identifier collisions. |  |  |
-| TASK-015 | Create `docs/protocol/pilot-v1.md` explaining the frozen execution protocol in human-readable form and recording the SHA-256 hashes of `pilot-v1.yaml`, `cues-v1.yaml`, and `reranker-v1.yaml`. |  |  |
-| TASK-016 | Add `tests/test_schemas.py`, `tests/test_validation.py`, and fixtures covering valid records, invalid identifiers, missing provenance, duplicate evidence units, illegal path IDs, and prohibited corpus-insufficiency inference. |  |  |
+| TASK-009 | Create `configs/pilot-v1.yaml` with seed `20260723`, domains, exact question counts, path IDs, BM25 depths, output cutoff 10, top-five seed policy, graph confidence `0.85`, graph target cap 5, context sidecar cap 3 per seed, duplicate-question count 30, five-fold assignment, calibration rule, and all Section 13 thresholds. | ✅ | 2026-07-24 |
+| TASK-010 | Create `configs/cues-v1.yaml` containing versioned Chinese and English table/context and citation/dependency cue dictionaries plus Unicode normalization rules. | ✅ | 2026-07-24 |
+| TASK-011 | Create `configs/reranker-v1.yaml` with the selected reranker repository, immutable revision, tokenizer revision, prompt format, precision, maximum input length, batch size, score interpretation, and stable tie-breaking rule. | ✅ | 2026-07-24 |
+| TASK-012 | Create Pydantic models in `src/evidence_routing/schemas.py` for `QueryRecord`, `EvidenceSpecification`, `RankedEvidenceUnit`, `ContextSidecar`, `PathRun`, `EvidenceAnnotation`, `QuestionAnnotationBundle`, `AdjudicationRecord`, `SplitAssignment`, and `ExperimentManifest`. | ✅ | 2026-07-24 |
+| TASK-013 | Create JSON Schemas under `data/schemas/` from the Pydantic models and create redistribution-safe examples under `data/templates/`. | ✅ | 2026-07-24 |
+| TASK-014 | Implement `src/evidence_routing/validation.py::validate_dataset`, `validate_path_run`, `validate_annotation_bundle`, and `validate_manifest`; reject unknown schema versions and identifier collisions. | ✅ | 2026-07-24 |
+| TASK-015 | Create `docs/protocol/pilot-v1.md` explaining the frozen execution protocol in human-readable form and recording the SHA-256 hashes of `pilot-v1.yaml`, `cues-v1.yaml`, and `reranker-v1.yaml`. | ✅ | 2026-07-24 |
+| TASK-016 | Add `tests/test_schemas.py`, `tests/test_validation.py`, and fixtures covering valid records, invalid identifiers, missing provenance, duplicate evidence units, illegal path IDs, and prohibited corpus-insufficiency inference. | ✅ | 2026-07-24 |
 
 Dependencies: TASK-009 through TASK-016 depend on TASK-006 and TASK-007 for field mapping but not on live corpus execution.
 

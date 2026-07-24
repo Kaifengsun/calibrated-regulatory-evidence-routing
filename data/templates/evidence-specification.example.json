@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "question_id": "CHEM-PILOT-001",
+  "specification_id": "SPEC-CHEM-PILOT-001",
+  "required_source_ids": [],
+  "sufficient_source_ids": [
+    "CHEM-SECTION-DEMO-01"
+  ],
+  "insufficiency_candidate": false,
+  "evidence_scope_note": "One attributable clause is sufficient for this fictional example."
+}

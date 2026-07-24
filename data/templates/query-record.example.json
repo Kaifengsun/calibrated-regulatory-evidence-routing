@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "question_id": "CHEM-PILOT-001",
+  "domain": "chemical",
+  "language": "zh",
+  "query_text": "某项监管要求在什么条件下适用？",
+  "construction_category": "direct_clause",
+  "source_group_id": "CHEM-STANDARD-DEMO",
+  "authoring_source_ids": [
+    "CHEM-SECTION-DEMO-01"
+  ],
+  "counter_cue_tags": []
+}

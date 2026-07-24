@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "evidence_scope_note": {
+      "maxLength": 1000,
+      "minLength": 3,
+      "title": "Evidence Scope Note",
+      "type": "string"
+    },
+    "insufficiency_candidate": {
+      "default": false,
+      "title": "Insufficiency Candidate",
+      "type": "boolean"
+    },
+    "question_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "required_source_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Required Source Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "specification_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Specification Id",
+      "type": "string"
+    },
+    "sufficient_source_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Sufficient Source Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "question_id",
+    "specification_id",
+    "evidence_scope_note"
+  ],
+  "title": "EvidenceSpecification",
+  "type": "object"
+}

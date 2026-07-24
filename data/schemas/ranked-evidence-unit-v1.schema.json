@@ -1,0 +1,158 @@
+{
+  "$defs": {
+    "Domain": {
+      "enum": [
+        "chemical",
+        "pharmaceutical"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "UnitOrigin": {
+      "enum": [
+        "direct",
+        "graph"
+      ],
+      "title": "UnitOrigin",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "bm25_rank": {
+      "exclusiveMinimum": 0,
+      "maximum": 50,
+      "title": "Bm25 Rank",
+      "type": "integer"
+    },
+    "bm25_score": {
+      "title": "Bm25 Score",
+      "type": "number"
+    },
+    "document_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "domain": {
+      "$ref": "#/$defs/Domain"
+    },
+    "graph_seed_source_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Graph Seed Source Id"
+    },
+    "origin": {
+      "$ref": "#/$defs/UnitOrigin"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "title": "Provenance",
+      "type": "object"
+    },
+    "rank": {
+      "exclusiveMinimum": 0,
+      "maximum": 10,
+      "title": "Rank",
+      "type": "integer"
+    },
+    "relation_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Relation Confidence"
+    },
+    "relation_type_normalized": {
+      "anyOf": [
+        {
+          "enum": [
+            "CITES",
+            "DEPENDS_ON"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Relation Type Normalized"
+    },
+    "relation_type_original": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Relation Type Original"
+    },
+    "reranker_score": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reranker Score"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_type": {
+      "maxLength": 40,
+      "minLength": 1,
+      "title": "Source Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_id",
+    "document_id",
+    "domain",
+    "source_type",
+    "rank",
+    "origin",
+    "bm25_rank",
+    "bm25_score",
+    "provenance"
+  ],
+  "title": "RankedEvidenceUnit",
+  "type": "object"
+}

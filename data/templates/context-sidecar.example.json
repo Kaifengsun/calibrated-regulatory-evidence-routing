@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "sidecar_id": "SIDECAR-CHEM-001",
+  "seed_source_id": "CHEM-SECTION-DEMO-01",
+  "seed_rank": 1,
+  "source_id": "CHEM-PARENT-DEMO-01",
+  "document_id": "CHEM-STANDARD-DEMO",
+  "domain": "chemical",
+  "context_type": "immediate_parent",
+  "order_within_seed": 1,
+  "provenance": {
+    "locator": "fictional-fixture"
+  }
+}

@@ -16,14 +16,16 @@ The Pilot covers:
 
 ## Current status
 
-Phase 1 is complete: the repository shell, safe local configuration contract,
-read-only source-system inventory, and tracked-file privacy checks are in place.
-Phase 2 will freeze the machine-readable Pilot protocol and schemas. No Pilot
-questions, path labels, or model results have been created.
+Phases 1 and 2 are complete: the repository boundary, read-only source
+inventory, machine-readable Pilot protocol, schemas, safe templates, and
+tracked-file privacy checks are in place. Phase 3 will implement the two
+read-only domain adapters and deterministic BM25 contract. No Pilot questions,
+path labels, or model results have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)
 - [Source-system inventory](docs/protocol/source-system-inventory.md)
+- [Frozen Pilot v1 protocol](docs/protocol/pilot-v1.md)
 
 ## Repository boundary
 

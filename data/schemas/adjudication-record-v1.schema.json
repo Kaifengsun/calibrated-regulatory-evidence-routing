@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "EvidenceLabel": {
+      "enum": [
+        "REQUIRED",
+        "SUFFICIENT",
+        "CONTEXT",
+        "IRRELEVANT",
+        "HARMFUL"
+      ],
+      "title": "EvidenceLabel",
+      "type": "string"
+    },
+    "PathId": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "title": "PathId",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "adjudicated_at": {
+      "format": "date-time",
+      "title": "Adjudicated At",
+      "type": "string"
+    },
+    "adjudicated_label": {
+      "$ref": "#/$defs/EvidenceLabel"
+    },
+    "adjudication_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Adjudication Id",
+      "type": "string"
+    },
+    "adjudicator_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Adjudicator Code",
+      "type": "string"
+    },
+    "duplicate_annotation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Duplicate Annotation Id",
+      "type": "string"
+    },
+    "duplicate_label": {
+      "$ref": "#/$defs/EvidenceLabel"
+    },
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "path_id": {
+      "$ref": "#/$defs/PathId"
+    },
+    "primary_annotation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Primary Annotation Id",
+      "type": "string"
+    },
+    "primary_label": {
+      "$ref": "#/$defs/EvidenceLabel"
+    },
+    "question_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "rationale_code": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Rationale Code",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "adjudication_id",
+    "question_id",
+    "path_id",
+    "evidence_id",
+    "primary_annotation_id",
+    "duplicate_annotation_id",
+    "primary_label",
+    "duplicate_label",
+    "adjudicated_label",
+    "adjudicator_code",
+    "rationale_code",
+    "adjudicated_at"
+  ],
+  "title": "AdjudicationRecord",
+  "type": "object"
+}

@@ -1,0 +1,347 @@
+{
+  "$defs": {
+    "ContextSidecar": {
+      "additionalProperties": false,
+      "properties": {
+        "context_type": {
+          "$ref": "#/$defs/ContextType"
+        },
+        "document_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "domain": {
+          "$ref": "#/$defs/Domain"
+        },
+        "order_within_seed": {
+          "exclusiveMinimum": 0,
+          "maximum": 3,
+          "title": "Order Within Seed",
+          "type": "integer"
+        },
+        "provenance": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1,
+          "title": "Provenance",
+          "type": "object"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "seed_rank": {
+          "exclusiveMinimum": 0,
+          "maximum": 5,
+          "title": "Seed Rank",
+          "type": "integer"
+        },
+        "seed_source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Seed Source Id",
+          "type": "string"
+        },
+        "sidecar_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Sidecar Id",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sidecar_id",
+        "seed_source_id",
+        "seed_rank",
+        "source_id",
+        "document_id",
+        "domain",
+        "context_type",
+        "order_within_seed",
+        "provenance"
+      ],
+      "title": "ContextSidecar",
+      "type": "object"
+    },
+    "ContextType": {
+      "enum": [
+        "heading_path",
+        "immediate_parent",
+        "table"
+      ],
+      "title": "ContextType",
+      "type": "string"
+    },
+    "Domain": {
+      "enum": [
+        "chemical",
+        "pharmaceutical"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "ExecutionStatus": {
+      "enum": [
+        "complete",
+        "execution_error"
+      ],
+      "title": "ExecutionStatus",
+      "type": "string"
+    },
+    "PathId": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "title": "PathId",
+      "type": "string"
+    },
+    "RankedEvidenceUnit": {
+      "additionalProperties": false,
+      "properties": {
+        "bm25_rank": {
+          "exclusiveMinimum": 0,
+          "maximum": 50,
+          "title": "Bm25 Rank",
+          "type": "integer"
+        },
+        "bm25_score": {
+          "title": "Bm25 Score",
+          "type": "number"
+        },
+        "document_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "domain": {
+          "$ref": "#/$defs/Domain"
+        },
+        "graph_seed_source_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Seed Source Id"
+        },
+        "origin": {
+          "$ref": "#/$defs/UnitOrigin"
+        },
+        "provenance": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1,
+          "title": "Provenance",
+          "type": "object"
+        },
+        "rank": {
+          "exclusiveMinimum": 0,
+          "maximum": 10,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "relation_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relation Confidence"
+        },
+        "relation_type_normalized": {
+          "anyOf": [
+            {
+              "enum": [
+                "CITES",
+                "DEPENDS_ON"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relation Type Normalized"
+        },
+        "relation_type_original": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relation Type Original"
+        },
+        "reranker_score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reranker Score"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "document_id",
+        "domain",
+        "source_type",
+        "rank",
+        "origin",
+        "bm25_rank",
+        "bm25_score",
+        "provenance"
+      ],
+      "title": "RankedEvidenceUnit",
+      "type": "object"
+    },
+    "UnitOrigin": {
+      "enum": [
+        "direct",
+        "graph"
+      ],
+      "title": "UnitOrigin",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "context_items_attached": {
+      "maximum": 15,
+      "minimum": 0,
+      "title": "Context Items Attached",
+      "type": "integer"
+    },
+    "context_sidecars": {
+      "items": {
+        "$ref": "#/$defs/ContextSidecar"
+      },
+      "maxItems": 15,
+      "title": "Context Sidecars",
+      "type": "array"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Code"
+    },
+    "graph_targets_inserted": {
+      "maximum": 5,
+      "minimum": 0,
+      "title": "Graph Targets Inserted",
+      "type": "integer"
+    },
+    "neural_model_calls": {
+      "minimum": 0,
+      "title": "Neural Model Calls",
+      "type": "integer"
+    },
+    "path_id": {
+      "$ref": "#/$defs/PathId"
+    },
+    "question_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "ranked_units": {
+      "items": {
+        "$ref": "#/$defs/RankedEvidenceUnit"
+      },
+      "maxItems": 10,
+      "title": "Ranked Units",
+      "type": "array"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "runtime_ms": {
+      "minimum": 0,
+      "title": "Runtime Ms",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ExecutionStatus"
+    }
+  },
+  "required": [
+    "run_id",
+    "question_id",
+    "path_id",
+    "status",
+    "neural_model_calls",
+    "graph_targets_inserted",
+    "context_items_attached",
+    "runtime_ms"
+  ],
+  "title": "PathRun",
+  "type": "object"
+}

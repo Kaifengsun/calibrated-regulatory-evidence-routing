@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "annotation_id": "ANN-CHEM-001-P0-01",
+  "question_id": "CHEM-PILOT-001",
+  "path_id": "P0",
+  "evidence_id": "CHEM-SECTION-DEMO-01",
+  "evidence_kind": "ranked",
+  "label": "SUFFICIENT",
+  "annotation_role": "primary",
+  "annotator_code": "ANNOTATOR-A",
+  "annotated_at": "2026-07-23T12:00:00+08:00",
+  "harmful_reason_code": null
+}

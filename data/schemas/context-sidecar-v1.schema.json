@@ -1,0 +1,89 @@
+{
+  "$defs": {
+    "ContextType": {
+      "enum": [
+        "heading_path",
+        "immediate_parent",
+        "table"
+      ],
+      "title": "ContextType",
+      "type": "string"
+    },
+    "Domain": {
+      "enum": [
+        "chemical",
+        "pharmaceutical"
+      ],
+      "title": "Domain",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "context_type": {
+      "$ref": "#/$defs/ContextType"
+    },
+    "document_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "domain": {
+      "$ref": "#/$defs/Domain"
+    },
+    "order_within_seed": {
+      "exclusiveMinimum": 0,
+      "maximum": 3,
+      "title": "Order Within Seed",
+      "type": "integer"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "title": "Provenance",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed_rank": {
+      "exclusiveMinimum": 0,
+      "maximum": 5,
+      "title": "Seed Rank",
+      "type": "integer"
+    },
+    "seed_source_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Seed Source Id",
+      "type": "string"
+    },
+    "sidecar_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Sidecar Id",
+      "type": "string"
+    },
+    "source_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Source Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "sidecar_id",
+    "seed_source_id",
+    "seed_rank",
+    "source_id",
+    "document_id",
+    "domain",
+    "context_type",
+    "order_within_seed",
+    "provenance"
+  ],
+  "title": "ContextSidecar",
+  "type": "object"
+}

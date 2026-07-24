@@ -1,0 +1,58 @@
+schema_version: "1.0"
+cue_set_id: cues-v1
+status: frozen_before_path_labels
+
+normalization:
+  unicode_form: NFKC
+  casefold: true
+  collapse_whitespace: true
+  strip_surrounding_whitespace: true
+  substring_matching: true
+
+table_context:
+  zh:
+    - 表
+    - 表格
+    - 附表
+    - 附录
+    - 栏
+    - 行
+    - 列
+    - 上下文
+    - 上级条款
+  en:
+    - table
+    - tabulated
+    - appendix
+    - annex
+    - column
+    - row
+    - context
+    - parent section
+
+citation_dependency:
+  zh:
+    - 引用
+    - 参照
+    - 依据
+    - 按照
+    - 依照
+    - 见
+    - 依赖
+  en:
+    - cite
+    - cited
+    - citation
+    - refer to
+    - according to
+    - in accordance with
+    - as defined in
+    - required by
+    - depends on
+
+heuristic_precedence:
+  both: P5
+  citation_dependency_only: P3
+  table_context_only: P2
+  neither_and_ambiguity_gap_below_threshold: P1
+  otherwise: P0

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "bundle_id": "BUNDLE-CHEM-PILOT-001-PRIMARY",
+  "question_id": "CHEM-PILOT-001",
+  "annotation_role": "primary",
+  "path_run_ids": [
+    "RUN-CHEM-PILOT-001-P0",
+    "RUN-CHEM-PILOT-001-P1",
+    "RUN-CHEM-PILOT-001-P2",
+    "RUN-CHEM-PILOT-001-P3",
+    "RUN-CHEM-PILOT-001-P4",
+    "RUN-CHEM-PILOT-001-P5"
+  ],
+  "evidence_annotations": [
+    {
+      "schema_version": "1.0",
+      "annotation_id": "ANN-CHEM-001-P0-01",
+      "question_id": "CHEM-PILOT-001",
+      "path_id": "P0",
+      "evidence_id": "CHEM-SECTION-DEMO-01",
+      "evidence_kind": "ranked",
+      "label": "SUFFICIENT",
+      "annotation_role": "primary",
+      "annotator_code": "ANNOTATOR-A",
+      "annotated_at": "2026-07-23T12:00:00+08:00",
+      "harmful_reason_code": null
+    }
+  ],
+  "corpus_assessment": "sufficient",
+  "manual_corpus_check": {
+    "schema_version": "1.0",
+    "checked": false,
+    "checked_by": null,
+    "checked_at": null,
+    "search_scope": null,
+    "evidence_found": null
+  }
+}

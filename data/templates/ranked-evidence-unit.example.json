@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "source_id": "CHEM-SECTION-DEMO-01",
+  "document_id": "CHEM-STANDARD-DEMO",
+  "domain": "chemical",
+  "source_type": "section",
+  "rank": 1,
+  "origin": "direct",
+  "bm25_rank": 1,
+  "bm25_score": 12.5,
+  "reranker_score": null,
+  "graph_seed_source_id": null,
+  "relation_type_original": null,
+  "relation_type_normalized": null,
+  "relation_confidence": null,
+  "provenance": {
+    "locator": "fictional-fixture"
+  }
+}

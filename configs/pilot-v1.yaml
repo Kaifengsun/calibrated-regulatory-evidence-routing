@@ -1,0 +1,177 @@
+schema_version: "1.0"
+protocol_id: pilot-v1
+status: frozen_before_path_labels
+seed: 20260723
+
+domains:
+  chemical:
+    question_count: 60
+    language: zh
+  pharmaceutical:
+    question_count: 60
+    language: en
+
+construction_categories:
+  - direct_clause
+  - parent_heading_context
+  - table_related
+  - citation_dependency
+  - evidence_insufficient
+questions_per_domain_category: 12
+total_question_count: 120
+
+retrieval:
+  first_stage: bm25
+  candidate_depth: 50
+  evaluated_ranked_cutoff: 10
+  seed_count: 5
+  stable_tie_break: source_id_asc
+
+context:
+  enabled_types:
+    - heading_path
+    - immediate_parent
+    - table
+  order:
+    - heading_path
+    - immediate_parent
+    - table
+  maximum_sidecars_per_seed: 3
+  table_requires_query_cue_or_direct_attachment: true
+  occupies_ranked_position: false
+
+graph:
+  direction: outgoing
+  hop_count: 1
+  normalized_relation_types:
+    - CITES
+    - DEPENDS_ON
+  minimum_confidence: 0.85
+  maximum_unique_targets: 5
+  target_order:
+    - source_seed_rank_asc
+    - edge_confidence_desc
+    - relation_type_asc
+    - target_source_id_asc
+  pharmaceutical_normalization:
+    CITES:
+      - REFERENCES
+    DEPENDS_ON:
+      - REQUIRES_COMPLIANCE_WITH
+      - APPLIES_DEFINITION_FROM
+      - USES_PRINCIPLES_FROM
+      - INTERPRETS
+    require_unique_text_target: true
+    exclude_ambiguous_or_non_textual_targets: true
+    infer_unrecorded_relations: false
+    deterministic_resolution_confidence: 1.0
+
+paths:
+  P0: [bm25_top_10]
+  P1: [bm25_top_50, rerank_top_10]
+  P2: [bm25_top_10, context_on_first_5]
+  P3: [bm25_top_10, graph_from_first_5]
+  P4: [bm25_top_50, rerank_top_10, context_on_first_5]
+  P5:
+    - bm25_top_50
+    - rerank_top_10
+    - context_on_first_5
+    - graph_from_same_first_5
+
+annotation:
+  evidence_labels:
+    - REQUIRED
+    - SUFFICIENT
+    - CONTEXT
+    - IRRELEVANT
+    - HARMFUL
+  duplicate_question_count: 30
+  duplicate_questions_per_domain_category: 3
+  duplicate_unit: complete_question
+  harmful_causes_combined_failure: true
+  corpus_insufficiency_requires_manual_check: true
+
+splitting:
+  folds: 5
+  grouping_unit: source_document_or_standard
+  assignment: stable_hash
+  outer_test_fold: i
+  calibration_fold: "(i + 1) mod 5"
+  remaining_training_folds: 3
+  target_domain_fit_for_transfer: false
+
+features:
+  ambiguity_gap_epsilon: 1.0e-9
+  heuristic_ambiguity_gap_threshold: 0.15
+  downstream_execution_features_in_primary_router: false
+  raw_query_embeddings_in_primary_analysis: false
+
+models:
+  logistic_regression:
+    penalty: l2
+    C: 1.0
+    solver: lbfgs
+    max_iter: 1000
+    class_weight: null
+  xgboost:
+    objective: binary:logistic
+    n_estimators: 100
+    max_depth: 3
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_lambda: 1.0
+    n_jobs: 1
+
+calibration:
+  logistic_regression: native_probability
+  xgboost: platt
+  isotonic_sensitivity_minimum_pairs: 100
+  isotonic_requires_both_classes: true
+  accepted_failure_rate_maximum: 0.10
+  minimum_accepted_questions: 10
+  threshold_candidates: distinct_calibration_probabilities
+  no_valid_threshold_action: force_abstain
+  test_threshold_search_allowed: false
+
+cost:
+  lexicographic_order:
+    - neural_model_calls
+    - graph_targets_inserted
+    - context_items_attached
+    - median_runtime_ms
+    - path_id
+  runtime_rounding_ms: 1
+
+evaluation:
+  ece_bin_edges: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  bootstrap_iterations: 10000
+  bootstrap_seed: 20260723
+
+go_no_go:
+  required_qualitative_gates: 3
+  required_quantitative_signals: 4
+  signal_1:
+    minimum_rescued_question_fraction: 0.20
+    denominator: all_120_questions
+  signal_2:
+    minimum_module_types: 2
+    minimum_unique_questions_per_module: 5
+  signal_3:
+    success_gain_pp: 5
+    maximum_success_loss_pp: 2
+    minimum_neural_call_reduction_fraction: 0.20
+    minimum_harm_reduction_pp: 5
+    maximum_completeness_loss_pp: 2
+    route_cost_and_harm_population: routable_questions_only
+  signal_4:
+    success_gain_pp: 5
+    maximum_success_loss_pp: 2
+    minimum_neural_call_reduction_fraction: 0.20
+    minimum_favorable_folds: 3
+    abstention_allowed: false
+  signal_5:
+    minimum_coverage: 0.20
+    maximum_accepted_failure_rate: 0.10
+    minimum_risk_reduction_pp: 5
+    threshold_source: calibration_partition_only

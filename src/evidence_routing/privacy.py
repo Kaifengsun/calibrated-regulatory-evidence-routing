@@ -69,6 +69,12 @@ _SAFE_SECRET_VALUES = {
     "placeholder",
     "redacted",
 }
+_SAFE_NON_SECRET_KEYS = {
+    "false_token",
+    "maximum_input_tokens",
+    "tokenizer_revision",
+    "true_token",
+}
 
 
 @dataclass(frozen=True)
@@ -118,6 +124,8 @@ def _content_findings(relative: Path, text: str) -> list[PrivacyFinding]:
         key = match.group("key").strip().casefold()
         value_raw = match.group("value").strip()
         value = value_raw.casefold()
+        if key in _SAFE_NON_SECRET_KEYS:
+            continue
         if key.startswith("_"):
             continue
         if key.endswith("_env"):

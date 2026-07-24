@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "question_id": "CHEM-PILOT-001",
+  "source_group_id": "CHEM-STANDARD-DEMO",
+  "domain": "chemical",
+  "fold": 0,
+  "assignment_seed": 20260723,
+  "assignment_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
