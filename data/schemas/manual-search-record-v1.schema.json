@@ -1,0 +1,117 @@
+{
+  "$defs": {
+    "Domain": {
+      "enum": [
+        "chemical",
+        "pharmaceutical"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "SearchConclusion": {
+      "enum": [
+        "corpus_sufficient",
+        "corpus_insufficient"
+      ],
+      "title": "SearchConclusion",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checked_at": {
+      "format": "date-time",
+      "title": "Checked At",
+      "type": "string"
+    },
+    "checked_by": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Checked By",
+      "type": "string"
+    },
+    "conclusion": {
+      "$ref": "#/$defs/SearchConclusion"
+    },
+    "domain": {
+      "$ref": "#/$defs/Domain"
+    },
+    "evidence_found": {
+      "title": "Evidence Found",
+      "type": "boolean"
+    },
+    "manual_search_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Manual Search Id",
+      "type": "string"
+    },
+    "query_terms": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Query Terms",
+      "type": "array"
+    },
+    "question_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "rationale": {
+      "maxLength": 1000,
+      "minLength": 10,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "search_methods": {
+      "items": {
+        "enum": [
+          "identifier_lookup",
+          "title_lookup",
+          "full_text_search",
+          "graph_relation_check",
+          "manual_document_browse"
+        ],
+        "type": "string"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Search Methods",
+      "type": "array"
+    },
+    "search_scope": {
+      "maxLength": 1000,
+      "minLength": 10,
+      "title": "Search Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "manual_search_id",
+    "question_id",
+    "domain",
+    "checked_by",
+    "checked_at",
+    "search_scope",
+    "search_methods",
+    "query_terms",
+    "evidence_found",
+    "conclusion",
+    "rationale"
+  ],
+  "title": "ManualSearchRecord",
+  "type": "object"
+}

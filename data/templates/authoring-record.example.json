@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "authoring_id": "AUTHOR-CHEM-DEMO-001",
+  "question_id": "CHEM-DEMO-001",
+  "specification_id": "SPEC-CHEM-DEMO-001",
+  "domain": "chemical",
+  "construction_category": "direct_clause",
+  "review_decision": "accept",
+  "construction_rationale": "A single attributable clause completely supports this fictional demonstration question.",
+  "counter_cue_justification": null,
+  "prior_question_check": "clear",
+  "source_resolution_checked": true,
+  "manual_search_record_id": null,
+  "reviewed_by": "REVIEWER-DEMO",
+  "reviewed_at": "2026-07-25T12:00:00+08:00"
+}

@@ -136,8 +136,8 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-031 | Create `docs/annotation/question-construction-v1.md` with category quotas, counter-cue requirements, prohibited reuse rules, and a source-to-query audit checklist. |  |  |
-| TASK-032 | Create `docs/annotation/evidence-labeling-v1.md` with the five evidence labels, corpus-insufficiency manual-check procedure, HARMFUL decision order, and positive and negative examples in both domains. |  |  |
+| TASK-031 | Create `docs/annotation/question-construction-v1.md` with category quotas, counter-cue requirements, prohibited reuse rules, and a source-to-query audit checklist. | ✅ | 2026-07-25 |
+| TASK-032 | Create `docs/annotation/evidence-labeling-v1.md` with the five evidence labels, corpus-insufficiency manual-check procedure, HARMFUL decision order, and positive and negative examples in both domains. | ✅ | 2026-07-25 |
 | TASK-033 | Create exactly 60 chemical and 60 pharmaceutical `QueryRecord` plus `EvidenceSpecification` records in the local ignored authoring area; export only redistribution-safe identifiers and metadata to the tracked frozen dataset when permitted. |  |  |
 | TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. |  |  |
 | TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. |  |  |

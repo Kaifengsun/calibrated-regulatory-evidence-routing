@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "manual_search_id": "SEARCH-CHEM-DEMO-001",
+  "question_id": "CHEM-DEMO-INSUFFICIENT-001",
+  "domain": "chemical",
+  "checked_by": "REVIEWER-DEMO",
+  "checked_at": "2026-07-25T12:00:00+08:00",
+  "search_scope": "The fictional frozen demonstration corpus and its attributable metadata were checked.",
+  "search_methods": [
+    "title_lookup",
+    "full_text_search",
+    "graph_relation_check"
+  ],
+  "query_terms": [
+    "fictional threshold",
+    "fictional regulated object"
+  ],
+  "evidence_found": false,
+  "conclusion": "corpus_insufficient",
+  "rationale": "No complete attributable evidence was found after the documented fictional search."
+}

@@ -1,0 +1,164 @@
+{
+  "$defs": {
+    "ConstructionCategory": {
+      "enum": [
+        "direct_clause",
+        "parent_heading_context",
+        "table_related",
+        "citation_dependency",
+        "evidence_insufficient"
+      ],
+      "title": "ConstructionCategory",
+      "type": "string"
+    },
+    "Domain": {
+      "enum": [
+        "chemical",
+        "pharmaceutical"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "PriorQuestionCheck": {
+      "enum": [
+        "not_checked",
+        "clear",
+        "review_required"
+      ],
+      "title": "PriorQuestionCheck",
+      "type": "string"
+    },
+    "ReviewDecision": {
+      "enum": [
+        "draft",
+        "ready_for_review",
+        "accept",
+        "revise_and_review",
+        "reject_and_replace"
+      ],
+      "title": "ReviewDecision",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authoring_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Authoring Id",
+      "type": "string"
+    },
+    "construction_category": {
+      "$ref": "#/$defs/ConstructionCategory"
+    },
+    "construction_rationale": {
+      "maxLength": 1000,
+      "minLength": 10,
+      "title": "Construction Rationale",
+      "type": "string"
+    },
+    "counter_cue_justification": {
+      "anyOf": [
+        {
+          "maxLength": 500,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Counter Cue Justification"
+    },
+    "domain": {
+      "$ref": "#/$defs/Domain"
+    },
+    "manual_search_record_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Manual Search Record Id"
+    },
+    "prior_question_check": {
+      "$ref": "#/$defs/PriorQuestionCheck",
+      "default": "not_checked"
+    },
+    "question_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Question Id",
+      "type": "string"
+    },
+    "review_decision": {
+      "$ref": "#/$defs/ReviewDecision",
+      "default": "draft"
+    },
+    "reviewed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewed At"
+    },
+    "reviewed_by": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewed By"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_resolution_checked": {
+      "default": false,
+      "title": "Source Resolution Checked",
+      "type": "boolean"
+    },
+    "specification_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
+      "title": "Specification Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "authoring_id",
+    "question_id",
+    "specification_id",
+    "domain",
+    "construction_category",
+    "construction_rationale"
+  ],
+  "title": "AuthoringRecord",
+  "type": "object"
+}

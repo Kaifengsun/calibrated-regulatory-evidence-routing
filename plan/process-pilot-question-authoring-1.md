@@ -65,10 +65,10 @@ router.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create `docs/annotation/question-construction-v1.md` containing the 2-by-5 batch quota, evidence-first/path-blind sequence, category definitions, counter-cue requirements, prior-question non-overlap procedure, review checklist, and accept/revise/reject decisions. |  |  |
-| TASK-002 | Create `docs/annotation/evidence-labeling-v1.md` containing the five labels, completeness logic, HARMFUL decision order, corpus-insufficiency manual-search procedure, and positive/negative examples for both domains. |  |  |
-| TASK-003 | Create `data/templates/authoring-record.example.json`, `data/templates/manual-search-record.example.json`, and their Pydantic models in `src/evidence_routing/authoring.py`; export matching version-1 JSON schemas under `data/schemas/`. |  |  |
-| TASK-004 | Add `tests/test_authoring.py` to validate record identity, review-state transitions, manual-search requirements, and rejection of committed source excerpts or local paths. |  |  |
+| TASK-001 | Create `docs/annotation/question-construction-v1.md` containing the 2-by-5 batch quota, evidence-first/path-blind sequence, category definitions, counter-cue requirements, prior-question non-overlap procedure, review checklist, and accept/revise/reject decisions. | ✅ | 2026-07-25 |
+| TASK-002 | Create `docs/annotation/evidence-labeling-v1.md` containing the five labels, completeness logic, HARMFUL decision order, corpus-insufficiency manual-search procedure, and positive/negative examples for both domains. | ✅ | 2026-07-25 |
+| TASK-003 | Create `data/templates/authoring-record.example.json`, `data/templates/manual-search-record.example.json`, and their Pydantic models in `src/evidence_routing/authoring.py`; export matching version-1 JSON schemas under `data/schemas/`. | ✅ | 2026-07-25 |
+| TASK-004 | Add `tests/test_authoring.py` to validate record identity, review-state transitions, manual-search requirements, and rejection of committed source excerpts or local paths. | ✅ | 2026-07-25 |
 
 Completion criteria:
 

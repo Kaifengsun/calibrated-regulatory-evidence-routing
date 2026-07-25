@@ -13,6 +13,7 @@ from pydantic import ValidationError
 
 from evidence_routing.adapters.chemical import ChemicalSafetyAdapter
 from evidence_routing.adapters.pharma import PharmaceuticalRegulatoryAdapter
+from evidence_routing.authoring import AUTHORING_SCHEMA_MODELS
 from evidence_routing.chemical_corpus import (
     export_scope_candidates,
     freeze_scope_review,
@@ -39,6 +40,7 @@ from evidence_routing.validation import (
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
 _REQUIRED_PROJECTS = {"chemical", "pharmaceutical"}
+_DATA_MODELS = {**SCHEMA_MODELS, **AUTHORING_SCHEMA_MODELS}
 _PHASE_GATED_COMMANDS = {
     "export-annotation": 5,
     "import-annotation": 5,
@@ -120,9 +122,9 @@ def validate_data(
     input_path: Path = typer.Option(..., "--input", exists=True, dir_okay=False, readable=True),
 ) -> None:
     """Validate one JSON record against a public Pilot data contract."""
-    model = SCHEMA_MODELS.get(model_name)
+    model = _DATA_MODELS.get(model_name)
     if model is None:
-        choices = ", ".join(sorted(SCHEMA_MODELS))
+        choices = ", ".join(sorted(_DATA_MODELS))
         raise typer.BadParameter(f"unknown model {model_name!r}; choose one of: {choices}")
     try:
         payload = json.loads(input_path.read_text(encoding="utf-8"))
