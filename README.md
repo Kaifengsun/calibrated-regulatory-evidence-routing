@@ -22,11 +22,10 @@ and immutable result cache are in place. The pharmaceutical adapter has passed
 a read-only check against the frozen 2,478-chunk snapshot. The chemical adapter
 has passed fixture tests and live read-only checks against the 9,206-standard,
 991,453-Section Neo4j instance, using globally unique `Section.uid` values.
-The chemical corpus has been strongly fingerprinted, and a reproducible
-title-based screen has produced 532 standards for human scope review. The
-chemical allowlist is not frozen until those candidates have received manual
-include/exclude decisions. No Pilot questions, path labels, or model results
-have been created.
+The chemical corpus has been strongly fingerprinted. A reproducible title-based
+screen produced 532 standards for human review; the completed review froze 399
+standards into the chemical question-source allowlist and excluded 133. No
+Pilot questions, path labels, or model results have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)
@@ -35,6 +34,7 @@ have been created.
 - [Chemical corpus fingerprint and scope freeze](docs/protocol/chemical-corpus-freeze.md)
 - [Frozen chemical corpus manifest](data/manifests/chemical-corpus-pilot-v1.json)
 - [Chemical scope-screening manifest](data/manifests/chemical-scope-screening-v1.json)
+- [Frozen chemical scope summary](data/manifests/chemical-scope-freeze-v1.json)
 
 ## Repository boundary
 

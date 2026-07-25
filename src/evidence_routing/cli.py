@@ -207,7 +207,7 @@ def chemical_freeze_scope(
             terms=rules["candidate_terms"],
             output_path=output,
         )
-    except (KeyError, json.JSONDecodeError, TypeError, ValueError) as error:
+    except (FileExistsError, KeyError, json.JSONDecodeError, TypeError, ValueError) as error:
         typer.echo(f"chemical scope freeze failed: {error}", err=True)
         raise typer.Exit(code=1) from error
     typer.echo(f"froze {scope.included_standard_count} included standards")

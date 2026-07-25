@@ -1,0 +1,12 @@
+{
+  "candidate_rules_hash": "7f563117adbd463b256cc72a67d2a9548a9d647710607676fffe3dc2491e73de",
+  "corpus_hash": "fc16f75259ddbdee652f21916858678c4e8fd8e9404eb077f6814493f0b6ad62",
+  "excluded_candidate_count": 133,
+  "frozen_at": "2026-07-25T12:20:42.122384+00:00",
+  "included_standard_count": 399,
+  "review_hash": "3685e3129f7000737f3678eb6c71eda01fd60c9884d4e3f4779e391e6c3cd92e",
+  "reviewer_count": 1,
+  "schema_version": "1.0",
+  "screened_candidate_count": 532,
+  "status": "frozen"
+}

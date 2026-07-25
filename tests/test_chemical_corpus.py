@@ -196,6 +196,14 @@ def test_freeze_scope_validates_and_writes_allowlist(tmp_path: Path):
     assert scope.included_standard_uids == ("STD1",)
     assert payload["included_standard_count"] == 1
     assert payload["corpus_hash"] == "a" * 64
+    repeated = freeze_scope_review(
+        review,
+        corpus_hash="a" * 64,
+        terms=["危险化学品"],
+        output_path=output,
+        frozen_at=datetime(2030, 1, 1, tzinfo=UTC),
+    )
+    assert repeated.frozen_at == scope.frozen_at
 
 
 def test_freeze_scope_rejects_incomplete_review(tmp_path: Path):
@@ -208,6 +216,25 @@ def test_freeze_scope_rejects_incomplete_review(tmp_path: Path):
         freeze_scope_review(
             review,
             corpus_hash="a" * 64,
+            terms=["危险化学品"],
+            output_path=output,
+        )
+
+
+def test_freeze_scope_refuses_to_replace_different_review(tmp_path: Path):
+    review = tmp_path / "review.csv"
+    output = tmp_path / "scope.json"
+    _write_review(review)
+    freeze_scope_review(
+        review,
+        corpus_hash="a" * 64,
+        terms=["危险化学品"],
+        output_path=output,
+    )
+    with pytest.raises(FileExistsError, match="different review data"):
+        freeze_scope_review(
+            review,
+            corpus_hash="b" * 64,
             terms=["危险化学品"],
             output_path=output,
         )

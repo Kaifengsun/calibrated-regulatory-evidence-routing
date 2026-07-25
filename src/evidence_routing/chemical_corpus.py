@@ -415,14 +415,44 @@ def freeze_scope_review(
 
     normalized_rows = sorted(rows, key=lambda row: row["standard_uid"])
     review_hash = hashlib.sha256(_canonical_bytes(normalized_rows)).hexdigest()
+    identity = {
+        "schema_version": SCOPE_SCHEMA_VERSION,
+        "corpus_hash": corpus_hash,
+        "candidate_rules_hash": candidate_rules_hash(terms),
+        "review_hash": review_hash,
+        "included_standard_count": len(included),
+        "excluded_candidate_count": excluded,
+        "included_standard_uids": tuple(sorted(included)),
+    }
+    if output_path.exists():
+        try:
+            existing_payload = json.loads(output_path.read_text(encoding="utf-8"))
+            existing = FrozenChemicalScope(
+                schema_version=str(existing_payload["schema_version"]),
+                corpus_hash=str(existing_payload["corpus_hash"]),
+                candidate_rules_hash=str(existing_payload["candidate_rules_hash"]),
+                review_hash=str(existing_payload["review_hash"]),
+                included_standard_count=int(existing_payload["included_standard_count"]),
+                excluded_candidate_count=int(existing_payload["excluded_candidate_count"]),
+                included_standard_uids=tuple(existing_payload["included_standard_uids"]),
+                frozen_at=str(existing_payload["frozen_at"]),
+            )
+        except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+            raise FileExistsError(
+                f"refusing to overwrite invalid frozen scope: {output_path}"
+            ) from error
+        existing_identity = {
+            key: getattr(existing, key)
+            for key in identity
+        }
+        if existing_identity != identity:
+            raise FileExistsError(
+                f"refusing to overwrite frozen scope with different review data: {output_path}"
+            )
+        return existing
+
     scope = FrozenChemicalScope(
-        schema_version=SCOPE_SCHEMA_VERSION,
-        corpus_hash=corpus_hash,
-        candidate_rules_hash=candidate_rules_hash(terms),
-        review_hash=review_hash,
-        included_standard_count=len(included),
-        excluded_candidate_count=excluded,
-        included_standard_uids=tuple(sorted(included)),
+        **identity,
         frozen_at=(frozen_at or datetime.now(UTC)).astimezone(UTC).isoformat(),
     )
     write_json_atomic(output_path, scope.to_payload())

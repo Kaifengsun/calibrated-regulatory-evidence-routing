@@ -5,5 +5,5 @@
   "inventory_count": 9206,
   "matching": "normalized_standard_title_substring_v1",
   "schema_version": "1.0",
-  "status": "awaiting_human_review"
+  "status": "human_review_completed"
 }

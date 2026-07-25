@@ -64,6 +64,11 @@ screening-rule hash.
 The allowlist must be frozen before formal Pilot question construction and
 must not be revised in response to retrieval performance.
 
+Freezing is idempotent. Re-running the command with the same corpus, screening
+rules, and reviewed decisions preserves the original manifest and timestamp.
+The command refuses to overwrite an existing frozen manifest when any identity
+field differs.
+
 ## Local commands
 
 The ignored `configs/local.yaml` must reference environment-variable names for
