@@ -4,13 +4,13 @@ version: 1.0
 date_created: 2026-07-25
 last_updated: 2026-07-25
 owner: Kaifeng Sun
-status: 'In progress'
+status: 'Completed'
 tags: [design, protocol, validation, pilot]
 ---
 
 # Introduction
 
-![Status: In progress](https://img.shields.io/badge/status-In%20progress-yellow)
+![Status: Completed](https://img.shields.io/badge/status-Completed-brightgreen)
 
 This plan applies the approved pre-label quota amendment without changing the
 120-question total, six evidence paths, or Go/No-Go thresholds.
@@ -38,9 +38,9 @@ This plan applies the approved pre-label quota amendment without changing the
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Replace scalar category quotas in `configs/pilot-v1.yaml` with explicit `question_quotas`, `prefreeze_question_quotas`, and `duplicate_annotation_quotas` mappings. |  |  |
-| TASK-002 | Amend `docs/protocol/pilot-v1.md`, the two approved design specifications, and `docs/annotation/question-construction-v1.md` to reference the domain-available quotas. |  |  |
-| TASK-003 | Update `plan/process-end-to-end-pilot-1.md` and `plan/process-pilot-question-authoring-1.md` without marking unexecuted human tasks complete. |  |  |
+| TASK-001 | Replace scalar category quotas in `configs/pilot-v1.yaml` with explicit `question_quotas`, `prefreeze_question_quotas`, and `duplicate_annotation_quotas` mappings. | ✅ | 2026-07-25 |
+| TASK-002 | Amend `docs/protocol/pilot-v1.md`, the two approved design specifications, and `docs/annotation/question-construction-v1.md` to reference the domain-available quotas. | ✅ | 2026-07-25 |
+| TASK-003 | Update `plan/process-end-to-end-pilot-1.md` and `plan/process-pilot-question-authoring-1.md` without marking unexecuted human tasks complete. | ✅ | 2026-07-25 |
 
 Completion criteria:
 
@@ -53,9 +53,9 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-004 | Replace the hard-coded 12-per-cell logic in `src/evidence_routing/validation.py::validate_query_dataset` with an explicit quota mapping parameter and a frozen default matching `configs/pilot-v1.yaml`. |  |  |
-| TASK-005 | Update `tests/test_protocol.py` and dataset-validation tests to verify all full, pre-freeze, and duplicate quota totals and reject pharmaceutical citation questions. |  |  |
-| TASK-006 | Run Pytest, Ruff, configuration validation, schema checks, and tracked-file privacy scanning; mark this plan completed. |  |  |
+| TASK-004 | Replace the hard-coded 12-per-cell logic in `src/evidence_routing/validation.py::validate_dataset` with an explicit quota mapping parameter and a frozen default matching `configs/pilot-v1.yaml`. | ✅ | 2026-07-25 |
+| TASK-005 | Update `tests/test_protocol.py` and dataset-validation tests to verify all full, pre-freeze, and duplicate quota totals and reject pharmaceutical citation questions. | ✅ | 2026-07-25 |
+| TASK-006 | Run Pytest, Ruff, configuration validation, schema checks, and tracked-file privacy scanning; mark this plan completed. | ✅ | 2026-07-25 |
 
 Completion criteria:
 

@@ -31,6 +31,7 @@ standards into the chemical question-source allowlist and excluded 133. No
 Pilot questions, path labels, or model results have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
+- [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
 - [Six frozen evidence paths design](docs/superpowers/specs/2026-07-25-six-frozen-evidence-paths-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)
 - [Source-system inventory](docs/protocol/source-system-inventory.md)

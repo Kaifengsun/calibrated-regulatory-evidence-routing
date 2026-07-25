@@ -112,13 +112,13 @@ The initial pilot will contain 120 newly written questions:
 - 60 chemical-safety questions;
 - 60 pharmaceutical-regulatory questions.
 
-Each domain will be sampled approximately evenly across:
+The pre-label quota amendment of 2026-07-25 aligns construction controls with
+available evidence structures:
 
-- direct-clause needs;
-- parent or heading context needs;
-- table-related needs;
-- citation or dependency needs;
-- evidence-insufficient needs.
+| Domain | Direct | Parent/heading | Table | Citation dependency | Evidence insufficient |
+|---|---:|---:|---:|---:|---:|
+| Chemical safety | 12 | 12 | 12 | 12 | 12 |
+| Pharmaceutical regulation | 15 | 15 | 15 | 0 | 15 |
 
 These sampling categories are construction controls, not route labels and not direct model targets.
 
@@ -177,7 +177,7 @@ Each candidate evidence unit is assigned one of five labels:
 
 A path has complete evidence when every `REQUIRED` evidence identifier is present either in the first ten ranked units or in an eligible context sidecar attached to a top-five seed, or when at least one `SUFFICIENT` item satisfies a single-item evidence specification. `IRRELEVANT` items do not by themselves cause failure. Any `HARMFUL` ranked item within the first ten or any `HARMFUL` attached context sidecar causes the path's success label to be zero. Context attachments inherit separate identifiers and labels; they do not receive relevance by association with their seed.
 
-At least 25% of Pilot questions, corresponding to exactly 30 of the 120 questions, must receive independent duplicate annotation. Duplicate annotation is assigned at the question level and covers all six path outputs and every evidence-unit and context-sidecar label associated with each selected question. The 30 questions are selected through a frozen stratified procedure covering both domains and all construction categories. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
+At least 25% of Pilot questions, corresponding to exactly 30 of the 120 questions, must receive independent duplicate annotation. Duplicate annotation is assigned at the question level and covers all six path outputs and every evidence-unit and context-sidecar label associated with each selected question. Chemical questions contribute three from each of five categories. Pharmaceutical questions contribute four direct, four parent/heading, four table, zero citation-dependency, and three evidence-insufficient questions. Disagreements must be adjudicated while preserving both original labels and the adjudication record.
 
 The annotation guideline must provide positive and negative examples for `HARMFUL` in the following decision order:
 

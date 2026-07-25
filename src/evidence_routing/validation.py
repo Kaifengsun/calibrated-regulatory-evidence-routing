@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 
 from evidence_routing.schemas import (
@@ -31,6 +31,20 @@ class DatasetValidationError(ValueError):
         super().__init__(rendered)
 
 
+FROZEN_QUESTION_QUOTAS: dict[tuple[Domain, ConstructionCategory], int] = {
+    (Domain.CHEMICAL, ConstructionCategory.DIRECT_CLAUSE): 12,
+    (Domain.CHEMICAL, ConstructionCategory.PARENT_HEADING_CONTEXT): 12,
+    (Domain.CHEMICAL, ConstructionCategory.TABLE_RELATED): 12,
+    (Domain.CHEMICAL, ConstructionCategory.CITATION_DEPENDENCY): 12,
+    (Domain.CHEMICAL, ConstructionCategory.EVIDENCE_INSUFFICIENT): 12,
+    (Domain.PHARMACEUTICAL, ConstructionCategory.DIRECT_CLAUSE): 15,
+    (Domain.PHARMACEUTICAL, ConstructionCategory.PARENT_HEADING_CONTEXT): 15,
+    (Domain.PHARMACEUTICAL, ConstructionCategory.TABLE_RELATED): 15,
+    (Domain.PHARMACEUTICAL, ConstructionCategory.CITATION_DEPENDENCY): 0,
+    (Domain.PHARMACEUTICAL, ConstructionCategory.EVIDENCE_INSUFFICIENT): 15,
+}
+
+
 def _duplicates(values: Iterable[str]) -> list[str]:
     counts = Counter(values)
     return sorted(value for value, count in counts.items() if count > 1)
@@ -41,6 +55,7 @@ def validate_dataset(
     specifications: list[EvidenceSpecification],
     *,
     require_frozen_counts: bool = True,
+    expected_quotas: Mapping[tuple[Domain, ConstructionCategory], int] | None = None,
 ) -> None:
     issues: list[ValidationIssue] = []
     duplicate_questions = _duplicates(row.question_id for row in queries)
@@ -60,11 +75,22 @@ def validate_dataset(
             )
         )
     if require_frozen_counts:
-        if len(queries) != 120:
-            issues.append(ValidationIssue("E_PILOT_COUNT", f"expected=120; actual={len(queries)}"))
-        expected = {
-            (domain, category): 12 for domain in Domain for category in ConstructionCategory
+        expected = dict(
+            FROZEN_QUESTION_QUOTAS if expected_quotas is None else expected_quotas
+        )
+        required_keys = {
+            (domain, category) for domain in Domain for category in ConstructionCategory
         }
+        if set(expected) != required_keys or any(count < 0 for count in expected.values()):
+            raise ValueError("expected_quotas must define non-negative counts for all cells")
+        expected_total = sum(expected.values())
+        if len(queries) != expected_total:
+            issues.append(
+                ValidationIssue(
+                    "E_PILOT_COUNT",
+                    f"expected={expected_total}; actual={len(queries)}",
+                )
+            )
         actual = Counter((row.domain, row.construction_category) for row in queries)
         for key, expected_count in expected.items():
             if actual[key] != expected_count:

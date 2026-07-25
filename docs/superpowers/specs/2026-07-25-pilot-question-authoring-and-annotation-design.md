@@ -45,14 +45,15 @@ authoring area.
 
 ## 3. Batch Composition
 
-The pre-freeze batch contains exactly 20 questions:
+The pre-freeze batch contains exactly 20 questions under the approved
+domain-available quota amendment:
 
-| Domain | Language | Questions |
-|---|---|---:|
-| Chemical safety | Chinese | 10 |
-| Pharmaceutical regulation | English | 10 |
+| Domain | Direct | Parent/heading | Table | Citation dependency | Evidence insufficient | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Chemical safety | 2 | 2 | 2 | 2 | 2 | 10 |
+| Pharmaceutical regulation | 3 | 3 | 2 | 0 | 2 | 10 |
 
-Each domain contains exactly two questions in each category:
+The category evidence structures remain:
 
 | Category | Required evidence structure |
 |---|---|
@@ -62,8 +63,8 @@ Each domain contains exactly two questions in each category:
 | `citation_dependency` | Complete evidence requires one eligible outgoing `CITES` or `DEPENDS_ON` target. |
 | `evidence_insufficient` | The frozen corpus lacks complete evidence, confirmed through a documented manual search. |
 
-The sample is deliberately balanced for workflow verification. It is not used
-to estimate the natural prevalence of the five categories.
+The sample verifies workflow coverage of every constructible domain-category
+cell. It is not used to estimate category prevalence.
 
 ## 4. Counter-Cue Requirements
 
@@ -183,7 +184,7 @@ corpus-insufficiency search.
 
 Freezing is blocked when any of the following occurs:
 
-- domain/category counts differ from the approved 2-by-5 design;
+- domain/category counts differ from the approved domain-available quotas;
 - question, specification, source, or evidence identifiers are missing or
   malformed;
 - question IDs or normalized question texts are duplicated;

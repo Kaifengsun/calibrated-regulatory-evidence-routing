@@ -16,10 +16,10 @@ frozen.
 
 The first batch contains exactly 20 questions:
 
-| Domain | Language | Questions per category | Total |
-|---|---|---:|---:|
-| Chemical safety | Chinese | 2 | 10 |
-| Pharmaceutical regulation | English | 2 | 10 |
+| Domain | Direct | Parent/heading | Table | Citation dependency | Evidence insufficient | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Chemical safety | 2 | 2 | 2 | 2 | 2 | 10 |
+| Pharmaceutical regulation | 3 | 3 | 2 | 0 | 2 | 10 |
 
 The five categories are:
 
@@ -29,8 +29,10 @@ The five categories are:
 4. `citation_dependency`;
 5. `evidence_insufficient`.
 
-The balanced batch verifies that the workflow can construct every category. It
-does not estimate the natural frequency of those categories.
+The batch verifies every constructible domain-category cell. The
+pharmaceutical graph has no uniquely attributable target chunk under the
+frozen relation rule, so pharmaceutical citation-dependency questions are
+prohibited. The batch does not estimate natural category frequency.
 
 ## 3. Authoring Sequence
 

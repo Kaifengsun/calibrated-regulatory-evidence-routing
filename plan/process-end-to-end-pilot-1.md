@@ -19,6 +19,8 @@ This plan implements the approved Pilot-first design in `docs/superpowers/specs/
 - **REQ-001**: Use BM25 as the only first-stage retriever for every path.
 - **REQ-002**: Implement exactly six Pilot paths, `P0` through `P5`, using the execution order and cutoffs in the approved design.
 - **REQ-003**: Construct exactly 120 new Pilot questions: 60 chemical-safety and 60 pharmaceutical-regulatory questions.
+- **REQ-003A**: Apply chemical category quotas `[12,12,12,12,12]` and
+  pharmaceutical quotas `[15,15,15,0,15]` in frozen category order.
 - **REQ-004**: Evaluate ranked evidence at cutoff 10 and context sidecars attached only to the first five seeds.
 - **REQ-005**: Preserve the five-label evidence scheme: `REQUIRED`, `SUFFICIENT`, `CONTEXT`, `IRRELEVANT`, and `HARMFUL`.
 - **REQ-006**: Independently duplicate-annotate exactly 30 complete questions, including all path outputs and associated evidence labels.

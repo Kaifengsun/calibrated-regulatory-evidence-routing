@@ -22,9 +22,8 @@ router.
 
 - **REQ-001**: Produce exactly 10 chemical-safety and 10 pharmaceutical
   candidates.
-- **REQ-002**: Produce exactly two candidates per domain for each of
-  `direct_clause`, `parent_heading_context`, `table_related`,
-  `citation_dependency`, and `evidence_insufficient`.
+- **REQ-002**: Apply the approved pre-freeze quotas: chemical `[2,2,2,2,2]`
+  and pharmaceutical `[3,3,2,0,2]` in frozen category order.
 - **REQ-003**: Represent every candidate with one version-1 `QueryRecord` and
   one version-1 `EvidenceSpecification`.
 - **REQ-004**: Resolve every non-insufficiency evidence identifier against the
@@ -65,7 +64,7 @@ router.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create `docs/annotation/question-construction-v1.md` containing the 2-by-5 batch quota, evidence-first/path-blind sequence, category definitions, counter-cue requirements, prior-question non-overlap procedure, review checklist, and accept/revise/reject decisions. | ✅ | 2026-07-25 |
+| TASK-001 | Create `docs/annotation/question-construction-v1.md` containing the domain-available batch quotas, evidence-first/path-blind sequence, category definitions, counter-cue requirements, prior-question non-overlap procedure, review checklist, and accept/revise/reject decisions. | ✅ | 2026-07-25 |
 | TASK-002 | Create `docs/annotation/evidence-labeling-v1.md` containing the five labels, completeness logic, HARMFUL decision order, corpus-insufficiency manual-search procedure, and positive/negative examples for both domains. | ✅ | 2026-07-25 |
 | TASK-003 | Create `data/templates/authoring-record.example.json`, `data/templates/manual-search-record.example.json`, and their Pydantic models in `src/evidence_routing/authoring.py`; export matching version-1 JSON schemas under `data/schemas/`. | ✅ | 2026-07-25 |
 | TASK-004 | Add `tests/test_authoring.py` to validate record identity, review-state transitions, manual-search requirements, and rejection of committed source excerpts or local paths. | ✅ | 2026-07-25 |
@@ -91,18 +90,16 @@ Completion criteria:
 
 Completion criteria:
 
-- Both domains yield at least two reviewable structures for each
-  non-insufficiency category.
+- Each positive-quota domain-category cell yields at least two reviewable
+  structures.
 - No selector imports or invokes path execution.
 - Live output contains no tracked source text.
 
 Live result on 2026-07-25: chemical selection yielded five structures in every
 non-insufficiency category. Pharmaceutical selection yielded five direct, five
 parent/heading, five table, and zero citation-dependency structures. The
-complete pharmaceutical normalized-edge index contains no target that resolves
-uniquely to one attributable chunk under the frozen rule. The first completion
-criterion is therefore not met, and Phase 3 must not begin until the protocol
-decision is recorded.
+domain-available quota amendment records pharmaceutical citation dependency as
+a zero-quota cell, so the positive-quota completion criterion is met.
 
 ### Implementation Phase 3
 

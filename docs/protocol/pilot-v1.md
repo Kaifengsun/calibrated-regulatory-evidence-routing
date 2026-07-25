@@ -1,6 +1,7 @@
-# Pilot v1 Frozen Execution Protocol
+# Pilot v1.1 Frozen Execution Protocol
 
 Date frozen: 2026-07-23
+Quota amendment: 2026-07-25, before Pilot question and path-label freeze
 
 Status: frozen before Pilot path labels
 
@@ -12,22 +13,30 @@ protocol must be versioned before any Pilot output is inspected.
 
 | File | SHA-256 |
 |---|---|
-| `configs/pilot-v1.yaml` | `bd405ca9561ea407f833e0ea48842a44fbedfa6160f00a747499d6b3450a0b40` |
+| `configs/pilot-v1.yaml` | `6eb3cda8001021ddcf1266fde70dabc46dbf0405736ae8503bf62ac56c8236ab` |
 | `configs/cues-v1.yaml` | `fa811d1fb4843bd950b2a9ddd5955cd25df5ae13ac82819b79a8d0b9897a995a` |
 | `configs/reranker-v1.yaml` | `f8352e9e04ea9d2a91cb6e5d90f552321d5a5add67a36e33db7db06c9cffadd6` |
 
-The Pilot seed is `20260723`. Configuration changes require a new protocol ID
+The Pilot seed is `20260723`. The amended protocol ID is `pilot-v1.1`.
+Configuration changes require a new protocol ID
 and new hashes. Existing Pilot artifacts must never be silently relabeled as
 belonging to the new protocol.
 
 ## 2. Dataset and split contract
 
 The Pilot contains exactly 120 new questions: 60 Chinese chemical-safety
-questions and 60 English pharmaceutical-regulatory questions. Each domain
-contains exactly 12 questions in each of five construction categories:
-direct clause, parent or heading context, table related, citation or dependency,
-and evidence insufficient. Construction categories are excluded from router
-features.
+questions and 60 English pharmaceutical-regulatory questions. Category quotas
+follow the evidence structures available in each frozen domain:
+
+| Domain | Direct | Parent/heading | Table | Citation dependency | Evidence insufficient |
+|---|---:|---:|---:|---:|---:|
+| Chemical safety | 12 | 12 | 12 | 12 | 12 |
+| Pharmaceutical regulation | 15 | 15 | 15 | 0 | 15 |
+
+Construction categories are excluded from router features. The pharmaceutical
+graph contains document-level references but no relation that resolves uniquely
+to one attributable target chunk under the frozen rule; no heuristic target
+mapping is introduced.
 
 Questions from the same source document, standard, clause family, table, or
 relation family share one `source_group_id`. Five-fold assignment uses a stable
@@ -99,9 +108,15 @@ Corpus insufficiency requires a documented manual search of the frozen corpus
 that finds no complete evidence.
 
 Exactly 30 complete questions receive independent duplicate annotation,
-stratified as three questions from each domain-category cell. Duplicate review
-covers all six paths and all ranked and sidecar evidence labels. Primary,
-duplicate, and adjudicated records remain separate.
+allocated as follows:
+
+| Domain | Direct | Parent/heading | Table | Citation dependency | Evidence insufficient |
+|---|---:|---:|---:|---:|---:|
+| Chemical safety | 3 | 3 | 3 | 3 | 3 |
+| Pharmaceutical regulation | 4 | 4 | 4 | 0 | 3 |
+
+Duplicate review covers all six paths and all ranked and sidecar evidence
+labels. Primary, duplicate, and adjudicated records remain separate.
 
 ## 6. Router, calibration, and cost
 

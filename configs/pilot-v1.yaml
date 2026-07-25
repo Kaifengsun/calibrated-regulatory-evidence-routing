@@ -1,7 +1,8 @@
 schema_version: "1.0"
-protocol_id: pilot-v1
+protocol_id: pilot-v1.1
 status: frozen_before_path_labels
 seed: 20260723
+amended_at: "2026-07-25"
 
 domains:
   chemical:
@@ -17,7 +18,32 @@ construction_categories:
   - table_related
   - citation_dependency
   - evidence_insufficient
-questions_per_domain_category: 12
+question_quotas:
+  chemical:
+    direct_clause: 12
+    parent_heading_context: 12
+    table_related: 12
+    citation_dependency: 12
+    evidence_insufficient: 12
+  pharmaceutical:
+    direct_clause: 15
+    parent_heading_context: 15
+    table_related: 15
+    citation_dependency: 0
+    evidence_insufficient: 15
+prefreeze_question_quotas:
+  chemical:
+    direct_clause: 2
+    parent_heading_context: 2
+    table_related: 2
+    citation_dependency: 2
+    evidence_insufficient: 2
+  pharmaceutical:
+    direct_clause: 3
+    parent_heading_context: 3
+    table_related: 2
+    citation_dependency: 0
+    evidence_insufficient: 2
 total_question_count: 120
 
 retrieval:
@@ -86,7 +112,19 @@ annotation:
     - IRRELEVANT
     - HARMFUL
   duplicate_question_count: 30
-  duplicate_questions_per_domain_category: 3
+  duplicate_annotation_quotas:
+    chemical:
+      direct_clause: 3
+      parent_heading_context: 3
+      table_related: 3
+      citation_dependency: 3
+      evidence_insufficient: 3
+    pharmaceutical:
+      direct_clause: 4
+      parent_heading_context: 4
+      table_related: 4
+      citation_dependency: 0
+      evidence_insufficient: 3
   duplicate_unit: complete_question
   harmful_causes_combined_failure: true
   corpus_insufficiency_requires_manual_check: true
