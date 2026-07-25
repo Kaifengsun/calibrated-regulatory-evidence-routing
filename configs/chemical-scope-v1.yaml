@@ -1,0 +1,20 @@
+schema_version: "1.0"
+
+# These high-specificity terms are matched only against normalized Standard
+# titles. A match only generates a human-review candidate and never includes a
+# Standard in the chemical-safety allowlist automatically.
+candidate_terms:
+  - 危险化学品
+  - 化学品
+  - 化工
+  - 毒物
+  - 有毒
+  - 易燃
+  - 防爆
+  - 职业卫生
+  - 职业健康
+  - 粉尘
+  - 压力容器
+  - 石化
+  - 农药
+  - 化肥

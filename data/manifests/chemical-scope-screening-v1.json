@@ -1,0 +1,9 @@
+{
+  "candidate_count": 532,
+  "candidate_rules_hash": "7f563117adbd463b256cc72a67d2a9548a9d647710607676fffe3dc2491e73de",
+  "corpus_hash": "fc16f75259ddbdee652f21916858678c4e8fd8e9404eb077f6814493f0b6ad62",
+  "inventory_count": 9206,
+  "matching": "normalized_standard_title_substring_v1",
+  "schema_version": "1.0",
+  "status": "awaiting_human_review"
+}

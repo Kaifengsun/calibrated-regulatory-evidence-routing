@@ -22,13 +22,19 @@ and immutable result cache are in place. The pharmaceutical adapter has passed
 a read-only check against the frozen 2,478-chunk snapshot. The chemical adapter
 has passed fixture tests and live read-only checks against the 9,206-standard,
 991,453-Section Neo4j instance, using globally unique `Section.uid` values.
-The full chemical corpus fingerprint remains to be generated before Pilot
-execution. No Pilot questions, path labels, or model results have been created.
+The chemical corpus has been strongly fingerprinted, and a reproducible
+title-based screen has produced 532 standards for human scope review. The
+chemical allowlist is not frozen until those candidates have received manual
+include/exclude decisions. No Pilot questions, path labels, or model results
+have been created.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [End-to-end Pilot plan](plan/process-end-to-end-pilot-1.md)
 - [Source-system inventory](docs/protocol/source-system-inventory.md)
 - [Frozen Pilot v1 protocol](docs/protocol/pilot-v1.md)
+- [Chemical corpus fingerprint and scope freeze](docs/protocol/chemical-corpus-freeze.md)
+- [Frozen chemical corpus manifest](data/manifests/chemical-corpus-pilot-v1.json)
+- [Chemical scope-screening manifest](data/manifests/chemical-scope-screening-v1.json)
 
 ## Repository boundary
 
@@ -57,7 +63,9 @@ python -m evidence_routing.cli validate-config --config configs/local.example.ya
 python -m evidence_routing.privacy
 ```
 
-Commands for path execution, annotation, modeling, and evaluation are registered in the CLI but remain phase-gated until their implementation tasks are completed.
+Chemical corpus fingerprinting and human-reviewed scope-freezing commands are
+operational. Commands for path execution, annotation, modeling, and evaluation
+remain phase-gated until their implementation tasks are completed.
 
 ## Publication scope
 

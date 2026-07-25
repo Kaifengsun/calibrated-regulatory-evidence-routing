@@ -1,0 +1,52 @@
+{
+  "algorithm": "sha256-canonical-jsonl-v1",
+  "components": {
+    "graph_edges": {
+      "record_count": 33818,
+      "sha256": "19d79696e9737f27733397176fa33dbada5713483ee662eeb9fafece4e766aaa"
+    },
+    "hierarchy_edges": {
+      "record_count": 743055,
+      "sha256": "00ef5fc3b8cfe49fb4ae4dd4f12aa20fe69b544e38ec2630f16ce911cef1d3bc"
+    },
+    "sections": {
+      "record_count": 991453,
+      "sha256": "ba4d95347c1e0991e610bc6d3970b2543ab3b4cd5d8365071aa2917b8616ff94"
+    },
+    "standards": {
+      "record_count": 9206,
+      "sha256": "481d31e560d0b681e0637940d8d363d9ca30166ce34c047877b168412299f290"
+    },
+    "tables": {
+      "record_count": 68422,
+      "sha256": "9bddc531b6791e4d32c5f479d2998cf9c9df3ad128efa425754ac387b5371f40"
+    }
+  },
+  "corpus_hash": "fc16f75259ddbdee652f21916858678c4e8fd8e9404eb077f6814493f0b6ad62",
+  "created_at": "2026-07-25T10:23:45.022716+00:00",
+  "fulltext_index": [
+    {
+      "labelsOrTypes": [
+        "Section"
+      ],
+      "name": "section_fulltext_cjk",
+      "options": {
+        "indexConfig": {
+          "fulltext.analyzer": "cjk",
+          "fulltext.eventually_consistent": true
+        },
+        "indexProvider": "fulltext-1.0"
+      },
+      "properties": [
+        "title",
+        "summary",
+        "content"
+      ],
+      "state": "ONLINE"
+    }
+  ],
+  "schema_version": "1.0",
+  "section_count": 991453,
+  "source_revision": "chemical-neo4j-2026-07-25-pilot-v1",
+  "standard_count": 9206
+}
