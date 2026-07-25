@@ -109,8 +109,8 @@ a zero-quota cell, so the positive-quota completion criterion is met.
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
 | TASK-010 | Create a private 20-row authoring manifest with exactly two rows per domain-category cell; create matching `QueryRecord`, `EvidenceSpecification`, and `AuthoringRecord` files. |  |  |
-| TASK-011 | Create `src/evidence_routing/question_validation.py::validate_authoring_batch` to enforce counts, language, ID uniqueness, normalized-text uniqueness, source groups, schema validity, evidence resolution, graph-edge eligibility, and manual-search records. |  |  |
-| TASK-012 | Implement prior-question comparison using locally supplied normalized prior-question inventories; emit exact-match and high-overlap review flags without automatically rejecting semantic near-matches. |  |  |
+| TASK-011 | Create `src/evidence_routing/question_validation.py::validate_authoring_batch` to enforce counts, language, ID uniqueness, normalized-text uniqueness, source groups, schema validity, evidence resolution, graph-edge eligibility, and manual-search records. | ✅ | 2026-07-25 |
+| TASK-012 | Implement prior-question comparison using locally supplied normalized prior-question inventories; emit exact-match and high-overlap review flags without automatically rejecting semantic near-matches. | ✅ | 2026-07-25 |
 | TASK-013 | Create `src/evidence_routing/review.py::export_prefreeze_review` and `import_prefreeze_review` using an XLSX workbook with immutable identity columns and explicit `accept`, `revise_and_review`, or `reject_and_replace` decisions. |  |  |
 | TASK-014 | Add `tests/test_question_validation.py` and `tests/test_review.py` covering quotas, duplicates, unresolved evidence, immutable workbook fields, deterministic ordering, and review-state transitions. |  |  |
 | TASK-015 | Export the first review workbook for Kaifeng Sun; do not freeze or run paths until all 20 rows receive an accepted review decision. |  |  |
