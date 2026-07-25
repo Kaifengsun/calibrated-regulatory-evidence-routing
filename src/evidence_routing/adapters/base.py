@@ -27,6 +27,7 @@ class SourceSection:
     source_type: str
     runtime_locator: str
     provenance: dict[str, str]
+    reranker_text: str = ""
 
 
 @dataclass(frozen=True, slots=True)

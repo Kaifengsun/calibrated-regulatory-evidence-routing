@@ -7,7 +7,9 @@
           "$ref": "#/$defs/ContextType"
         },
         "document_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Document Id",
           "type": "string"
         },
@@ -41,17 +43,23 @@
           "type": "integer"
         },
         "seed_source_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Seed Source Id",
           "type": "string"
         },
         "sidecar_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Sidecar Id",
           "type": "string"
         },
         "source_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Source Id",
           "type": "string"
         }
@@ -121,7 +129,9 @@
           "type": "number"
         },
         "document_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Document Id",
           "type": "string"
         },
@@ -131,7 +141,9 @@
         "graph_seed_source_id": {
           "anyOf": [
             {
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
               "type": "string"
             },
             {
@@ -222,7 +234,9 @@
           "type": "string"
         },
         "source_id": {
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
           "title": "Source Id",
           "type": "string"
         },
@@ -300,7 +314,9 @@
       "$ref": "#/$defs/PathId"
     },
     "question_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Question Id",
       "type": "string"
     },
@@ -313,7 +329,9 @@
       "type": "array"
     },
     "run_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Run Id",
       "type": "string"
     },

@@ -4,13 +4,13 @@ version: 1.0
 date_created: 2026-07-25
 last_updated: 2026-07-25
 owner: Kaifeng Sun
-status: 'In progress'
+status: 'Completed'
 tags: [feature, retrieval, reranking, evidence-routing, pilot]
 ---
 
 # Introduction
 
-![Status: In progress](https://img.shields.io/badge/status-In%20progress-yellow)
+![Status: Completed](https://img.shields.io/badge/status-Completed-brightgreen)
 
 This plan implements the approved modular execution design for `P0` through
 `P5`. It ends after fixture verification and bounded live smoke tests. It does
@@ -55,10 +55,10 @@ not execute the formal 120-question Pilot.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create `src/evidence_routing/reranking.py` with `Reranker` protocol, immutable scored-candidate record, score-vector validation, frozen sorting, and a production `QwenFrozenReranker` with lazy optional imports. |  |  |
-| TASK-002 | Create `src/evidence_routing/context.py` with `attach_context(adapter, seeds, query_text)` enforcing five seeds, context-type order, stable tie-break, and three-sidecar cap. |  |  |
-| TASK-003 | Create `src/evidence_routing/graph.py` with `expand_one_hop(adapter, direct_candidates, seeds)` enforcing confidence `0.85`, frozen target order, global deduplication, five-target cap, preserved seeds, direct remainder fill, and top-10 cutoff. |  |  |
-| TASK-004 | Create focused fixture tests in `tests/test_reranking.py` and `tests/test_stages.py`; use deterministic test doubles and no real source data. |  |  |
+| TASK-001 | Create `src/evidence_routing/reranking.py` with `Reranker` protocol, immutable scored-candidate record, score-vector validation, frozen sorting, and a production `QwenFrozenReranker` with lazy optional imports. | ✅ | 2026-07-25 |
+| TASK-002 | Create `src/evidence_routing/context.py` with `attach_context(adapter, seeds, query_text)` enforcing five seeds, context-type order, stable tie-break, and three-sidecar cap. | ✅ | 2026-07-25 |
+| TASK-003 | Create `src/evidence_routing/graph.py` with `expand_one_hop(adapter, direct_candidates, seeds)` enforcing confidence `0.85`, frozen target order, global deduplication, five-target cap, preserved seeds, direct remainder fill, and top-10 cutoff. | ✅ | 2026-07-25 |
+| TASK-004 | Create focused fixture tests in `tests/test_reranking.py` and `tests/test_stages.py`; use deterministic test doubles and no real source data. | ✅ | 2026-07-25 |
 
 Completion criteria:
 
@@ -72,9 +72,9 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-005 | Create `src/evidence_routing/paths.py` with explicit `run_p0` through `run_p5` functions and shared conversion helpers for public ranked units and context sidecars. |  |  |
-| TASK-006 | Ensure direct units preserve BM25 rank/score, reranked units preserve reranker score, and graph units preserve complete seed/relation provenance. |  |  |
-| TASK-007 | Create `tests/test_paths.py` covering all six compositions, consecutive ranks, top-10 cutoff, sidecar placement, graph insertion, and identical `P5` seed use. |  |  |
+| TASK-005 | Create `src/evidence_routing/paths.py` with explicit `run_p0` through `run_p5` functions and shared conversion helpers for public ranked units and context sidecars. | ✅ | 2026-07-25 |
+| TASK-006 | Ensure direct units preserve BM25 rank/score, reranked units preserve reranker score, and graph units preserve complete seed/relation provenance. | ✅ | 2026-07-25 |
+| TASK-007 | Create `tests/test_paths.py` covering all six compositions, consecutive ranks, top-10 cutoff, sidecar placement, graph insertion, and identical `P5` seed use. | ✅ | 2026-07-25 |
 
 Completion criteria:
 
@@ -88,9 +88,9 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-008 | Create `src/evidence_routing/runner.py::run_all_paths` to call BM25 once, execute paths independently, map exceptions to stable bounded error codes, and return runs ordered `P0` through `P5`. |  |  |
-| TASK-009 | Replace the phase-gated `run-paths` CLI registration with a callable command boundary only after the runner contract is implemented; retain explicit refusal when required local inputs are absent. |  |  |
-| TASK-010 | Create `tests/test_runner.py` proving one BM25 call, six ordered outputs, path failure isolation, and all-path first-stage failure handling. |  |  |
+| TASK-008 | Create `src/evidence_routing/runner.py::run_all_paths` to call BM25 once, execute paths independently, map exceptions to stable bounded error codes, and return runs ordered `P0` through `P5`. | ✅ | 2026-07-25 |
+| TASK-009 | Replace the phase-gated `run-paths` CLI registration with a callable command boundary only after the runner contract is implemented; retain explicit refusal when required local inputs are absent. | ✅ | 2026-07-25 |
+| TASK-010 | Create `tests/test_runner.py` proving one BM25 call, six ordered outputs, path failure isolation, and all-path first-stage failure handling. | ✅ | 2026-07-25 |
 
 Completion criteria:
 
@@ -105,10 +105,10 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-011 | Locate and verify the local Qwen3-Reranker snapshot against the frozen manifest SHA-256 without copying model files into the repository. |  |  |
-| TASK-012 | Run one bounded real reranker inference over redistribution-safe or transient live candidates; record only aggregate pass/fail and timing. |  |  |
-| TASK-013 | Run at least one transient six-path smoke query through the chemical adapter and one through the pharmaceutical adapter; inspect counts, order, and provenance without committing source text. |  |  |
-| TASK-014 | Run `pytest`, `ruff check .`, configuration validation, schema validation, and tracked-file privacy scanning; update this plan's task statuses and README current status. |  |  |
+| TASK-011 | Locate and verify the local Qwen3-Reranker snapshot against the frozen manifest SHA-256 without copying model files into the repository. | ✅ | 2026-07-25 |
+| TASK-012 | Run one bounded real reranker inference over redistribution-safe or transient live candidates; record only aggregate pass/fail and timing. | ✅ | 2026-07-25 |
+| TASK-013 | Run at least one transient six-path smoke query through the chemical adapter and one through the pharmaceutical adapter; inspect counts, order, and provenance without committing source text. | ✅ | 2026-07-25 |
+| TASK-014 | Run `pytest`, `ruff check .`, configuration validation, schema validation, and tracked-file privacy scanning; update this plan's task statuses and README current status. | ✅ | 2026-07-25 |
 
 Completion criteria:
 

@@ -297,6 +297,7 @@ class PharmaceuticalRegulatoryAdapter(RegulatoryCorpusAdapter):
                 "corpus_hash": self._manifest.corpus_hash,
                 "source_locator": source_id,
             },
+            reranker_text=_source_text(row),
         )
 
     def bm25_search(self, query: str, limit: int = 50) -> list[RetrievalCandidate]:

@@ -18,8 +18,15 @@ from pydantic import (
 )
 
 SCHEMA_VERSION = "1.0"
-IDENTIFIER_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
-Identifier = Annotated[str, Field(pattern=IDENTIFIER_PATTERN)]
+IDENTIFIER_PATTERN = r"^[^\x00-\x1f\x7f]{1,128}$"
+Identifier = Annotated[
+    str,
+    Field(
+        min_length=1,
+        max_length=128,
+        pattern=IDENTIFIER_PATTERN,
+    ),
+]
 
 
 class StrictModel(BaseModel):

@@ -35,17 +35,23 @@
       "$ref": "#/$defs/EvidenceLabel"
     },
     "adjudication_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Adjudication Id",
       "type": "string"
     },
     "adjudicator_code": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Adjudicator Code",
       "type": "string"
     },
     "duplicate_annotation_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Duplicate Annotation Id",
       "type": "string"
     },
@@ -53,7 +59,9 @@
       "$ref": "#/$defs/EvidenceLabel"
     },
     "evidence_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Evidence Id",
       "type": "string"
     },
@@ -61,7 +69,9 @@
       "$ref": "#/$defs/PathId"
     },
     "primary_annotation_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Primary Annotation Id",
       "type": "string"
     },
@@ -69,7 +79,9 @@
       "$ref": "#/$defs/EvidenceLabel"
     },
     "question_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Question Id",
       "type": "string"
     },

@@ -16,12 +16,15 @@ The Pilot covers:
 
 ## Current status
 
-Phases 1 through 3 are implemented: the repository boundary, frozen Pilot
+Phases 1 through 4 are implemented: the repository boundary, frozen Pilot
 protocol, schemas, two read-only domain adapters, deterministic BM25 contract,
-and immutable result cache are in place. The pharmaceutical adapter has passed
-a read-only check against the frozen 2,478-chunk snapshot. The chemical adapter
-has passed fixture tests and live read-only checks against the 9,206-standard,
+immutable result cache, six fixed evidence paths, and their command boundary
+are in place. The pharmaceutical adapter has passed a live six-path check
+against the frozen 2,478-chunk snapshot. The chemical adapter has passed live
+six-path and positive graph-expansion checks against the 9,206-standard,
 991,453-Section Neo4j instance, using globally unique `Section.uid` values.
+The frozen Qwen3-Reranker-0.6B snapshot passed identity verification and real
+GPU inference.
 The chemical corpus has been strongly fingerprinted. A reproducible title-based
 screen produced 532 standards for human review; the completed review froze 399
 standards into the chemical question-source allowlist and excluded 133. No
@@ -64,8 +67,8 @@ python -m evidence_routing.cli validate-config --config configs/local.example.ya
 python -m evidence_routing.privacy
 ```
 
-Chemical corpus fingerprinting and human-reviewed scope-freezing commands are
-operational. Commands for path execution, annotation, modeling, and evaluation
+Chemical corpus fingerprinting, human-reviewed scope freezing, and six-path
+execution are operational. Commands for annotation, modeling, and evaluation
 remain phase-gated until their implementation tasks are completed.
 
 ## Publication scope

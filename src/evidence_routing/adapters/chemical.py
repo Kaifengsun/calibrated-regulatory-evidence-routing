@@ -126,25 +126,31 @@ class ChemicalSafetyAdapter(RegulatoryCorpusAdapter):
         runtime_locator = str(row.get("runtime_locator") or "")
         if not source_id or not runtime_locator:
             raise RuntimeError("chemical result lacks stable or runtime identity")
+        document_id = str(row.get("document_id") or source_id)
+        heading = " ".join(
+            value
+            for value in (
+                str(row.get("section_number") or "").strip(),
+                str(row.get("heading") or "").strip(),
+            )
+            if value
+        )
+        content = str(row.get("content") or "")
         return SourceSection(
             domain=Domain.CHEMICAL,
             source_id=source_id,
-            document_id=str(row.get("document_id") or source_id),
-            heading=" ".join(
-                value
-                for value in (
-                    str(row.get("section_number") or "").strip(),
-                    str(row.get("heading") or "").strip(),
-                )
-                if value
-            ),
-            content=str(row.get("content") or ""),
+            document_id=document_id,
+            heading=heading,
+            content=content,
             source_type="section",
             runtime_locator=runtime_locator,
             provenance={
                 "corpus_hash": self._corpus_hash,
                 "runtime_locator": runtime_locator,
             },
+            reranker_text="\n".join(
+                value for value in (document_id, heading, content) if value
+            ),
         )
 
     def bm25_search(self, query: str, limit: int = 50) -> list[RetrievalCandidate]:

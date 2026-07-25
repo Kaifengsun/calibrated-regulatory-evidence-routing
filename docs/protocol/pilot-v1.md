@@ -156,3 +156,9 @@ state, seed, schema version, timestamp, input hashes, and output hashes. Public
 artifacts contain only permitted identifiers and metadata. Source corpora,
 database snapshots, credentials, machine-local paths, and private review
 worksheets remain outside version control.
+
+Before any Pilot path labels were created, the version-1 identifier schema was
+corrected on 2026-07-25 to admit native regulatory identifiers containing
+spaces and slashes while continuing to reject empty values, control characters,
+and values longer than 128 characters. Identifiers remain verbatim stable
+source keys; they are not rewritten or replaced with runtime database IDs.

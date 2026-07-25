@@ -115,14 +115,14 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-023 | Implement `src/evidence_routing/paths.py::run_p0` as BM25 top 10. |  |  |
-| TASK-024 | Implement `src/evidence_routing/reranking.py::FrozenReranker` and `paths.py::run_p1` as BM25 top 50 followed by frozen reranking to top 10. |  |  |
-| TASK-025 | Implement `src/evidence_routing/context.py::attach_context` and `paths.py::run_p2`; preserve BM25 ranked units and attach ordered heading, immediate-parent, and eligible table-text sidecars to the first five seeds. |  |  |
-| TASK-026 | Implement `src/evidence_routing/graph.py::expand_one_hop` and `paths.py::run_p3`; preserve five seeds, insert up to five deduplicated eligible graph targets, then fill from the BM25 remainder. |  |  |
-| TASK-027 | Implement `paths.py::run_p4` as frozen reranking followed by context sidecars on the first five reranked seeds. |  |  |
-| TASK-028 | Implement `paths.py::run_p5` as frozen reranking, context attachment, and graph expansion from the same five reranked Section seeds. |  |  |
+| TASK-023 | Implement `src/evidence_routing/paths.py::run_p0` as BM25 top 10. | ✅ | 2026-07-25 |
+| TASK-024 | Implement `src/evidence_routing/reranking.py::FrozenReranker` and `paths.py::run_p1` as BM25 top 50 followed by frozen reranking to top 10. | ✅ | 2026-07-25 |
+| TASK-025 | Implement `src/evidence_routing/context.py::attach_context` and `paths.py::run_p2`; preserve BM25 ranked units and attach ordered heading, immediate-parent, and eligible table-text sidecars to the first five seeds. | ✅ | 2026-07-25 |
+| TASK-026 | Implement `src/evidence_routing/graph.py::expand_one_hop` and `paths.py::run_p3`; preserve five seeds, insert up to five deduplicated eligible graph targets, then fill from the BM25 remainder. | ✅ | 2026-07-25 |
+| TASK-027 | Implement `paths.py::run_p4` as frozen reranking followed by context sidecars on the first five reranked seeds. | ✅ | 2026-07-25 |
+| TASK-028 | Implement `paths.py::run_p5` as frozen reranking, context attachment, and graph expansion from the same five reranked Section seeds. | ✅ | 2026-07-25 |
 | TASK-029 | Implement `src/evidence_routing/runner.py::run_all_paths` to run BM25 once, reuse the cached first stage, execute all six paths, isolate path errors, and write one `ExperimentManifest` per question. |  |  |
-| TASK-030 | Add `tests/test_paths.py` covering ordering, top-five seed preservation, cutoff 10, context sidecar placement, graph confidence filtering, deduplication, stable ties, and P5 execution order. |  |  |
+| TASK-030 | Add `tests/test_paths.py` covering ordering, top-five seed preservation, cutoff 10, context sidecar placement, graph confidence filtering, deduplication, stable ties, and P5 execution order. | ✅ | 2026-07-25 |
 
 Completion criteria:
 

@@ -24,7 +24,9 @@
       "$ref": "#/$defs/ContextType"
     },
     "document_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Document Id",
       "type": "string"
     },
@@ -58,17 +60,23 @@
       "type": "integer"
     },
     "seed_source_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Seed Source Id",
       "type": "string"
     },
     "sidecar_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Sidecar Id",
       "type": "string"
     },
     "source_id": {
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f\\x7f]{1,128}$",
       "title": "Source Id",
       "type": "string"
     }

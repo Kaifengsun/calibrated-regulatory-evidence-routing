@@ -14,6 +14,24 @@ from evidence_routing.schemas import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES = ROOT / "data" / "templates"
+
+
+def test_regulatory_identifiers_allow_standard_spacing_and_slashes() -> None:
+    payload = json.loads((TEMPLATES / "query-record.example.json").read_text(encoding="utf-8"))
+    payload["source_group_id"] = "GB/T 12345-2026"
+    payload["authoring_source_ids"] = ["AQ 1011-2005:normal:5.2"]
+    record = QueryRecord.model_validate(payload)
+    assert record.source_group_id == "GB/T 12345-2026"
+    assert record.authoring_source_ids == ["AQ 1011-2005:normal:5.2"]
+
+
+def test_regulatory_identifiers_reject_embedded_control_characters() -> None:
+    payload = json.loads((TEMPLATES / "query-record.example.json").read_text(encoding="utf-8"))
+    payload["source_group_id"] = "GB/T 12345\ninvalid"
+    with pytest.raises(ValidationError):
+        QueryRecord.model_validate(payload)
+
+
 SCHEMAS = ROOT / "data" / "schemas"
 
 
@@ -36,9 +54,9 @@ def test_unknown_schema_version_is_rejected() -> None:
         QueryRecord.model_validate(payload)
 
 
-def test_invalid_identifier_is_rejected() -> None:
+def test_empty_identifier_is_rejected() -> None:
     payload = json.loads((TEMPLATES / "query-record.example.json").read_text(encoding="utf-8"))
-    payload["authoring_source_ids"] = ["invalid identifier with spaces"]
+    payload["authoring_source_ids"] = [""]
     with pytest.raises(ValidationError, match="authoring_source_ids"):
         QueryRecord.model_validate(payload)
 

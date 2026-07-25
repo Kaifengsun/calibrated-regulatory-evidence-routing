@@ -11,6 +11,8 @@ import typer
 import yaml
 from pydantic import ValidationError
 
+from evidence_routing.adapters.chemical import ChemicalSafetyAdapter
+from evidence_routing.adapters.pharma import PharmaceuticalRegulatoryAdapter
 from evidence_routing.chemical_corpus import (
     export_scope_candidates,
     freeze_scope_review,
@@ -18,10 +20,13 @@ from evidence_routing.chemical_corpus import (
     write_json_atomic,
 )
 from evidence_routing.privacy import scan_tracked_files
+from evidence_routing.reranking import QwenFrozenReranker
+from evidence_routing.runner import run_all_paths
 from evidence_routing.schemas import (
     SCHEMA_MODELS,
     ExperimentManifest,
     PathRun,
+    QueryRecord,
     QuestionAnnotationBundle,
 )
 from evidence_routing.validation import (
@@ -35,7 +40,6 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 
 _REQUIRED_PROJECTS = {"chemical", "pharmaceutical"}
 _PHASE_GATED_COMMANDS = {
-    "run-paths": 4,
     "export-annotation": 5,
     "import-annotation": 5,
     "fit-router": 6,
@@ -79,6 +83,14 @@ def _chemical_session(config: Path):
     driver = GraphDatabase.driver(uri, auth=(user, credential_value))
     session = driver.session(**({"database": database} if database else {}))
     return driver, session
+
+
+def _project_root(payload: dict[str, Any], project_name: str) -> Path:
+    try:
+        variable = str(payload["projects"][project_name]["root_env"])
+    except (KeyError, TypeError) as error:
+        raise typer.BadParameter(f"projects.{project_name}.root_env is required") from error
+    return Path(_required_environment(variable)).resolve()
 
 
 @app.command("validate-config")
@@ -211,6 +223,104 @@ def chemical_freeze_scope(
         typer.echo(f"chemical scope freeze failed: {error}", err=True)
         raise typer.Exit(code=1) from error
     typer.echo(f"froze {scope.included_standard_count} included standards")
+
+
+@app.command("run-paths")
+def run_paths(
+    config: Path = typer.Option(..., exists=True, dir_okay=False, readable=True),
+    query_path: Path = typer.Option(
+        ...,
+        "--query",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    model_snapshot: Path = typer.Option(
+        ...,
+        exists=True,
+        file_okay=False,
+        readable=True,
+    ),
+    output: Path = typer.Option(..., dir_okay=False),
+    reranker_config: Path = typer.Option(
+        Path("configs/reranker-v1.yaml"),
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    chemical_fingerprint: Path = typer.Option(
+        Path("artifacts/private/chemical-corpus-fingerprint.json"),
+        exists=False,
+        dir_okay=False,
+    ),
+    device: str = typer.Option("cuda:0"),
+) -> None:
+    """Execute all six paths for one local query and write source-free records."""
+    if output.exists():
+        raise typer.BadParameter(f"refusing to overwrite existing output: {output}")
+    payload = _load_yaml(config)
+    try:
+        query = QueryRecord.model_validate(
+            json.loads(query_path.read_text(encoding="utf-8"))
+        )
+    except (json.JSONDecodeError, ValidationError) as error:
+        raise typer.BadParameter(f"invalid query record: {error}") from error
+
+    driver = None
+    try:
+        if query.domain.value == "chemical":
+            if not chemical_fingerprint.is_file():
+                raise typer.BadParameter(
+                    f"chemical fingerprint does not exist: {chemical_fingerprint}"
+                )
+            fingerprint = json.loads(chemical_fingerprint.read_text(encoding="utf-8"))
+            driver, session = _chemical_session(config)
+            session.close()
+            adapter = ChemicalSafetyAdapter(
+                driver,
+                database=os.environ.get(
+                    payload["projects"]["chemical"]["neo4j"].get("database_env", ""),
+                    "",
+                )
+                or None,
+                corpus_hash=str(fingerprint["corpus_hash"]),
+                source_revision=str(fingerprint["source_revision"]),
+            )
+        else:
+            project = payload["projects"]["pharmaceutical"]
+            root = _project_root(payload, "pharmaceutical")
+            adapter = PharmaceuticalRegulatoryAdapter(
+                root / str(project["corpus_relative_path"]),
+                root / str(project["graph_relative_path"]),
+                source_revision=str(project.get("source_revision", "pharma-pilot-v1")),
+                expected_record_count=(
+                    None
+                    if project.get("expected_record_count") is None
+                    else int(project["expected_record_count"])
+                ),
+            )
+        reranker = QwenFrozenReranker(
+            model_snapshot,
+            config_path=reranker_config,
+            device=device,
+        )
+        runs = run_all_paths(adapter, query, reranker)
+        write_json_atomic(
+            output,
+            {
+                "schema_version": "1.0",
+                "question_id": query.question_id,
+                "runs": [run.model_dump(mode="json") for run in runs],
+            },
+        )
+    except (KeyError, TypeError, ValueError, RuntimeError) as error:
+        typer.echo(f"run-paths failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    finally:
+        if driver is not None:
+            driver.close()
+    completed = sum(run.status.value == "complete" for run in runs)
+    typer.echo(f"wrote {len(runs)} path runs ({completed} complete)")
 
 
 def _phase_gate(command: str) -> None:
