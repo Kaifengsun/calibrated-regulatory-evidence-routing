@@ -40,6 +40,7 @@ Pilot questions, path labels, or model results have been created.
 - [Evidence labeling guide](docs/annotation/evidence-labeling-v1.md)
 - [Twenty-question authoring plan](plan/process-pilot-question-authoring-1.md)
 - [Frozen chemical corpus manifest](data/manifests/chemical-corpus-pilot-v1.json)
+- [Frozen pharmaceutical corpus manifest](data/manifests/pharmaceutical-corpus-pilot-v1.json)
 - [Chemical scope-screening manifest](data/manifests/chemical-scope-screening-v1.json)
 - [Frozen chemical scope summary](data/manifests/chemical-scope-freeze-v1.json)
 

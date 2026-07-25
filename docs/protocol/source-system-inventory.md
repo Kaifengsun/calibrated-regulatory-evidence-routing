@@ -164,6 +164,16 @@ above, and returned deterministic BM25 candidates. The conservative relation
 normalizer returned no eligible graph target for the five seeds in the smoke
 query; it did not guess a target section inside a referenced document.
 
+On 2026-07-25, path-blind candidate discovery inspected the complete
+pharmaceutical normalized-edge index rather than only five smoke-test seeds.
+The graph contains the documented explicit document-level relations, but none
+resolves uniquely to one attributable target chunk under the frozen
+normalization rule. The adapter therefore exposes zero eligible pharmaceutical
+`CITES` or `DEPENDS_ON` targets. Direct, parent/heading, and table candidate
+structures are available; pharmaceutical `citation_dependency` question
+construction remains blocked pending an explicit protocol decision. No
+heuristic target-chunk selection was introduced.
+
 The chemical Neo4j adapter is implemented and passes a query-contract fixture
 that rejects write clauses. The live instance is available through its
 non-default local Browser and Bolt ports. Read-only verification found 9,206

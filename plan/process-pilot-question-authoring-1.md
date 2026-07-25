@@ -83,11 +83,11 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-005 | Create `src/evidence_routing/candidate_selection.py` with read-only selectors for direct, context, table, and citation evidence structures; selectors return stable identifiers and private excerpt handles but never execute `run_all_paths`. |  |  |
-| TASK-006 | Restrict chemical selection to the frozen 399-standard allowlist and pharmaceutical selection to the frozen 2,478-chunk manifest; verify corpus hashes and source revisions before selection. |  |  |
-| TASK-007 | Add deterministic selector constraints for attributable non-empty evidence, eligible sidecars, one-hop normalized graph edges at confidence at least 0.85, source-group diversity, and duplicate removal. |  |  |
-| TASK-008 | Add `tests/test_candidate_selection.py` with fixture adapters proving domain/category balance inputs, path-blind operation, stable ordering, graph threshold enforcement, and source-resolution failure handling. |  |  |
-| TASK-009 | Run bounded live selection in each domain and write candidate structures only to the ignored `artifacts/private/authoring/pilot-20-v1/` directory. |  |  |
+| TASK-005 | Create `src/evidence_routing/candidate_selection.py` with read-only selectors for direct, context, table, and citation evidence structures; selectors return stable identifiers and private excerpt handles but never execute `run_all_paths`. | ✅ | 2026-07-25 |
+| TASK-006 | Restrict chemical selection to the frozen 399-standard allowlist and pharmaceutical selection to the frozen 2,478-chunk manifest; verify corpus hashes and source revisions before selection. | ✅ | 2026-07-25 |
+| TASK-007 | Add deterministic selector constraints for attributable non-empty evidence, eligible sidecars, one-hop normalized graph edges at confidence at least 0.85, source-group diversity, and duplicate removal. | ✅ | 2026-07-25 |
+| TASK-008 | Add `tests/test_candidate_selection.py` with fixture adapters proving domain/category balance inputs, path-blind operation, stable ordering, graph threshold enforcement, and source-resolution failure handling. | ✅ | 2026-07-25 |
+| TASK-009 | Run bounded live selection in each domain and write candidate structures only to the ignored `artifacts/private/authoring/pilot-20-v1/` directory. | ✅ | 2026-07-25 |
 
 Completion criteria:
 
@@ -95,6 +95,14 @@ Completion criteria:
   non-insufficiency category.
 - No selector imports or invokes path execution.
 - Live output contains no tracked source text.
+
+Live result on 2026-07-25: chemical selection yielded five structures in every
+non-insufficiency category. Pharmaceutical selection yielded five direct, five
+parent/heading, five table, and zero citation-dependency structures. The
+complete pharmaceutical normalized-edge index contains no target that resolves
+uniquely to one attributable chunk under the frozen rule. The first completion
+criterion is therefore not met, and Phase 3 must not begin until the protocol
+decision is recorded.
 
 ### Implementation Phase 3
 

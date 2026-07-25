@@ -1,0 +1,13 @@
+{
+  "corpus_hash": "7dbc24dc74628d5e2bb45427d38d5da10d5ca75515c60cee1c58aa3d72cbe031",
+  "graph": {
+    "edge_count": 15237,
+    "edges_sha256": "522b67d03821d104489529aae1fcdca3d5714e0895d62aefd3d9c4f2df056502",
+    "eligible_normalized_edge_count": 0,
+    "node_count": 7578,
+    "nodes_sha256": "4eba23690803e4dd749db52d1740c10b51515eef3053f099dc32b9d3435a63c7"
+  },
+  "record_count": 2478,
+  "schema_version": "1.0",
+  "source_revision": "pharma-pilot-v1"
+}
