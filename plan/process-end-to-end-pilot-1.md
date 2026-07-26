@@ -160,6 +160,14 @@ round-trip, formula-error, and visual-layout checks. TASK-033 remains open
 until the 50 new chemical questions are accepted and all 60 pharmaceutical
 questions are also authored and reviewed.
 
+Review update (2026-07-26): the 50-question chemical expansion review imported
+with no immutable-field or identity-hash differences. Kaifeng Sun accepted 47
+questions and returned three table questions for revision. Those three were
+narrowed to evidence explicitly present in the frozen table sidecars and
+exported as a separate three-question re-review batch. No path output was run
+or inspected during revision. The chemical question freeze remains pending
+until the three revised rows are accepted.
+
 Human dependency:
 
 - Kaifeng Sun supplies or confirms realistic information needs and completes the primary annotation.
