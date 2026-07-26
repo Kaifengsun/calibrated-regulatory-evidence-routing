@@ -164,9 +164,16 @@ Review update (2026-07-26): the 50-question chemical expansion review imported
 with no immutable-field or identity-hash differences. Kaifeng Sun accepted 47
 questions and returned three table questions for revision. Those three were
 narrowed to evidence explicitly present in the frozen table sidecars and
-exported as a separate three-question re-review batch. No path output was run
-or inspected during revision. The chemical question freeze remains pending
-until the three revised rows are accepted.
+exported as a separate three-question re-review batch. The completed re-review
+accepted all three revised questions with all four checklist fields confirmed.
+The resulting 60-question chemical domain batch has 12 questions in each
+construction category, 60 accepted authoring records, 12 documented negative
+manual searches, no high-overlap flags, and a private immutable domain-freeze
+hash of
+`c03dcc8caa9cd602b1843730c3d5770aa4ea19bd16f3488c39f1f25e96e5d665`.
+No path output was run or inspected during revision or domain freeze. TASK-033
+remains open until the 60 pharmaceutical questions are also authored, reviewed,
+and combined with this domain batch into the complete 120-question freeze.
 
 Human dependency:
 
