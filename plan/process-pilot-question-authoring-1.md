@@ -155,6 +155,12 @@ question-evidence judgments. Its private mapping preserves all 1,741 path-level
 occurrences, and its export/import identity round trip has zero differences.
 Human evidence labeling remains pending and is not marked complete.
 
+Update (2026-07-26): the completed primary workbook was imported with zero
+identity differences. Its 570 unique judgments expanded losslessly to 1,741
+path-level annotations. The preliminary 20-question descriptive outcome is
+stored privately; it is not a substitute for the planned 120-question
+duplicate-annotation, adjudication, calibration, or Go/No-Go stages.
+
 ## 3. Alternatives
 
 - **ALT-001**: Write all 120 questions immediately. Rejected because category
