@@ -1,0 +1,65 @@
+{
+  "adjudication_queue_count": 279,
+  "adjudication_workbook_sha256": "f906a8137272e34786f8ac0bf3156f4d2507954001106ac20dfd6c630fd28c9e",
+  "agreement_count": 644,
+  "batch_id": "pilot-120-v1",
+  "bootstrap_replicates": 5000,
+  "bootstrap_seed": 20260723,
+  "bootstrap_unit": "question",
+  "by_domain": {
+    "chemical": {
+      "cluster_count": 15,
+      "cohen_kappa": 0.5321227955584585,
+      "cohen_kappa_95_ci": [
+        0.4032265178463943,
+        0.6592102011165485
+      ],
+      "exact_agreement": 0.6942148760330579,
+      "exact_agreement_95_ci": [
+        0.6086065573770492,
+        0.7813829215896885
+      ],
+      "finite_kappa_replicates": 5000,
+      "pair_count": 484,
+      "question_count": 15,
+      "replicates": 5000
+    },
+    "pharmaceutical": {
+      "cluster_count": 15,
+      "cohen_kappa": 0.583824714327571,
+      "cohen_kappa_95_ci": [
+        0.49315720324029266,
+        0.6652953366587687
+      ],
+      "exact_agreement": 0.7386091127098321,
+      "exact_agreement_95_ci": [
+        0.6790123456790124,
+        0.7908045977011494
+      ],
+      "finite_kappa_replicates": 5000,
+      "pair_count": 417,
+      "question_count": 15,
+      "replicates": 5000
+    }
+  },
+  "cohen_kappa": 0.5558596746969465,
+  "cohen_kappa_95_ci": [
+    0.47005133127252186,
+    0.6370240821670555
+  ],
+  "disagreement_count": 257,
+  "duplicate_annotations_sha256": "2fa5a14818baa5b85493e290bf9c1192ef2e4357c22c6bba7f33885ca2f72ed4",
+  "duplicate_workbook_sha256": "b5156df128f8bcae527e76a6d99bc6d934bcbb501918085dee69d8574a049e3e",
+  "exact_agreement": 0.7147613762486127,
+  "exact_agreement_95_ci": [
+    0.661110646599777,
+    0.7685293326329545
+  ],
+  "harmful_reason_queue_count": 22,
+  "label_disagreement_queue_count": 257,
+  "private_comparison_rows_committed": false,
+  "question_count": 30,
+  "schema_version": "1.0",
+  "status": "duplicate_imported_agreement_pending_adjudication",
+  "visible_evidence_row_count": 901
+}

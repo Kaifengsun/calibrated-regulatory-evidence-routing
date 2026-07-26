@@ -40,7 +40,11 @@ their 3,446 displayed evidence rows were expanded into 10,385 annotations with
 exact coverage of every ranked item and context sidecar in the 720 path runs.
 The frozen seed and domain-category quotas selected exactly 30 complete
 questions without using evidence labels, and their independent duplicate-review
-workbook has been exported. The second review itself remains pending.
+workbook has been exported and completed. Pre-adjudication agreement is 71.5%
+(question-cluster bootstrap 95% CI 66.1%-76.9%) with Cohen's kappa 0.556
+(95% CI 0.470-0.637) across 901 visible evidence rows. The 279 label or
+HARMFUL-reason disagreements have been exported for adjudication; final labels
+remain unfrozen until that review is complete.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -61,6 +65,7 @@ workbook has been exported. The second review itself remains pending.
 - [Primary annotation export summary](data/manifests/pilot-120-primary-annotation-export-v1.json)
 - [Primary annotation import summary](data/manifests/pilot-120-primary-annotation-import-v1.json)
 - [Duplicate-question selection summary](data/manifests/pilot-120-duplicate-selection-v1.json)
+- [Pre-adjudication agreement summary](data/manifests/pilot-120-agreement-pre-adjudication-v1.json)
 
 ## Repository boundary
 

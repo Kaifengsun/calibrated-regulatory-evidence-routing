@@ -8,13 +8,18 @@ import pytest
 import yaml
 
 from evidence_routing.annotation import (
+    build_adjudication_queue,
     build_blinded_annotation_payload,
+    compute_agreement,
     import_reviewed_workbook,
     select_duplicate_questions,
 )
 from evidence_routing.schemas import (
+    AnnotationRole,
     ConstructionCategory,
     Domain,
+    EvidenceAnnotation,
+    EvidenceLabel,
     ExecutionStatus,
     PathId,
     PathRun,
@@ -189,3 +194,197 @@ def test_duplicate_selection_rejects_unavailable_quota() -> None:
     quotas["pharmaceutical"]["direct_clause"] = 2
     with pytest.raises(ValueError, match="quota exceeds available questions"):
         select_duplicate_questions([query], quotas=quotas, seed=20260723)
+
+
+def _annotation(
+    annotation_id: str,
+    *,
+    role: AnnotationRole,
+    evidence_id: str,
+    label: EvidenceLabel,
+    path_id: PathId = PathId.P0,
+    harmful_reason: str = "wrong_version",
+) -> EvidenceAnnotation:
+    return EvidenceAnnotation(
+        annotation_id=annotation_id,
+        question_id="PHARM-AGREE-001",
+        path_id=path_id,
+        evidence_id=evidence_id,
+        evidence_kind="ranked",
+        label=label,
+        annotation_role=role,
+        annotator_code="ANNOTATOR-A" if role == AnnotationRole.PRIMARY else "ANNOTATOR-B",
+        annotated_at=datetime.fromisoformat("2026-07-26T12:00:00+08:00"),
+        harmful_reason_code=(
+            harmful_reason if label == EvidenceLabel.HARMFUL else None
+        ),
+    )
+
+
+def test_agreement_collapses_repeated_path_occurrences_and_builds_queue() -> None:
+    primary = [
+        _annotation(
+            "ANN-P-1",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+        ),
+        _annotation(
+            "ANN-P-2",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+            path_id=PathId.P1,
+        ),
+        _annotation(
+            "ANN-P-3",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-2",
+            label=EvidenceLabel.IRRELEVANT,
+        ),
+    ]
+    duplicate = [
+        _annotation(
+            "ANN-D-1",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+        ),
+        _annotation(
+            "ANN-D-2",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+            path_id=PathId.P1,
+        ),
+        _annotation(
+            "ANN-D-3",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="EVIDENCE-2",
+            label=EvidenceLabel.CONTEXT,
+        ),
+    ]
+
+    agreement = compute_agreement(primary, duplicate)
+    assert agreement["pair_count"] == 2
+    assert agreement["agreement_count"] == 1
+    assert agreement["exact_agreement"] == 0.5
+    queue = build_adjudication_queue(agreement)
+    assert len(queue) == 1
+    assert queue[0]["evidence_id"] == "EVIDENCE-2"
+
+
+def test_agreement_rejects_inconsistent_repeated_labels() -> None:
+    primary = [
+        _annotation(
+            "ANN-P-1",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+        ),
+        _annotation(
+            "ANN-P-2",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.CONTEXT,
+            path_id=PathId.P1,
+        ),
+    ]
+    duplicate = [
+        _annotation(
+            "ANN-D-1",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.REQUIRED,
+        )
+    ]
+    with pytest.raises(ValueError, match="inconsistent repeated annotation"):
+        compute_agreement(primary, duplicate)
+
+
+def test_row_level_agreement_uses_visible_workbook_rows() -> None:
+    primary = [
+        _annotation(
+            "ANN-P-1",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="SIDECAR-1",
+            label=EvidenceLabel.CONTEXT,
+        ),
+        _annotation(
+            "ANN-P-2",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="SIDECAR-2",
+            label=EvidenceLabel.CONTEXT,
+            path_id=PathId.P1,
+        ),
+    ]
+    duplicate = [
+        _annotation(
+            "ANN-D-1",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="SIDECAR-1",
+            label=EvidenceLabel.CONTEXT,
+        ),
+        _annotation(
+            "ANN-D-2",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="SIDECAR-2",
+            label=EvidenceLabel.CONTEXT,
+            path_id=PathId.P1,
+        ),
+    ]
+    mapping = {
+        "row_mappings": [
+            {
+                "row_code": "EV-00001",
+                "occurrences": [
+                    {
+                        "question_id": "PHARM-AGREE-001",
+                        "path_id": "P0",
+                        "evidence_id": "SIDECAR-1",
+                        "evidence_kind": "ranked",
+                    },
+                    {
+                        "question_id": "PHARM-AGREE-001",
+                        "path_id": "P1",
+                        "evidence_id": "SIDECAR-2",
+                        "evidence_kind": "ranked",
+                    },
+                ],
+            }
+        ]
+    }
+    agreement = compute_agreement(
+        primary,
+        duplicate,
+        duplicate_identity_mapping=mapping,
+    )
+    assert agreement["unit"] == "workbook_visible_evidence_row"
+    assert agreement["pair_count"] == 1
+    assert agreement["comparisons"][0]["evidence_ids"] == [
+        "SIDECAR-1",
+        "SIDECAR-2",
+    ]
+
+
+def test_adjudication_queue_includes_harmful_reason_disagreement() -> None:
+    primary = [
+        _annotation(
+            "ANN-P-1",
+            role=AnnotationRole.PRIMARY,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.HARMFUL,
+        )
+    ]
+    duplicate = [
+        _annotation(
+            "ANN-D-1",
+            role=AnnotationRole.DUPLICATE,
+            evidence_id="EVIDENCE-1",
+            label=EvidenceLabel.HARMFUL,
+            harmful_reason="wrong_regulated_object",
+        )
+    ]
+    queue = build_adjudication_queue(compute_agreement(primary, duplicate))
+    assert len(queue) == 1
+    assert queue[0]["queue_reason"] == "harmful_reason_disagreement"

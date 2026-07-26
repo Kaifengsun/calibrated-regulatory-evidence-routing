@@ -5,10 +5,13 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+from collections import Counter
 from collections.abc import Callable, Mapping, Sequence
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+from sklearn.metrics import cohen_kappa_score, confusion_matrix
 
 from evidence_routing.schemas import (
     AnnotationRole,
@@ -106,6 +109,275 @@ def select_duplicate_questions(
             selections.extend(ranked[:quota])
 
     return sorted(selections)
+
+
+def _collapse_annotation_occurrences(
+    annotations: Sequence[EvidenceAnnotation],
+) -> dict[tuple[str, str, str], dict[str, Any]]:
+    collapsed: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for annotation in annotations:
+        key = (
+            annotation.question_id,
+            annotation.evidence_kind,
+            annotation.evidence_id,
+        )
+        record = collapsed.setdefault(
+            key,
+            {
+                "question_id": annotation.question_id,
+                "evidence_kind": annotation.evidence_kind,
+                "evidence_id": annotation.evidence_id,
+                "label": annotation.label,
+                "harmful_reason_code": annotation.harmful_reason_code,
+                "annotation_ids": [],
+                "path_ids": [],
+            },
+        )
+        if (
+            record["label"] != annotation.label
+            or record["harmful_reason_code"] != annotation.harmful_reason_code
+        ):
+            raise ValueError(f"inconsistent repeated annotation label: {key}")
+        record["annotation_ids"].append(annotation.annotation_id)
+        record["path_ids"].append(annotation.path_id.value)
+    for record in collapsed.values():
+        record["annotation_ids"] = sorted(set(record["annotation_ids"]))
+        record["path_ids"] = sorted(set(record["path_ids"]))
+    return collapsed
+
+
+def _nominal_kappa(
+    primary_labels: Sequence[str],
+    duplicate_labels: Sequence[str],
+    *,
+    labels: Sequence[str],
+) -> float | None:
+    if len(set(primary_labels) | set(duplicate_labels)) < 2:
+        return None
+    value = float(cohen_kappa_score(primary_labels, duplicate_labels, labels=labels))
+    return value if value == value else None
+
+
+def compute_agreement(
+    primary_annotations: Sequence[EvidenceAnnotation],
+    duplicate_annotations: Sequence[EvidenceAnnotation],
+    *,
+    duplicate_identity_mapping: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compute nominal agreement once per unique question-evidence unit."""
+    if duplicate_identity_mapping is not None:
+        return _compute_row_level_agreement(
+            primary_annotations,
+            duplicate_annotations,
+            duplicate_identity_mapping,
+        )
+    primary = _collapse_annotation_occurrences(primary_annotations)
+    duplicate = _collapse_annotation_occurrences(duplicate_annotations)
+    if not duplicate:
+        raise ValueError("duplicate annotations are empty")
+    if not set(duplicate).issubset(primary):
+        raise ValueError("duplicate annotations contain units absent from primary labels")
+
+    comparisons = []
+    for key in sorted(duplicate):
+        primary_row = primary[key]
+        duplicate_row = duplicate[key]
+        comparisons.append(
+            {
+                "question_id": key[0],
+                "evidence_kind": key[1],
+                "evidence_id": key[2],
+                "path_ids": duplicate_row["path_ids"],
+                "primary_annotation_ids": primary_row["annotation_ids"],
+                "duplicate_annotation_ids": duplicate_row["annotation_ids"],
+                "primary_label": primary_row["label"].value,
+                "duplicate_label": duplicate_row["label"].value,
+                "primary_harmful_reason_code": primary_row["harmful_reason_code"],
+                "duplicate_harmful_reason_code": duplicate_row[
+                    "harmful_reason_code"
+                ],
+                "agrees": primary_row["label"] == duplicate_row["label"],
+                "harmful_reason_agrees": (
+                    primary_row["harmful_reason_code"]
+                    == duplicate_row["harmful_reason_code"]
+                ),
+            }
+        )
+
+    return _summarize_comparisons(comparisons, unit="unique_question_evidence")
+
+
+def _compute_row_level_agreement(
+    primary_annotations: Sequence[EvidenceAnnotation],
+    duplicate_annotations: Sequence[EvidenceAnnotation],
+    duplicate_identity_mapping: Mapping[str, Any],
+) -> dict[str, Any]:
+    primary_by_occurrence = {
+        (
+            annotation.question_id,
+            annotation.path_id.value,
+            annotation.evidence_id,
+            annotation.evidence_kind,
+        ): annotation
+        for annotation in primary_annotations
+    }
+    duplicate_by_occurrence = {
+        (
+            annotation.question_id,
+            annotation.path_id.value,
+            annotation.evidence_id,
+            annotation.evidence_kind,
+        ): annotation
+        for annotation in duplicate_annotations
+    }
+    comparisons = []
+    for mapping_row in sorted(
+        duplicate_identity_mapping["row_mappings"],
+        key=lambda row: row["row_code"],
+    ):
+        occurrence_keys = [
+            (
+                occurrence["question_id"],
+                occurrence["path_id"],
+                occurrence["evidence_id"],
+                occurrence["evidence_kind"],
+            )
+            for occurrence in mapping_row["occurrences"]
+        ]
+        try:
+            primary_rows = [primary_by_occurrence[key] for key in occurrence_keys]
+            duplicate_rows = [duplicate_by_occurrence[key] for key in occurrence_keys]
+        except KeyError as error:
+            raise ValueError(
+                f"annotation occurrence missing for duplicate row {mapping_row['row_code']}"
+            ) from error
+        primary_labels = {row.label for row in primary_rows}
+        primary_reasons = {row.harmful_reason_code for row in primary_rows}
+        duplicate_labels = {row.label for row in duplicate_rows}
+        duplicate_reasons = {row.harmful_reason_code for row in duplicate_rows}
+        if (
+            len(primary_labels) != 1
+            or len(primary_reasons) != 1
+            or len(duplicate_labels) != 1
+            or len(duplicate_reasons) != 1
+        ):
+            raise ValueError(
+                f"inconsistent labels within duplicate workbook row: "
+                f"{mapping_row['row_code']}"
+            )
+        primary_label = next(iter(primary_labels))
+        duplicate_label = next(iter(duplicate_labels))
+        primary_reason = next(iter(primary_reasons))
+        duplicate_reason = next(iter(duplicate_reasons))
+        comparisons.append(
+            {
+                "duplicate_row_code": mapping_row["row_code"],
+                "question_id": occurrence_keys[0][0],
+                "evidence_kind": occurrence_keys[0][3],
+                "evidence_id": occurrence_keys[0][2],
+                "evidence_ids": sorted({key[2] for key in occurrence_keys}),
+                "path_ids": sorted({key[1] for key in occurrence_keys}),
+                "primary_annotation_ids": sorted(
+                    {row.annotation_id for row in primary_rows}
+                ),
+                "duplicate_annotation_ids": sorted(
+                    {row.annotation_id for row in duplicate_rows}
+                ),
+                "primary_label": primary_label.value,
+                "duplicate_label": duplicate_label.value,
+                "primary_harmful_reason_code": primary_reason,
+                "duplicate_harmful_reason_code": duplicate_reason,
+                "agrees": primary_label == duplicate_label,
+                "harmful_reason_agrees": primary_reason == duplicate_reason,
+            }
+        )
+    return _summarize_comparisons(comparisons, unit="workbook_visible_evidence_row")
+
+
+def _summarize_comparisons(
+    comparisons: list[dict[str, Any]],
+    *,
+    unit: str,
+) -> dict[str, Any]:
+    labels = [label.value for label in EvidenceLabel]
+    primary_labels = [row["primary_label"] for row in comparisons]
+    duplicate_labels = [row["duplicate_label"] for row in comparisons]
+    agreement_count = sum(row["agrees"] for row in comparisons)
+    matrix = confusion_matrix(primary_labels, duplicate_labels, labels=labels)
+    kappa = _nominal_kappa(primary_labels, duplicate_labels, labels=labels)
+    primary_counts = Counter(primary_labels)
+    duplicate_counts = Counter(duplicate_labels)
+    per_label = {}
+    for label in labels:
+        both = sum(
+            row["primary_label"] == label and row["duplicate_label"] == label
+            for row in comparisons
+        )
+        denominator = primary_counts[label] + duplicate_counts[label]
+        per_label[label] = {
+            "primary_count": primary_counts[label],
+            "duplicate_count": duplicate_counts[label],
+            "both_count": both,
+            "specific_agreement": (2 * both / denominator) if denominator else None,
+        }
+    return {
+        "unit": unit,
+        "pair_count": len(comparisons),
+        "question_count": len({row["question_id"] for row in comparisons}),
+        "agreement_count": agreement_count,
+        "disagreement_count": len(comparisons) - agreement_count,
+        "exact_agreement": agreement_count / len(comparisons),
+        "cohen_kappa": kappa,
+        "label_order": labels,
+        "confusion_matrix": matrix.tolist(),
+        "per_label": per_label,
+        "comparisons": comparisons,
+    }
+
+
+def build_adjudication_queue(agreement: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Create one immutable queue row for each unique-unit label disagreement."""
+    queue = []
+    for row in agreement["comparisons"]:
+        label_disagreement = not row["agrees"]
+        reason_disagreement = (
+            row["primary_label"] == EvidenceLabel.HARMFUL.value
+            and row["duplicate_label"] == EvidenceLabel.HARMFUL.value
+            and not row["harmful_reason_agrees"]
+        )
+        if not label_disagreement and not reason_disagreement:
+            continue
+        identity = (
+            f"{row['question_id']}\0{row['evidence_kind']}\0"
+            f"{row.get('duplicate_row_code', row['evidence_id'])}"
+        )
+        queue.append(
+            {
+                "queue_id": f"ADJQ-{hashlib.sha256(identity.encode()).hexdigest()[:16]}",
+                "question_id": row["question_id"],
+                "duplicate_row_code": row.get("duplicate_row_code"),
+                "evidence_kind": row["evidence_kind"],
+                "evidence_id": row["evidence_id"],
+                "evidence_ids": row.get("evidence_ids", [row["evidence_id"]]),
+                "path_ids": row["path_ids"],
+                "primary_annotation_ids": row["primary_annotation_ids"],
+                "duplicate_annotation_ids": row["duplicate_annotation_ids"],
+                "primary_label": row["primary_label"],
+                "duplicate_label": row["duplicate_label"],
+                "primary_harmful_reason_code": row[
+                    "primary_harmful_reason_code"
+                ],
+                "duplicate_harmful_reason_code": row[
+                    "duplicate_harmful_reason_code"
+                ],
+                "queue_reason": (
+                    "label_disagreement"
+                    if label_disagreement
+                    else "harmful_reason_disagreement"
+                ),
+            }
+        )
+    return queue
 
 
 def _canonical(value: Any) -> bytes:
