@@ -1,0 +1,22 @@
+{
+  "batch_count": 6,
+  "batch_evidence_row_counts": [
+    590,
+    599,
+    572,
+    562,
+    588,
+    535
+  ],
+  "evidence_row_count": 3446,
+  "frozen_batch_hash": "99774accab1268d1b66cb4a0743c88d0c8b2928508044c93043973cef625dd91",
+  "method_identity_visible": false,
+  "package_count": 720,
+  "path_runs_sha256": "0d6640c0a5f8bc7226d7fc5ee1bb09a7f44e8a9a7d3f0a02adc5ae361e69d63d",
+  "private_mapping_committed": false,
+  "question_count": 120,
+  "questions_per_batch": 20,
+  "schema_version": "1.0",
+  "seed": 20260723,
+  "status": "exported_for_primary_annotation"
+}

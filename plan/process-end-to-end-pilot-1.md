@@ -230,6 +230,16 @@ frozen batch hash. Aggregate execution counts were 360 neural path calls, 18
 inserted graph targets, and 3,185 attached context items. No evidence labels
 or route-success outcomes were inspected during execution.
 
+Primary-annotation export update (2026-07-26): the globally randomized,
+method-blinded payload contains 120 question codes, 720 package codes, and
+3,446 unique question-evidence rows after within-question deduplication. It was
+split only at complete-question boundaries into six private workbooks of 20
+questions and 120 packages each. Batch evidence-row counts are 590, 599, 572,
+562, 588, and 535. The private package/path mapping remains outside version
+control. All six workbooks passed identity round-trip and formula-error checks;
+the six batch partitions contain 3,446 unique row codes and 720 unique package
+codes with no loss or duplication. Primary evidence labeling remains pending.
+
 Human dependency:
 
 - Kaifeng Sun supplies or confirms realistic information needs and completes the primary annotation.
