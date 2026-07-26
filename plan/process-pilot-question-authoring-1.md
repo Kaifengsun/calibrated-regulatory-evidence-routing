@@ -131,11 +131,11 @@ Completion criteria:
 |------|-------------|-----------|------|
 | TASK-016 | Create `src/evidence_routing/freeze.py::freeze_queries` to verify accepted review state, batch hashes, protocol/config hashes, corpus hashes, counts, quotas, and prior-question checks before writing immutable private frozen records. | ✅ | 2026-07-26 |
 | TASK-017 | Add a correction ledger that invalidates prior run hashes whenever a frozen question version changes; prohibit in-place overwrite of a frozen batch. | ✅ | 2026-07-26 |
-| TASK-018 | Execute `run_all_paths` for all 20 frozen questions and record exactly 120 `PathRun` records, allowing only explicit path-level execution errors. |  |  |
-| TASK-019 | Create `src/evidence_routing/annotation.py::export_blinded_workbook` with randomized method-blinded packages and a separate ignored immutable identity mapping. |  |  |
-| TASK-020 | Create `annotation.py::import_reviewed_workbook` to validate immutable identities and produce version-1 evidence annotations without overwriting raw reviewer labels. |  |  |
-| TASK-021 | Add `tests/test_freeze.py` and `tests/test_annotation.py` covering no-overwrite behavior, frozen hashes, correction invalidation, 120-run count, blinding, deterministic randomization, and identity tampering. |  |  |
-| TASK-022 | Run regression, lint, configuration validation, schema validation, tracked-file privacy scanning, and bounded live smoke checks; update this plan and the main Pilot plan without marking human review tasks complete prematurely. |  |  |
+| TASK-018 | Execute `run_all_paths` for all 20 frozen questions and record exactly 120 `PathRun` records, allowing only explicit path-level execution errors. | ✅ | 2026-07-26 |
+| TASK-019 | Create `src/evidence_routing/annotation.py::export_blinded_workbook` with randomized method-blinded packages and a separate ignored immutable identity mapping. | ✅ | 2026-07-26 |
+| TASK-020 | Create `annotation.py::import_reviewed_workbook` to validate immutable identities and produce version-1 evidence annotations without overwriting raw reviewer labels. | ✅ | 2026-07-26 |
+| TASK-021 | Add `tests/test_freeze.py` and `tests/test_annotation.py` covering no-overwrite behavior, frozen hashes, correction invalidation, 120-run count, blinding, deterministic randomization, and identity tampering. | ✅ | 2026-07-26 |
+| TASK-022 | Run regression, lint, configuration validation, schema validation, tracked-file privacy scanning, and bounded live smoke checks; update this plan and the main Pilot plan without marking human review tasks complete prematurely. | ✅ | 2026-07-26 |
 
 Completion criteria:
 
@@ -148,7 +148,11 @@ Progress note (2026-07-26): Kaifeng Sun accepted all 20 pre-freeze
 questions with complete checklists. The immutable private `pilot-20-v1`
 question freeze contains 20 records and has batch SHA-256
 `519c21ba8338a46d7acc57db7ed30bcf61ef82fcfed09f56a0e0b649ca1893a4`.
-Path execution and blinded annotation preparation remain pending.
+All six paths completed without an execution error: 120 path records have
+SHA-256 `d7bdd37d932b6011c87d55a31eb38fe38bf72c62e3131eb457d9d705e5c5246b`.
+The method-blinded workbook contains 120 randomized packages and 1,741
+evidence rows; its export/import identity round trip has zero differences.
+Human evidence labeling remains pending and is not marked complete.
 
 ## 3. Alternatives
 

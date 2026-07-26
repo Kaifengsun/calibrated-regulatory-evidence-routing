@@ -141,9 +141,9 @@ Completion criteria:
 | TASK-031 | Create `docs/annotation/question-construction-v1.md` with category quotas, counter-cue requirements, prohibited reuse rules, and a source-to-query audit checklist. | ✅ | 2026-07-25 |
 | TASK-032 | Create `docs/annotation/evidence-labeling-v1.md` with the five evidence labels, corpus-insufficiency manual-check procedure, HARMFUL decision order, and positive and negative examples in both domains. | ✅ | 2026-07-25 |
 | TASK-033 | Create exactly 60 chemical and 60 pharmaceutical `QueryRecord` plus `EvidenceSpecification` records in the local ignored authoring area; export only redistribution-safe identifiers and metadata to the tracked frozen dataset when permitted. |  |  |
-| TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. |  |  |
+| TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. | ✅ | 2026-07-26 |
 | TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. |  |  |
-| TASK-036 | Implement `src/evidence_routing/annotation.py::export_blinded_workbook` and export randomized, method-blinded evidence units while preserving a private immutable mapping file outside version control. |  |  |
+| TASK-036 | Implement `src/evidence_routing/annotation.py::export_blinded_workbook` and export randomized, method-blinded evidence units while preserving a private immutable mapping file outside version control. | ✅ | 2026-07-26 |
 | TASK-037 | Implement `annotation.py::select_duplicate_questions` using the frozen seed to select exactly 30 stratified complete questions for the second annotator. |  |  |
 | TASK-038 | Complete primary annotation for all 120 questions and independent duplicate annotation for all outputs of the selected 30 questions. |  |  |
 | TASK-039 | Implement `annotation.py::import_reviewed_workbook`, `compute_agreement`, and `build_adjudication_queue`; preserve original labels and reject modified question/path identities. |  |  |
