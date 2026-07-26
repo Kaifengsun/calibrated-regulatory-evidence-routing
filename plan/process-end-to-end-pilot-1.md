@@ -149,6 +149,17 @@ Completion criteria:
 | TASK-039 | Implement `annotation.py::import_reviewed_workbook`, `compute_agreement`, and `build_adjudication_queue`; preserve original labels and reject modified question/path identities. |  |  |
 | TASK-040 | Complete adjudication, documented manual corpus checks, and final label freeze; write `artifacts/pilot-v1/annotation-manifest.json` without restricted source text. |  |  |
 
+Progress note (2026-07-26): the chemical portion now contains 60 schema-valid
+questions: the 10 accepted workflow-validation questions plus a path-blind
+50-question expansion with 10 new questions in each frozen construction
+category. All positive evidence identifiers resolve against the frozen
+chemical corpus, all 12 chemical insufficiency candidates have manual-search
+records, and comparison against the prior-manuscript inventory produced no
+high-overlap flags. The new 50-question review workbook passed quota, identity
+round-trip, formula-error, and visual-layout checks. TASK-033 remains open
+until the 50 new chemical questions are accepted and all 60 pharmaceutical
+questions are also authored and reviewed.
+
 Human dependency:
 
 - Kaifeng Sun supplies or confirms realistic information needs and completes the primary annotation.
