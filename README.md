@@ -34,8 +34,11 @@ path labels or model results have been created. The complete path-blind
 negative manual searches. No P0-P5 path was run before this freeze.
 After the freeze, all six paths were executed for every question. The resulting
 720 path runs are complete with no execution errors and are bound to the frozen
-question-batch hash. Primary method-blinded annotation has been exported as six
-private 20-question workbooks; no evidence labels have yet been imported.
+question-batch hash. Primary method-blinded annotation is complete: all six
+private 20-question workbooks passed immutable-field and label validation, and
+their 3,446 displayed evidence rows were expanded into 10,385 annotations with
+exact coverage of every ranked item and context sidecar in the 720 path runs.
+Independent duplicate annotation of 30 complete questions remains pending.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -54,6 +57,7 @@ private 20-question workbooks; no evidence labels have yet been imported.
 - [Frozen 120-question Pilot summary](data/manifests/pilot-120-question-freeze-v1.json)
 - [Complete 720-run path summary](data/manifests/pilot-120-path-run-v1.json)
 - [Primary annotation export summary](data/manifests/pilot-120-primary-annotation-export-v1.json)
+- [Primary annotation import summary](data/manifests/pilot-120-primary-annotation-import-v1.json)
 
 ## Repository boundary
 

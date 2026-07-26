@@ -1,0 +1,35 @@
+{
+  "annotation_role": "primary",
+  "batch_count": 6,
+  "batch_id": "pilot-120-v1",
+  "coverage_against_path_runs": "exact",
+  "displayed_evidence_row_count": 3446,
+  "expanded_annotation_count": 10385,
+  "harmful_reason_distribution": {
+    "direct_conflict": 1,
+    "materially_misleading": 6,
+    "wrong_regulated_object": 135,
+    "wrong_scope_condition_or_exception": 138,
+    "wrong_version": 17
+  },
+  "occurrence_label_distribution": {
+    "CONTEXT": 4649,
+    "HARMFUL": 966,
+    "IRRELEVANT": 3535,
+    "REQUIRED": 490,
+    "SUFFICIENT": 745
+  },
+  "package_count": 720,
+  "primary_annotations_sha256": "806f4da64d362ad7bafe6d8df7842800c8031f93665978c405d75ae790ec4856",
+  "private_annotation_rows_committed": false,
+  "question_count": 120,
+  "row_label_distribution": {
+    "CONTEXT": 1545,
+    "HARMFUL": 297,
+    "IRRELEVANT": 1335,
+    "REQUIRED": 110,
+    "SUFFICIENT": 159
+  },
+  "schema_version": "1.0",
+  "status": "primary_annotation_imported_and_validated"
+}
