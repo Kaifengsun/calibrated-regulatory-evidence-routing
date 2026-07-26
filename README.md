@@ -44,7 +44,10 @@ workbook has been exported and completed. Pre-adjudication agreement is 71.5%
 (question-cluster bootstrap 95% CI 66.1%-76.9%) with Cohen's kappa 0.556
 (95% CI 0.470-0.637) across 901 visible evidence rows. The 279 label or
 HARMFUL-reason disagreements have been exported for adjudication; final labels
-remain unfrozen until that review is complete.
+are now frozen. The final private label set contains exactly one label for each
+of the 10,385 ranked or sidecar path occurrences; 837 occurrences were resolved
+through 279 completed adjudication decisions, while 27 documented negative
+manual corpus searches remain bound to evidence-insufficiency questions.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -66,6 +69,7 @@ remain unfrozen until that review is complete.
 - [Primary annotation import summary](data/manifests/pilot-120-primary-annotation-import-v1.json)
 - [Duplicate-question selection summary](data/manifests/pilot-120-duplicate-selection-v1.json)
 - [Pre-adjudication agreement summary](data/manifests/pilot-120-agreement-pre-adjudication-v1.json)
+- [Final annotation freeze summary](data/manifests/pilot-120-annotation-freeze-v1.json)
 
 ## Repository boundary
 

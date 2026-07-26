@@ -150,7 +150,7 @@ Completion criteria:
 | TASK-037 | Implement `annotation.py::select_duplicate_questions` using the frozen seed to select exactly 30 stratified complete questions for the second annotator. | ✅ | 2026-07-26 |
 | TASK-038 | Complete primary annotation for all 120 questions and independent duplicate annotation for all outputs of the selected 30 questions. | ✅ | 2026-07-26 |
 | TASK-039 | Implement `annotation.py::import_reviewed_workbook`, `compute_agreement`, and `build_adjudication_queue`; preserve original labels and reject modified question/path identities. | ✅ | 2026-07-26 |
-| TASK-040 | Complete adjudication, documented manual corpus checks, and final label freeze; write `artifacts/pilot-v1/annotation-manifest.json` without restricted source text. |  |  |
+| TASK-040 | Complete adjudication, documented manual corpus checks, and final label freeze; write `artifacts/pilot-v1/annotation-manifest.json` without restricted source text. | ✅ | 2026-07-26 |
 
 Progress note (2026-07-26): the chemical portion now contains 60 schema-valid
 questions: the 10 accepted workflow-validation questions plus a path-blind

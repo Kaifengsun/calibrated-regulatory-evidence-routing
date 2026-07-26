@@ -1,0 +1,37 @@
+{
+  "adjudicated_resolution_count": 837,
+  "adjudication_record_count": 837,
+  "batch_id": "pilot-120-v1",
+  "exact_path_output_coverage": true,
+  "final_evidence_labels_sha256": "795df097229542bebaaa14ab5889e2418e46b33d03557086c8b5ff2c94eb612a",
+  "final_harmful_reason_distribution": {
+    "direct_conflict": 9,
+    "materially_misleading": 15,
+    "wrong_regulated_object": 529,
+    "wrong_scope_condition_or_exception": 618,
+    "wrong_version": 61
+  },
+  "final_label_count": 10385,
+  "final_label_distribution": {
+    "CONTEXT": 4728,
+    "HARMFUL": 1232,
+    "IRRELEVANT": 3126,
+    "REQUIRED": 523,
+    "SUFFICIENT": 776
+  },
+  "frozen_at": "2026-07-26T21:11:50.283370+08:00",
+  "manual_corpus_search_record_count": 27,
+  "path_run_count": 720,
+  "primary_resolution_count": 9548,
+  "private_final_label_rows_committed": false,
+  "question_count": 120,
+  "schema_version": "1.0",
+  "source_hashes": {
+    "adjudication_queue": "04a7d757372139085e185425c56551de17beef2919f41cdbbccd58df7e557806",
+    "completed_adjudication_workbook": "1464142d5ed5d3459a8d84aac832a524e6068aa7f1ea77e1df42c79f82df13e2",
+    "duplicate_annotations": "2fa5a14818baa5b85493e290bf9c1192ef2e4357c22c6bba7f33885ca2f72ed4",
+    "manual_search_records": "8bd075993d4c353b35a7d61631742e195c6b22b756d75934ed317093a2deecd4",
+    "primary_annotations": "806f4da64d362ad7bafe6d8df7842800c8031f93665978c405d75ae790ec4856"
+  },
+  "status": "final_annotation_frozen"
+}
