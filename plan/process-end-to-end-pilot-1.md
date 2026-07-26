@@ -147,7 +147,7 @@ Completion criteria:
 | TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. | ✅ | 2026-07-26 |
 | TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. | ✅ | 2026-07-26 |
 | TASK-036 | Implement `src/evidence_routing/annotation.py::export_blinded_workbook` and export randomized, method-blinded evidence units while preserving a private immutable mapping file outside version control. | ✅ | 2026-07-26 |
-| TASK-037 | Implement `annotation.py::select_duplicate_questions` using the frozen seed to select exactly 30 stratified complete questions for the second annotator. |  |  |
+| TASK-037 | Implement `annotation.py::select_duplicate_questions` using the frozen seed to select exactly 30 stratified complete questions for the second annotator. | ✅ | 2026-07-26 |
 | TASK-038 | Complete primary annotation for all 120 questions and independent duplicate annotation for all outputs of the selected 30 questions. |  |  |
 | TASK-039 | Implement `annotation.py::import_reviewed_workbook`, `compute_agreement`, and `build_adjudication_queue`; preserve original labels and reject modified question/path identities. |  |  |
 | TASK-040 | Complete adjudication, documented manual corpus checks, and final label freeze; write `artifacts/pilot-v1/annotation-manifest.json` without restricted source text. |  |  |

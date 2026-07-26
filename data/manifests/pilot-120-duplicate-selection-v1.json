@@ -1,0 +1,31 @@
+{
+  "batch_id": "pilot-120-v1",
+  "evidence_row_count": 901,
+  "package_count": 180,
+  "question_count": 30,
+  "schema_version": "1.0",
+  "selected_question_ids_committed": false,
+  "selection_seed": 20260723,
+  "selection_sha256": "49ac22ed16f41fd0aac049f3271181a9022e0a87fd322fff7ddc6a82fb3887d1",
+  "selection_unit": "complete_question",
+  "selection_uses_evidence_labels": false,
+  "status": "exported_for_independent_duplicate_annotation",
+  "stratum_counts": {
+    "chemical": {
+      "citation_dependency": 3,
+      "direct_clause": 3,
+      "evidence_insufficient": 3,
+      "parent_heading_context": 3,
+      "table_related": 3
+    },
+    "pharmaceutical": {
+      "citation_dependency": 0,
+      "direct_clause": 4,
+      "evidence_insufficient": 3,
+      "parent_heading_context": 4,
+      "table_related": 4
+    }
+  },
+  "workbook_blinding_seed": 20260724,
+  "workbook_sha256": "7bcd129b082c20782b3611fd2fa905aa49dabdf778492ce402b9ef92da8a2afd"
+}

@@ -2,12 +2,15 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
+from random import Random
 
 import pytest
+import yaml
 
 from evidence_routing.annotation import (
     build_blinded_annotation_payload,
     import_reviewed_workbook,
+    select_duplicate_questions,
 )
 from evidence_routing.schemas import (
     ConstructionCategory,
@@ -124,3 +127,65 @@ def test_review_import_rejects_identity_tampering() -> None:
             annotator_code="ANNOTATOR-A",
             annotated_at=datetime.fromisoformat("2026-07-26T12:00:00+08:00"),
         )
+
+
+def test_duplicate_selection_uses_exact_frozen_strata_and_is_order_invariant() -> None:
+    config = yaml.safe_load(Path("configs/pilot-v1.yaml").read_text(encoding="utf-8"))
+    quotas = config["annotation"]["duplicate_annotation_quotas"]
+    queries = []
+    for domain in Domain:
+        language = "zh" if domain == Domain.CHEMICAL else "en"
+        for category in ConstructionCategory:
+            available = config["question_quotas"][domain.value][category.value]
+            queries.extend(
+                QueryRecord(
+                    question_id=(
+                        f"{domain.value.upper()}-{category.value.upper()}-{index:02d}"
+                    ),
+                    domain=domain,
+                    language=language,
+                    query_text=f"Frozen duplicate-selection question {index}.",
+                    construction_category=category,
+                    source_group_id=f"GROUP-{domain.value}-{category.value}-{index:02d}",
+                )
+                for index in range(1, available + 1)
+            )
+
+    selected = select_duplicate_questions(
+        queries,
+        quotas=quotas,
+        seed=config["seed"],
+    )
+    shuffled = queries.copy()
+    Random(91).shuffle(shuffled)
+    assert selected == select_duplicate_questions(
+        shuffled,
+        quotas=quotas,
+        seed=config["seed"],
+    )
+    assert len(selected) == config["annotation"]["duplicate_question_count"] == 30
+
+    by_id = {query.question_id: query for query in queries}
+    observed = {
+        domain.value: {
+            category.value: sum(
+                by_id[question_id].domain == domain
+                and by_id[question_id].construction_category == category
+                for question_id in selected
+            )
+            for category in ConstructionCategory
+        }
+        for domain in Domain
+    }
+    assert observed == quotas
+
+
+def test_duplicate_selection_rejects_unavailable_quota() -> None:
+    query = _query(1)
+    quotas = {
+        domain.value: {category.value: 0 for category in ConstructionCategory}
+        for domain in Domain
+    }
+    quotas["pharmaceutical"]["direct_clause"] = 2
+    with pytest.raises(ValueError, match="quota exceeds available questions"):
+        select_duplicate_questions([query], quotas=quotas, seed=20260723)

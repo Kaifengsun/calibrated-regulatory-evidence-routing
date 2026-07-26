@@ -12,6 +12,8 @@ from typing import Any
 
 from evidence_routing.schemas import (
     AnnotationRole,
+    ConstructionCategory,
+    Domain,
     EvidenceAnnotation,
     EvidenceLabel,
     ExecutionStatus,
@@ -47,6 +49,63 @@ _VISIBLE_IDENTITY_FIELDS = (
     "context_type",
     "evidence_text",
 )
+
+
+def select_duplicate_questions(
+    queries: Sequence[QueryRecord],
+    *,
+    quotas: Mapping[str, Mapping[str, int]],
+    seed: int,
+) -> list[str]:
+    """Select complete-question duplicate-review units by frozen stratum quotas."""
+    query_by_id = {query.question_id: query for query in queries}
+    if len(query_by_id) != len(queries):
+        raise ValueError("query identities must be unique")
+
+    expected_domains = {domain.value for domain in Domain}
+    if set(quotas) != expected_domains:
+        raise ValueError("duplicate-review quotas must define both frozen domains")
+
+    selections: list[str] = []
+    for domain in Domain:
+        domain_quotas = quotas[domain.value]
+        expected_categories = {category.value for category in ConstructionCategory}
+        if set(domain_quotas) != expected_categories:
+            raise ValueError(
+                f"duplicate-review quotas must define every category for {domain.value}"
+            )
+        for category in ConstructionCategory:
+            quota = domain_quotas[category.value]
+            if isinstance(quota, bool) or not isinstance(quota, int) or quota < 0:
+                raise ValueError(
+                    f"invalid duplicate-review quota: {domain.value}/{category.value}"
+                )
+            candidates = sorted(
+                query.question_id
+                for query in queries
+                if query.domain == domain
+                and query.construction_category == category
+            )
+            if len(candidates) < quota:
+                raise ValueError(
+                    f"duplicate-review quota exceeds available questions: "
+                    f"{domain.value}/{category.value}"
+                )
+            ranked = sorted(
+                candidates,
+                key=lambda question_id: (
+                    hashlib.sha256(
+                        (
+                            f"{seed}\0{domain.value}\0{category.value}"
+                            f"\0{question_id}"
+                        ).encode()
+                    ).hexdigest(),
+                    question_id,
+                ),
+            )
+            selections.extend(ranked[:quota])
+
+    return sorted(selections)
 
 
 def _canonical(value: Any) -> bytes:

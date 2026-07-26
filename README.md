@@ -38,7 +38,9 @@ question-batch hash. Primary method-blinded annotation is complete: all six
 private 20-question workbooks passed immutable-field and label validation, and
 their 3,446 displayed evidence rows were expanded into 10,385 annotations with
 exact coverage of every ranked item and context sidecar in the 720 path runs.
-Independent duplicate annotation of 30 complete questions remains pending.
+The frozen seed and domain-category quotas selected exactly 30 complete
+questions without using evidence labels, and their independent duplicate-review
+workbook has been exported. The second review itself remains pending.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -58,6 +60,7 @@ Independent duplicate annotation of 30 complete questions remains pending.
 - [Complete 720-run path summary](data/manifests/pilot-120-path-run-v1.json)
 - [Primary annotation export summary](data/manifests/pilot-120-primary-annotation-export-v1.json)
 - [Primary annotation import summary](data/manifests/pilot-120-primary-annotation-import-v1.json)
+- [Duplicate-question selection summary](data/manifests/pilot-120-duplicate-selection-v1.json)
 
 ## Repository boundary
 
