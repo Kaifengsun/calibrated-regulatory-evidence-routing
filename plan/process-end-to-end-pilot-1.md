@@ -185,7 +185,18 @@ resolve, all 13 insufficiency candidates have documented frozen-corpus search
 records, and comparison with both prior-manuscript inventories and the
 Pilot-20 questions produced no high-overlap flags. The private pre-freeze
 review workbook passed quota, immutable-field round-trip, formula-error, and
-four-sheet visual checks. These 50 questions remain review candidates and have
+four-sheet visual checks.
+
+Pharmaceutical review update (2026-07-26): the completed 50-question review
+imported with no immutable-field or identity-hash differences. Kaifeng Sun
+accepted 42 questions and returned eight questions for revision because their
+requested precision exceeded the evidence displayed in the review workbook;
+all eight passed the category, wording, and prior-overlap checks. The eight
+questions were narrowed without changing sources, quotas, or construction
+categories and were exported as a separate pre-freeze re-review batch. That
+workbook passed immutable-field round-trip, formula-error, quota, and
+four-sheet visual checks. The eight revised questions remain pending human
+re-review, so the pharmaceutical domain and combined 120-question Pilot have
 not been frozen or executed through any evidence path.
 
 Human dependency:
