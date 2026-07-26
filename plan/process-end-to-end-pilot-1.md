@@ -34,6 +34,9 @@ This plan implements the approved Pilot-first design in `docs/superpowers/specs/
 - **CON-004**: Group all modeling splits by source document or standard.
 - **CON-005**: Treat Chinese chemical-safety to English pharmaceutical-regulatory transfer as joint domain-and-language transfer.
 - **CON-006**: Freeze the reranker identity, revision, inference parameters, cue dictionaries, schemas, seeds, and path parameters before inspecting Pilot path labels.
+- **CON-007**: Deliver the final manuscript as an editable Microsoft Word
+  `.docx`; PDF may be used only for internal layout verification, not as the
+  primary user deliverable.
 - **SEC-001**: Load local paths and secrets only from ignored files or environment variables.
 - **SEC-002**: Run an automated tracked-file privacy scan before every release commit.
 - **DAT-001**: Infer `corpus_insufficiency` only after a documented manual frozen-corpus check; never infer it from six path failures.
@@ -174,6 +177,16 @@ hash of
 No path output was run or inspected during revision or domain freeze. TASK-033
 remains open until the 60 pharmaceutical questions are also authored, reviewed,
 and combined with this domain batch into the complete 120-question freeze.
+
+Pharmaceutical authoring update (2026-07-26): the remaining 50 path-blind
+questions have been drafted from the frozen 2,478-chunk snapshot with quotas
+`[12,12,13,0,13]`. All positive evidence identifiers and context sidecars
+resolve, all 13 insufficiency candidates have documented frozen-corpus search
+records, and comparison with both prior-manuscript inventories and the
+Pilot-20 questions produced no high-overlap flags. The private pre-freeze
+review workbook passed quota, immutable-field round-trip, formula-error, and
+four-sheet visual checks. These 50 questions remain review candidates and have
+not been frozen or executed through any evidence path.
 
 Human dependency:
 
