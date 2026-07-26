@@ -1,0 +1,37 @@
+{
+  "batch_hash": "99774accab1268d1b66cb4a0743c88d0c8b2928508044c93043973cef625dd91",
+  "batch_id": "pilot-120-v1",
+  "category_counts": {
+    "chemical": {
+      "citation_dependency": 12,
+      "direct_clause": 12,
+      "evidence_insufficient": 12,
+      "parent_heading_context": 12,
+      "table_related": 12
+    },
+    "pharmaceutical": {
+      "citation_dependency": 0,
+      "direct_clause": 15,
+      "evidence_insufficient": 15,
+      "parent_heading_context": 15,
+      "table_related": 15
+    }
+  },
+  "domain_batch_hashes": {
+    "chemical": "c03dcc8caa9cd602b1843730c3d5770aa4ea19bd16f3488c39f1f25e96e5d665",
+    "pharmaceutical": "faad36b171cf0c854d0e02e1db241e4017b5a7c19bb79128c0d85acb888ae270"
+  },
+  "domain_question_counts": {
+    "chemical": 60,
+    "pharmaceutical": 60
+  },
+  "frozen_at": "2026-07-26T19:15:00Z",
+  "manual_search_record_count": 27,
+  "path_execution_count": 0,
+  "private_records_committed": false,
+  "protocol_hash": "7aed4e93c464fe2258077df1df872b1a1145fbbd97e57860ee15fc60a8bfbc0a",
+  "question_count": 120,
+  "review_accepted_count": 120,
+  "schema_version": "1.0",
+  "status": "frozen_before_path_execution"
+}

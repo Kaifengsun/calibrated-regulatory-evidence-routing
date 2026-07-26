@@ -143,7 +143,7 @@ Completion criteria:
 |------|-------------|-----------|------|
 | TASK-031 | Create `docs/annotation/question-construction-v1.md` with category quotas, counter-cue requirements, prohibited reuse rules, and a source-to-query audit checklist. | ✅ | 2026-07-25 |
 | TASK-032 | Create `docs/annotation/evidence-labeling-v1.md` with the five evidence labels, corpus-insufficiency manual-check procedure, HARMFUL decision order, and positive and negative examples in both domains. | ✅ | 2026-07-25 |
-| TASK-033 | Create exactly 60 chemical and 60 pharmaceutical `QueryRecord` plus `EvidenceSpecification` records in the local ignored authoring area; export only redistribution-safe identifiers and metadata to the tracked frozen dataset when permitted. |  |  |
+| TASK-033 | Create exactly 60 chemical and 60 pharmaceutical `QueryRecord` plus `EvidenceSpecification` records in the local ignored authoring area; export only redistribution-safe identifiers and metadata to the tracked frozen dataset when permitted. | ✅ | 2026-07-26 |
 | TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. | ✅ | 2026-07-26 |
 | TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. |  |  |
 | TASK-036 | Implement `src/evidence_routing/annotation.py::export_blinded_workbook` and export randomized, method-blinded evidence units while preserving a private immutable mapping file outside version control. | ✅ | 2026-07-26 |
@@ -201,11 +201,22 @@ requiring the declared parent-heading context. The question was revised once
 more so that the responsibilities scope supplied by the parent heading is part
 of the requested answer, without changing its source, category, or quota. The
 resulting one-question final re-review workbook passed immutable-field
-round-trip, formula-error, quota, and four-sheet visual checks. The
-pharmaceutical batch now contains 49 accepted questions and one question
-pending final human re-review; therefore the pharmaceutical domain and
-combined 120-question Pilot have not been frozen or executed through any
-evidence path.
+round-trip, formula-error, quota, and four-sheet visual checks. The final
+review accepted `PHARM-P120-033` with all four checklist fields confirmed.
+
+Question-freeze completion update (2026-07-26): all 60 pharmaceutical
+questions are accepted, with 15 questions in each available construction
+category and 15 documented negative manual searches. The pharmaceutical
+domain-freeze hash is
+`faad36b171cf0c854d0e02e1db241e4017b5a7c19bb79128c0d85acb888ae270`.
+The 60 pharmaceutical questions were combined with the frozen 60-question
+chemical batch to create the complete private `pilot-120-v1` question freeze.
+It contains 120 accepted questions, 27 manual-search records, exact frozen
+domain/category quotas, and no prior-question overlap flags. Its batch hash is
+`99774accab1268d1b66cb4a0743c88d0c8b2928508044c93043973cef625dd91`.
+A second idempotent freeze produced the same hashes, and independent
+recalculation found no record-hash mismatches. No P0-P5 path output was run or
+inspected before the freeze. TASK-035 is the next implementation task.
 
 Human dependency:
 

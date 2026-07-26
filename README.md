@@ -16,7 +16,7 @@ The Pilot covers:
 
 ## Current status
 
-Phases 1 through 4 are implemented: the repository boundary, frozen Pilot
+Phases 1 through 4 and Pilot question construction are implemented: the repository boundary, frozen Pilot
 protocol, schemas, two read-only domain adapters, deterministic BM25 contract,
 immutable result cache, six fixed evidence paths, and their command boundary
 are in place. The pharmaceutical adapter has passed a live six-path check
@@ -28,7 +28,10 @@ GPU inference.
 The chemical corpus has been strongly fingerprinted. A reproducible title-based
 screen produced 532 standards for human review; the completed review froze 399
 standards into the chemical question-source allowlist and excluded 133. No
-Pilot questions, path labels, or model results have been created.
+path labels or model results have been created. The complete path-blind
+120-question Pilot has been human reviewed and frozen: 60 chemical questions,
+60 pharmaceutical questions, 120 accepted authoring records, and 27 documented
+negative manual searches. No P0-P5 path was run before this freeze.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -44,6 +47,7 @@ Pilot questions, path labels, or model results have been created.
 - [Frozen pharmaceutical corpus manifest](data/manifests/pharmaceutical-corpus-pilot-v1.json)
 - [Chemical scope-screening manifest](data/manifests/chemical-scope-screening-v1.json)
 - [Frozen chemical scope summary](data/manifests/chemical-scope-freeze-v1.json)
+- [Frozen 120-question Pilot summary](data/manifests/pilot-120-question-freeze-v1.json)
 
 ## Repository boundary
 
