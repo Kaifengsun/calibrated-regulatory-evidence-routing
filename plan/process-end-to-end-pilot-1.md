@@ -195,9 +195,17 @@ all eight passed the category, wording, and prior-overlap checks. The eight
 questions were narrowed without changing sources, quotas, or construction
 categories and were exported as a separate pre-freeze re-review batch. That
 workbook passed immutable-field round-trip, formula-error, quota, and
-four-sheet visual checks. The eight revised questions remain pending human
-re-review, so the pharmaceutical domain and combined 120-question Pilot have
-not been frozen or executed through any evidence path.
+four-sheet visual checks. The completed re-review accepted seven questions and
+returned `PHARM-P120-033` because its child passage supplied the answer without
+requiring the declared parent-heading context. The question was revised once
+more so that the responsibilities scope supplied by the parent heading is part
+of the requested answer, without changing its source, category, or quota. The
+resulting one-question final re-review workbook passed immutable-field
+round-trip, formula-error, quota, and four-sheet visual checks. The
+pharmaceutical batch now contains 49 accepted questions and one question
+pending final human re-review; therefore the pharmaceutical domain and
+combined 120-question Pilot have not been frozen or executed through any
+evidence path.
 
 Human dependency:
 
