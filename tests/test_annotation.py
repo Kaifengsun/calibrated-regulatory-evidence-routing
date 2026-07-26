@@ -33,7 +33,7 @@ def _query(index: int) -> QueryRecord:
 
 
 def _run(query: QueryRecord, path_id: PathId) -> PathRun:
-    source_id = f"SOURCE-{query.question_id}-{path_id.value}"
+    source_id = f"SOURCE-{query.question_id}"
     return PathRun(
         run_id=f"RUN-{query.question_id}-{path_id.value}",
         question_id=query.question_id,
@@ -83,7 +83,7 @@ def test_blinding_is_deterministic_and_contains_exactly_120_packages() -> None:
     assert first_payload == second_payload
     assert first_mapping == second_mapping
     assert len(first_payload["packages"]) == 120
-    assert len(first_payload["rows"]) == 120
+    assert len(first_payload["rows"]) == 20
     assert all("path_id" not in row for row in first_payload["rows"])
     assert {row["path_id"] for row in first_mapping["package_mappings"]} == {
         path_id.value for path_id in PathId

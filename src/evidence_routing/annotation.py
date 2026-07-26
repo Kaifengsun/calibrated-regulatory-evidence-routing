@@ -37,9 +37,9 @@ _HARMFUL_REASONS = {
 _VISIBLE_IDENTITY_FIELDS = (
     "row_code",
     "question_code",
-    "package_code",
+    "package_codes",
     "question_text",
-    "item_order",
+    "package_positions",
     "evidence_kind",
     "source_id",
     "document_id",
@@ -96,8 +96,7 @@ def build_blinded_annotation_payload(
     }
     rows: list[dict[str, Any]] = []
     package_mappings: list[dict[str, str]] = []
-    row_mappings: list[dict[str, str]] = []
-    row_number = 0
+    evidence_records: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     package_number = 0
 
     for question_id in sorted(question_ids, key=question_codes.get):
@@ -142,41 +141,101 @@ def build_blinded_annotation_payload(
             if run.status == ExecutionStatus.EXECUTION_ERROR and units:
                 raise ValueError(f"execution-error run contains evidence: {run.run_id}")
             for evidence_kind, evidence_id, order, source_id, document_id, context_type in units:
-                row_number += 1
                 display = dict(evidence_text_lookup(run, evidence_kind, evidence_id))
-                row: dict[str, Any] = {
-                    "row_code": f"EV-{row_number:05d}",
+                key = (
+                    question_id,
+                    evidence_kind,
+                    source_id,
+                    context_type or "",
+                )
+                visible = {
                     "question_code": question_codes[question_id],
-                    "package_code": package_code,
                     "question_text": query.query_text,
-                    "item_order": order,
                     "evidence_kind": evidence_kind,
                     "source_id": source_id,
                     "document_id": document_id,
                     "heading": str(display.get("heading", "")),
                     "context_type": context_type or "",
                     "evidence_text": str(display.get("evidence_text", "")),
-                    "label": "",
-                    "harmful_reason_code": "",
-                    "annotator_comment": "",
                 }
-                if not row["evidence_text"].strip():
+                if not visible["evidence_text"].strip():
                     raise ValueError(
                         f"annotation evidence text is empty: {run.run_id}/{evidence_id}"
                     )
-                row["identity_sha256"] = _identity_hash(row)
-                rows.append(row)
-                row_mappings.append(
+                record = evidence_records.setdefault(
+                    key,
                     {
-                        "row_code": row["row_code"],
+                        "visible": visible,
+                        "memberships": [],
+                        "occurrences": [],
+                    },
+                )
+                if record["visible"] != visible:
+                    raise ValueError(
+                        f"inconsistent display text for repeated evidence: {key}"
+                    )
+                record["memberships"].append(
+                    {"package_code": package_code, "item_order": order}
+                )
+                record["occurrences"].append(
+                    {
                         "question_id": question_id,
                         "run_id": run.run_id,
                         "path_id": run.path_id.value,
                         "evidence_id": evidence_id,
                         "evidence_kind": evidence_kind,
-                        "identity_sha256": row["identity_sha256"],
                     }
                 )
+
+    row_mappings: list[dict[str, Any]] = []
+    ordered_records = sorted(
+        evidence_records.values(),
+        key=lambda record: (
+            record["visible"]["question_code"],
+            min(
+                int(item["package_code"].split("-")[1])
+                for item in record["memberships"]
+            ),
+            min(item["item_order"] for item in record["memberships"]),
+            record["visible"]["evidence_kind"],
+            record["visible"]["source_id"],
+        ),
+    )
+    for row_number, record in enumerate(ordered_records, 1):
+        memberships = sorted(
+            record["memberships"],
+            key=lambda item: (item["package_code"], item["item_order"]),
+        )
+        row = {
+            "row_code": f"EV-{row_number:05d}",
+            **record["visible"],
+            "package_codes": " | ".join(
+                item["package_code"] for item in memberships
+            ),
+            "package_positions": " | ".join(
+                f"{item['package_code']}:{item['item_order']}"
+                for item in memberships
+            ),
+            "label": "",
+            "harmful_reason_code": "",
+            "annotator_comment": "",
+        }
+        row["identity_sha256"] = _identity_hash(row)
+        rows.append(row)
+        row_mappings.append(
+            {
+                "row_code": row["row_code"],
+                "identity_sha256": row["identity_sha256"],
+                "occurrences": sorted(
+                    record["occurrences"],
+                    key=lambda item: (
+                        item["run_id"],
+                        item["evidence_kind"],
+                        item["evidence_id"],
+                    ),
+                ),
+            }
+        )
     workbook_payload = {
         "schema_version": "1.0",
         "seed": seed,
@@ -187,7 +246,9 @@ def build_blinded_annotation_payload(
                 "question_code": question_codes[row["question_id"]],
                 "question_text": query_by_id[row["question_id"]].query_text,
                 "item_count": sum(
-                    item["package_code"] == row["package_code"] for item in rows
+                    row["package_code"]
+                    in item["package_codes"].split(" | ")
+                    for item in rows
                 ),
             }
             for row in package_mappings
@@ -286,18 +347,23 @@ def import_reviewed_workbook(
                 raise ValueError(f"HARMFUL row lacks a valid reason: {row_code}")
         elif harmful_reason:
             raise ValueError(f"non-HARMFUL row has a harmful reason: {row_code}")
-        annotations.append(
-            EvidenceAnnotation(
-                annotation_id=f"ANN-{annotator_code}-{row_code}",
-                question_id=mapping["question_id"],
-                path_id=mapping["path_id"],
-                evidence_id=mapping["evidence_id"],
-                evidence_kind=mapping["evidence_kind"],
-                label=label,
-                annotation_role=annotation_role,
-                annotator_code=annotator_code,
-                annotated_at=annotated_at,
-                harmful_reason_code=harmful_reason or None,
+        for occurrence_index, occurrence in enumerate(
+            mapping["occurrences"], 1
+        ):
+            annotations.append(
+                EvidenceAnnotation(
+                    annotation_id=(
+                        f"ANN-{annotator_code}-{row_code}-{occurrence_index:02d}"
+                    ),
+                    question_id=occurrence["question_id"],
+                    path_id=occurrence["path_id"],
+                    evidence_id=occurrence["evidence_id"],
+                    evidence_kind=occurrence["evidence_kind"],
+                    label=label,
+                    annotation_role=annotation_role,
+                    annotator_code=annotator_code,
+                    annotated_at=annotated_at,
+                    harmful_reason_code=harmful_reason or None,
+                )
             )
-        )
     return annotations

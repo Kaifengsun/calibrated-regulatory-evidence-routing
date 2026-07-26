@@ -150,8 +150,9 @@ question freeze contains 20 records and has batch SHA-256
 `519c21ba8338a46d7acc57db7ed30bcf61ef82fcfed09f56a0e0b649ca1893a4`.
 All six paths completed without an execution error: 120 path records have
 SHA-256 `d7bdd37d932b6011c87d55a31eb38fe38bf72c62e3131eb457d9d705e5c5246b`.
-The method-blinded workbook contains 120 randomized packages and 1,741
-evidence rows; its export/import identity round trip has zero differences.
+The method-blinded workbook contains 120 randomized packages and 570 unique
+question-evidence judgments. Its private mapping preserves all 1,741 path-level
+occurrences, and its export/import identity round trip has zero differences.
 Human evidence labeling remains pending and is not marked complete.
 
 ## 3. Alternatives
