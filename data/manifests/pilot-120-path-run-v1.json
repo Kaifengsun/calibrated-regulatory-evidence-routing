@@ -1,0 +1,25 @@
+{
+  "context_items_attached": 3185,
+  "error_run_count": 0,
+  "frozen_batch_hash": "99774accab1268d1b66cb4a0743c88d0c8b2928508044c93043973cef625dd91",
+  "frozen_batch_id": "pilot-120-v1",
+  "graph_targets_inserted": 18,
+  "neural_model_call_count": 360,
+  "path_counts": {
+    "P0": 120,
+    "P1": 120,
+    "P2": 120,
+    "P3": 120,
+    "P4": 120,
+    "P5": 120
+  },
+  "path_run_count": 720,
+  "path_runs_sha256": "0d6640c0a5f8bc7226d7fc5ee1bb09a7f44e8a9a7d3f0a02adc5ae361e69d63d",
+  "question_count": 120,
+  "ranked_units_per_run": 10,
+  "schema_version": "1.0",
+  "status": "complete",
+  "status_counts": {
+    "complete": 720
+  }
+}

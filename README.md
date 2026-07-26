@@ -32,6 +32,9 @@ path labels or model results have been created. The complete path-blind
 120-question Pilot has been human reviewed and frozen: 60 chemical questions,
 60 pharmaceutical questions, 120 accepted authoring records, and 27 documented
 negative manual searches. No P0-P5 path was run before this freeze.
+After the freeze, all six paths were executed for every question. The resulting
+720 path runs are complete with no execution errors and are bound to the frozen
+question-batch hash.
 
 - [Frozen Pilot design](docs/superpowers/specs/2026-07-23-pilot-first-evidence-routing-design.md)
 - [Domain-available quota amendment](docs/superpowers/specs/2026-07-25-domain-available-category-quotas-amendment-design.md)
@@ -48,6 +51,7 @@ negative manual searches. No P0-P5 path was run before this freeze.
 - [Chemical scope-screening manifest](data/manifests/chemical-scope-screening-v1.json)
 - [Frozen chemical scope summary](data/manifests/chemical-scope-freeze-v1.json)
 - [Frozen 120-question Pilot summary](data/manifests/pilot-120-question-freeze-v1.json)
+- [Complete 720-run path summary](data/manifests/pilot-120-path-run-v1.json)
 
 ## Repository boundary
 

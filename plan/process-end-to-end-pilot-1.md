@@ -145,7 +145,7 @@ Completion criteria:
 | TASK-032 | Create `docs/annotation/evidence-labeling-v1.md` with the five evidence labels, corpus-insufficiency manual-check procedure, HARMFUL decision order, and positive and negative examples in both domains. | ✅ | 2026-07-25 |
 | TASK-033 | Create exactly 60 chemical and 60 pharmaceutical `QueryRecord` plus `EvidenceSpecification` records in the local ignored authoring area; export only redistribution-safe identifiers and metadata to the tracked frozen dataset when permitted. | ✅ | 2026-07-26 |
 | TASK-034 | Implement `src/evidence_routing/freeze.py::freeze_queries` to verify counts, quotas, uniqueness, source grouping, prior-benchmark non-overlap, and protocol hashes before writing the immutable Pilot version. | ✅ | 2026-07-26 |
-| TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. |  |  |
+| TASK-035 | Execute `run_all_paths` for every frozen question and verify 720 successful path manifests or explicit path-level execution errors. | ✅ | 2026-07-26 |
 | TASK-036 | Implement `src/evidence_routing/annotation.py::export_blinded_workbook` and export randomized, method-blinded evidence units while preserving a private immutable mapping file outside version control. | ✅ | 2026-07-26 |
 | TASK-037 | Implement `annotation.py::select_duplicate_questions` using the frozen seed to select exactly 30 stratified complete questions for the second annotator. |  |  |
 | TASK-038 | Complete primary annotation for all 120 questions and independent duplicate annotation for all outputs of the selected 30 questions. |  |  |
@@ -217,6 +217,18 @@ domain/category quotas, and no prior-question overlap flags. Its batch hash is
 A second idempotent freeze produced the same hashes, and independent
 recalculation found no record-hash mismatches. No P0-P5 path output was run or
 inspected before the freeze. TASK-035 is the next implementation task.
+
+Path-execution update (2026-07-26): after the immutable question freeze, all
+six paths were executed for each of the 120 questions. The final source-free
+artifact contains 720 unique question-path records, exactly 120 records per
+path, ten ranked evidence units per record, and zero execution errors. Its
+SHA-256 is
+`0d6640c0a5f8bc7226d7fc5ee1bb09a7f44e8a9a7d3f0a02adc5ae361e69d63d`.
+Structural validation confirmed complete P0-P5 sets for every frozen question,
+no unknown or missing question IDs, no duplicate run keys, and a matching
+frozen batch hash. Aggregate execution counts were 360 neural path calls, 18
+inserted graph targets, and 3,185 attached context items. No evidence labels
+or route-success outcomes were inspected during execution.
 
 Human dependency:
 
