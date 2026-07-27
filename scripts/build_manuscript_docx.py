@@ -15,7 +15,7 @@ from docx.shared import Inches, Pt, RGBColor
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "manuscript" / "manuscript.md"
 REFERENCES = ROOT / "manuscript" / "references.md"
-OUTPUT = ROOT / "output" / "word" / "When_Does_Evidence_Expansion_Help.docx"
+OUTPUT = ROOT / "output" / "word" / "When_Does_Evidence_Expansion_Help_Revised.docx"
 
 INK = "18324A"
 BLUE = "2E74B5"
@@ -243,7 +243,7 @@ def configure_header_footer(doc):
     add_field(p, "PAGE")
 
 
-def add_title_block(doc, title, author):
+def add_title_block(doc, title, author, affiliation):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = Pt(10)
@@ -254,10 +254,24 @@ def add_title_block(doc, title, author):
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p.paragraph_format.space_after = Pt(14)
+    p.paragraph_format.space_after = Pt(3)
     p.paragraph_format.keep_with_next = True
     run = p.add_run(author)
-    set_run_font(run, size=11.5, color=MUTED)
+    set_run_font(run, size=11.5, color=INK)
+
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_after = Pt(3)
+    p.paragraph_format.keep_with_next = True
+    run = p.add_run(affiliation)
+    set_run_font(run, size=10.5, color=MUTED)
+
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_after = Pt(12)
+    p.paragraph_format.keep_with_next = True
+    run = p.add_run("Sole author and corresponding author")
+    set_run_font(run, size=9.5, italic=True, color=MUTED)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -367,8 +381,9 @@ def build():
     lines = SOURCE.read_text(encoding="utf-8").splitlines()
     title = lines[0].lstrip("# ").strip()
     author = lines[2].strip()
-    add_title_block(doc, title, author)
-    lines = lines[4:]
+    affiliation = lines[3].strip()
+    add_title_block(doc, title, author, affiliation)
+    lines = lines[5:]
 
     paragraph_buffer = []
     skip_reference_placeholder = False
@@ -437,8 +452,11 @@ def build():
     core.title = title
     core.subject = "Cross-domain regulatory evidence retrieval"
     core.author = "Kaifeng Sun"
-    core.keywords = "regulatory retrieval; evidence expansion; BM25; routing; abstention"
-    core.comments = "Generated from the frozen Pilot artifacts."
+    core.keywords = (
+        "regulatory retrieval; risk-sensitive evaluation; structural context "
+        "expansion; selective routing; evidence sufficiency; retrieval-augmented generation"
+    )
+    core.comments = "Generated from the prespecified Pilot artifacts."
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)
     print(OUTPUT)

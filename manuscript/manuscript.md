@@ -1,37 +1,35 @@
 # When Does Evidence Expansion Help? A Cross-Domain Study of Retrieval Paths and Lightweight Routing for Regulatory Evidence
 
 Kaifeng Sun
+China Jiliang University, China
 
 ## Abstract
 
-Regulatory retrieval systems often add neural reranking, document hierarchy,
-tables, or graph relations to an initial lexical result. Each added stage can
-recover missing evidence, but it can also increase computation and introduce
-material from the wrong version, scope, or regulatory object. We study this
-trade-off in a prespecified, version-controlled Pilot spanning 60 Chinese chemical-safety
-questions and 60 English pharmaceutical-regulatory questions. Every question
-was processed through six frozen paths built on a shared BM25 result:
-BM25-only, reranking, context expansion, relation expansion, and two combined
-paths. Human annotators assessed 10,385 ranked or sidecar evidence occurrences
-using five labels and treated any materially misleading evidence as a
-risk-sensitive path failure. Context expansion produced the clearest benefit.
-Adding context to BM25 improved combined path success by 15.83 percentage
-points (95% paired bootstrap interval, 9.17 to 22.50; Holm-adjusted exact
-McNemar p < 0.001), whereas reranking and one-hop graph traversal produced
-sparse independent rescue. The most complete path reached 63.33% evidence
-completeness but also a 51.67% harmful-expansion rate, leaving combined success
-at 33.33%, equal to the cheaper context-only path. In grouped out-of-fold
-evaluation, Logistic Regression and XGBoost routers achieved 32.50% and 31.67%
-combined success, compared with 19.17% for a frozen heuristic. Calibration-only
-abstention failed: Logistic Regression covered 9.17% of questions with 63.64%
-accepted failure, and XGBoost abstained on all questions. The prespecified
-expansion gate therefore failed. The findings support selective use of
-structural context, risk-separated evaluation, and simple route prediction,
-while showing that a small cross-domain Pilot cannot establish reliable
-evidence-sufficiency abstention.
+Regulatory question answering often fails because the decisive evidence is not
+contained in the retrieved leaf passage but in its heading, parent clause,
+table, or cited provision. We study whether common evidence-expansion stages
+improve retrieval before generation under a risk-sensitive criterion that
+requires complete supporting evidence and rejects materially misleading
+additions. In a prespecified pilot of 120 questions drawn from Chinese
+chemical-safety standards and English pharmaceutical-regulatory documents, we
+compare six retrieval paths built on a shared BM25 first stage, including
+reranking, structural-context expansion, relation expansion, and their
+combinations. Human annotators labeled 10,385 evidence occurrences for
+completeness and harmfulness. Structural context provided the clearest benefit:
+adding heading, parent, and table context improved combined success by 15.83
+percentage points over BM25, whereas reranking and one-hop relation expansion
+yielded limited independent rescue. The most complete path did not outperform
+the cheaper context-only path because additional evidence often introduced
+harmful material. Lightweight learned routers outperformed a prespecified
+heuristic in grouped out-of-fold evaluation, but calibration-based abstention
+failed to achieve usable risk and coverage. These results support selective
+use of structural context and separate evaluation of completeness and harm,
+while indicating that reliable evidence-sufficiency abstention requires
+substantially more calibration data.
 
-**Keywords:** regulatory information retrieval; evidence expansion; BM25;
-neural reranking; selective prediction; retrieval-augmented generation
+**Keywords:** regulatory retrieval; risk-sensitive evaluation; structural
+context expansion; selective routing; evidence sufficiency;
+retrieval-augmented generation
 
 ## 1. Introduction
 
@@ -81,7 +79,7 @@ cue-based heuristic, but calibrated abstention does not reach usable risk and
 coverage. The last result caused the prespecified expansion decision to fail;
 we report it as a boundary of the approach rather than tune it away.
 
-**Figure 1. Frozen study workflow from question construction to diagnostic
+**Figure 1. Prespecified study workflow from question construction to diagnostic
 evaluation.**
 
 ![Study workflow](../artifacts/pilot-v1/figures/figure0_study_design.png)
@@ -170,8 +168,8 @@ but were never supplied to the routers.
 Question authors inspected source evidence to express realistic information
 needs but did not inspect P0-P5 rankings before freezing a question and its
 evidence specification. A pre-freeze reviewer checked naturalness,
-specificity, source validity, category fit, and overlap with questions used in
-earlier manuscripts. All 120 questions were accepted after review. For
+specificity, source validity, category fit, and overlap with two pre-existing
+evaluation sets. All 120 questions were accepted after review. For
 evidence-insufficient questions, a reviewer documented a manual search of the
 frozen corpus; six failed paths alone could not establish corpus
 insufficiency.
@@ -198,6 +196,17 @@ references. None of these references resolved deterministically to one target
 text chunk under the conservative protocol, so graph expansion returned no
 eligible target in this domain. The study reports this structural absence
 rather than introducing a heuristic target mapping after inspection.
+
+**Table 1. Characteristics of the two regulatory retrieval domains.**
+
+| Characteristic | Chemical-safety domain | Pharmaceutical-regulatory domain |
+|---|---|---|
+| Language | Chinese | English |
+| Frozen source corpus | 9,206 standards and 991,453 sections | 99 enriched files and 2,478 unique chunks |
+| First-stage retrieval | CJK BM25 index over section title, summary, and content | BM25 over stable document chunks |
+| Structural context | Heading hierarchy, immediate parent, and tables | Heading, parent context, and tables |
+| Eligible graph expansion | One-hop CITES or DEPENDS_ON targets when uniquely attributable | No reference resolved uniquely to an attributable target chunk |
+| Pilot questions | 60 across five construction categories | 60 across four construction categories |
 
 ### 3.4 Annotation
 
@@ -327,14 +336,14 @@ confounded. We therefore treat transfer as descriptive.
 
 ### 5.1 Path outcomes
 
-Table 1 reports pooled outcomes. BM25-only reached 26.67% completeness and
+Table 2 reports pooled outcomes. BM25-only reached 26.67% completeness and
 17.50% combined success. Adding context without a neural call (P2) raised
 completeness to 55.00% and combined success to 33.33%. The full P5 path reached
 the highest completeness, 63.33%, but also produced harmful evidence on
 51.67% of questions. Its combined success remained 33.33%, equal to P2. More
 complete retrieval did not produce a better risk-sensitive endpoint.
 
-**Table 1. Pooled outcomes for the six frozen evidence paths (n = 120).**
+**Table 2. Pooled outcomes for the six prespecified evidence paths (n = 120).**
 
 | Path | Evidence completeness (%) | Harmful expansion (%) | Combined success (%) | Mean neural calls |
 |---|---:|---:|---:|---:|
@@ -360,7 +369,7 @@ success across P0-P5.**
 ### 5.2 Matched stage effects
 
 Matched comparisons identified context as the only stage with a substantial
-and repeatable effect (Table 2). P2 improved combined success over P0 by 15.83
+and repeatable effect (Table 3). P2 improved combined success over P0 by 15.83
 percentage points (95% paired bootstrap interval, 9.17 to 22.50; exact
 McNemar p = 0.0000038; Holm-adjusted p = 0.000019). P4 improved over P1 by
 13.33 points (95% interval, 7.50 to 20.00; Holm-adjusted p = 0.000122).
@@ -372,7 +381,7 @@ success by 0.83 points (95% interval, 0 to 2.50) and rescued one question.
 Under the prespecified rescue definition, context rescued 19 unique
 questions, reranking three, and graph traversal one.
 
-**Table 2. Matched path-stage effects on combined success.**
+**Table 3. Matched path-stage effects on combined success.**
 
 | Added stage | Comparison | Difference (pp) | 95% CI (pp) | Rescued | Lost | Holm-adjusted p |
 |---|---|---:|---:|---:|---:|---:|
@@ -413,7 +422,7 @@ successful path. Among these routable questions, the Oracle used 0.068 mean
 neural calls because the lexicographic cost rule favored successful
 non-neural paths.
 
-**Table 3. Fixed and learned policy outcomes.**
+**Table 4. Fixed and learned policy outcomes.**
 
 | Policy | Combined success (%) | Mean neural calls | Selective coverage (%) | Accepted failure (%) |
 |---|---:|---:|---:|---:|
@@ -454,19 +463,13 @@ transfers.
 
 ### 5.6 Prespecified continuation decision
 
-The continuation rule required all three qualitative gates and at least four
-of five quantitative signals. Two quantitative signals passed. Oracle routing
-met the practical improvement criterion, and both learned no-abstention
-routers beat the heuristic. Three failed. Twenty-three questions (19.17%)
-needed a successful path beyond P0, just below the required 24 questions
-(20%). Only context met the minimum five-question module-rescue threshold; the
-protocol required two module types. Calibrated abstention also failed.
-
-One qualitative gate failed conservatively because the strongest context gains
-were concentrated in authoring strata designed to need parent or table
-context. The final decision was therefore NO-GO for expansion of the original
-calibrated-routing study. No thresholds, questions, paths, or models were
-changed after observing this result.
+The prespecified continuation rule was not satisfied. Two of five quantitative
+signals passed: Oracle routing met the practical improvement criterion, and
+both learned no-abstention routers beat the heuristic. The path-heterogeneity,
+independent-module-rescue, and calibrated-abstention signals failed, as did one
+qualitative gate. The resulting decision was NO-GO for expansion of the
+original calibrated-routing study. Appendix A reports the fixed decision
+criteria and their outcomes.
 
 ## 6. Discussion
 
@@ -563,21 +566,31 @@ bound the performance of other retrieval strategies.
 
 ## 7. Conclusion
 
-Evidence expansion helped when the missing information followed the document's
-structure. In this two-domain Pilot, parent, heading, and table context produced
-the largest independent gains and matched the full path's risk-sensitive
-success without a neural call. Reranking and conservative graph traversal
-added little independent rescue, and the most complete path also introduced
-harmful evidence often enough to erase its advantage.
+Evidence expansion was most useful when decisive scope information was
+structurally adjacent to the retrieved passage rather than lexically distant
+from it. Across both regulatory domains, adding heading, parent, and table
+context produced the clearest independent gain and matched the full path's
+risk-sensitive success without a neural call. Reranking and conservative graph
+traversal yielded little independent rescue, while indiscriminate expansion
+often added harmful evidence. The practical implication is narrow but clear:
+structural context should be added selectively, and retrieval quality should
+report completeness and harm separately rather than treating more evidence as
+automatically better.
 
-Logistic Regression and XGBoost selected successful paths more often than a
-frozen heuristic under grouped out-of-fold evaluation. Their calibrated
-abstention policies did not achieve usable coverage or accepted risk, and the
-prespecified study-expansion gate failed. The results justify a narrow
-diagnostic conclusion: regulatory retrieval benefits from selective structural
-context and from evaluating completeness and harm separately, but reliable
-evidence-sufficiency abstention needs substantially more independent
-calibration data.
+Lightweight learned routers outperformed the prespecified heuristic under
+grouped out-of-fold evaluation, but the present sample did not support a
+reliable abstention policy. This is a data-limited negative finding rather than
+evidence that evidence-sufficiency abstention is impossible. Larger independent
+calibration sets, naturally sampled questions, and less confounded
+cross-domain evaluation are required before the routing and abstention
+components can support deployment.
+
+## Author Contributions
+
+Kaifeng Sun is the sole author and was responsible for conceptualization,
+methodology, software, validation, formal analysis, investigation, data
+curation, visualization, writing the original draft, reviewing and editing the
+manuscript, and project administration.
 
 ## Data and Code Availability
 
@@ -590,11 +603,41 @@ https://github.com/Kaifengsun/calibrated-regulatory-evidence-routing.
 
 ## Ethics Statement
 
-The study used regulatory documents and technical standards rather than human
-subjects or personal data. The system is a research prototype and should not
-replace professional regulatory interpretation. A retrieved evidence package
-can remain incomplete or misleading even when a path receives a high predicted
+The study used regulatory documents and technical standards and did not collect
+personal or sensitive information. Annotation was performed to construct and
+evaluate the retrieval dataset; annotators were not treated as research
+participants. The system is a research prototype and should not replace
+professional regulatory interpretation. A retrieved evidence package can
+remain incomplete or misleading even when a path receives a high predicted
 score.
+
+## Appendix A. Continuation Criteria and HARMFUL Evidence Examples
+
+### A.1 Prespecified continuation decision
+
+The study could continue only if all three qualitative gates and at least four
+of five quantitative signals passed. Two quantitative signals passed. Oracle
+routing met the practical improvement criterion, and both learned
+no-abstention routers beat the heuristic. Three signals failed: 23 questions
+(19.17%) needed a successful path beyond P0, just below the required 24
+questions (20%); only context met the minimum five-question module-rescue
+threshold, whereas two module types were required; and calibrated abstention
+did not achieve the prespecified risk and coverage. One qualitative gate also
+failed conservatively because the strongest context gains were concentrated in
+authoring strata designed to need parent or table context. No threshold,
+question, path, or model was changed after this decision.
+
+### A.2 Illustrative HARMFUL evidence categories
+
+The examples below are schematic paraphrases of the annotation rules rather
+than quotations from the source corpora.
+
+| Category | Illustrative case | Why it is HARMFUL rather than IRRELEVANT |
+|---|---|---|
+| Wrong version | A superseded standard is retrieved for a requirement governed by the current edition. | The obsolete rule can change the applicable obligation. |
+| Wrong regulatory object | A provision for a different product, substance, or responsible party appears topically relevant. | The evidence can transfer a duty or restriction to the wrong object. |
+| Wrong condition or threshold | A nearby clause supplies a different concentration, duration, or triggering condition. | The value can directly alter the regulatory decision. |
+| Conflicting exception | An exception from another scope is added without the clause that limits its use. | The package can incorrectly imply that the main requirement does not apply. |
 
 ## References
 

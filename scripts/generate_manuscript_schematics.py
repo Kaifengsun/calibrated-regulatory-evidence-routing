@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -41,17 +42,36 @@ def _box(draw, xy, text, fill, font_size=34):
 
 def _arrow(draw, start, end, color=INK, width=6):
     draw.line([start, end], fill=color, width=width)
-    x, y = end
-    draw.polygon([(x, y), (x - 24, y - 14), (x - 24, y + 14)], fill=color)
+    x0, y0 = start
+    x1, y1 = end
+    dx = x1 - x0
+    dy = y1 - y0
+    length = math.hypot(dx, dy)
+    if length == 0:
+        return
+    ux, uy = dx / length, dy / length
+    px, py = -uy, ux
+    arrow_length = 24
+    arrow_half_width = 14
+    base_x = x1 - arrow_length * ux
+    base_y = y1 - arrow_length * uy
+    draw.polygon(
+        [
+            (x1, y1),
+            (base_x + arrow_half_width * px, base_y + arrow_half_width * py),
+            (base_x - arrow_half_width * px, base_y - arrow_half_width * py),
+        ],
+        fill=color,
+    )
 
 
 def study_design() -> None:
     image = Image.new("RGB", (3600, 1560), "white")
     draw = ImageDraw.Draw(image)
     boxes = [
-        ((100, 180, 730, 550), "120 frozen questions\n60 chemical + 60 pharmaceutical", LIGHT),
+        ((100, 180, 730, 550), "120 prespecified questions\n60 chemical + 60 pharmaceutical", LIGHT),
         ((990, 180, 1620, 550), "Shared BM25 first stage\nTop 50 candidates", "#DCEAF7"),
-        ((1880, 180, 2510, 550), "Six frozen paths\nP0-P5", "#D8F0EC"),
+        ((1880, 180, 2510, 550), "Six fixed paths\nP0-P5", "#D8F0EC"),
         ((2770, 180, 3400, 550), "720 path outputs\n10,385 evidence labels", "#F8EBC7"),
     ]
     for xy, text, fill in boxes:
@@ -76,7 +96,7 @@ def study_design() -> None:
     for xy, text, fill in lower:
         _box(draw, xy, text, fill)
     for end in ((740, 820), (1800, 820), (2860, 820)):
-        draw.line([(3085, 550), end], fill="#5C7080", width=5)
+        _arrow(draw, (3085, 550), end, color="#5C7080", width=5)
 
     footer = (
         "Question-grouped five-fold evaluation  |  paired 10,000-resample intervals  |  "
@@ -116,8 +136,8 @@ def outcome_definition() -> None:
         "#DCEAF7",
         38,
     )
-    draw.line([(735, 680), (1250, 870)], fill="#2A9D8F", width=8)
-    draw.line([(2415, 680), (1900, 870)], fill="#C69A24", width=8)
+    _arrow(draw, (735, 680), (1250, 870), color="#2A9D8F", width=8)
+    _arrow(draw, (2415, 680), (1900, 870), color="#C69A24", width=8)
     image.save(OUT / "figure3_outcome_definition.png", dpi=(300, 300))
 
 
