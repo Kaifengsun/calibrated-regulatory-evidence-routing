@@ -40,8 +40,8 @@ diagnostic study without expanding the dataset or changing frozen results.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Implement `src/evidence_routing/bootstrap.py::paired_bootstrap` with 10,000 question-level resamples and seed `20260723`. |  |  |
-| TASK-002 | Extend `src/evidence_routing/metrics.py` with Brier score, frozen-bin ECE, coverage, accepted risk, and abstention rate. |  |  |
+| TASK-001 | Implement `src/evidence_routing/bootstrap.py::paired_bootstrap` with 10,000 question-level resamples and seed `20260723`. | ✅ | 2026-07-27 |
+| TASK-002 | Extend `src/evidence_routing/metrics.py` with Brier score, frozen-bin ECE, coverage, accepted risk, and abstention rate. | ✅ | 2026-07-27 |
 | TASK-003 | Implement per-domain and construction-category diagnostic summaries in `src/evidence_routing/diagnostics.py`; prohibit category fields from model features. |  |  |
 | TASK-004 | Implement descriptive two-direction transfer in `src/evidence_routing/transfer.py` with source-only fitting, calibration, and normalization. |  |  |
 | TASK-005 | Add deterministic boundary, bootstrap, transfer-leakage, and metric tests under `tests/`. |  |  |

@@ -1,6 +1,12 @@
 from __future__ import annotations
 
-from evidence_routing.metrics import compute_path_outcomes, summarize_path_outcomes
+from evidence_routing.metrics import (
+    brier_score,
+    compute_path_outcomes,
+    frozen_bin_ece,
+    selective_metrics,
+    summarize_path_outcomes,
+)
 from evidence_routing.schemas import (
     Domain,
     EvidenceSpecification,
@@ -79,9 +85,7 @@ def test_sufficient_evidence_and_insufficiency_candidate() -> None:
         sufficient_source_ids=["SUFF-1"],
         evidence_scope_note="One clause is sufficient.",
     )
-    outcome = compute_path_outcomes(
-        [sufficient], [run], _labels(run, ["SUFFICIENT"])
-    )[0]
+    outcome = compute_path_outcomes([sufficient], [run], _labels(run, ["SUFFICIENT"]))[0]
     assert outcome.combined_path_success is True
 
     insufficient = sufficient.model_copy(
@@ -91,9 +95,7 @@ def test_sufficient_evidence_and_insufficiency_candidate() -> None:
             "insufficiency_candidate": True,
         }
     )
-    outcome = compute_path_outcomes(
-        [insufficient], [run], _labels(run, ["IRRELEVANT"])
-    )[0]
+    outcome = compute_path_outcomes([insufficient], [run], _labels(run, ["IRRELEVANT"]))[0]
     assert outcome.evidence_complete is False
     assert outcome.combined_path_success is False
 
@@ -106,9 +108,16 @@ def test_summary_reports_rates_and_costs_by_path_and_domain() -> None:
         sufficient_source_ids=["SUFF-1"],
         evidence_scope_note="One clause is sufficient.",
     )
-    outcomes = compute_path_outcomes(
-        [specification], [run], _labels(run, ["SUFFICIENT"])
-    )
+    outcomes = compute_path_outcomes([specification], [run], _labels(run, ["SUFFICIENT"]))
     summary = summarize_path_outcomes(outcomes)
     assert summary["all"]["P0"]["combined_path_success_rate"] == 1.0
     assert summary["chemical"]["P0"]["mean_runtime_ms"] == 10.0
+
+
+def test_probability_and_selective_metrics_have_explicit_denominators() -> None:
+    assert brier_score([0.0, 1.0], [0, 1]) == 0.0
+    assert frozen_bin_ece([0.0, 1.0], [0, 1]) == 0.0
+    result = selective_metrics([True, False], [True, False])
+    assert result["question_count"] == 2
+    assert result["accepted_count"] == 1
+    assert result["coverage"] == 0.5

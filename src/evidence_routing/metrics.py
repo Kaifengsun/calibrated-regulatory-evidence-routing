@@ -59,9 +59,7 @@ def compute_path_outcomes(
     final_labels: Sequence[Mapping[str, Any]],
 ) -> list[PathOutcome]:
     """Evaluate complete evidence, harmful expansion, and combined success."""
-    specifications_by_question = {
-        row.question_id: row for row in specifications
-    }
+    specifications_by_question = {row.question_id: row for row in specifications}
     if len(specifications_by_question) != len(specifications):
         raise ValueError("evidence specifications must have unique question identities")
     label_by_evidence = _final_label_map(final_labels)
@@ -87,13 +85,10 @@ def compute_path_outcomes(
             raise ValueError(f"path evidence lacks final labels: {missing_labels[:3]}")
         consumed_label_keys.update(evidence_keys)
         harmful = any(
-            label_by_evidence[key] == EvidenceLabel.HARMFUL.value
-            for key in evidence_keys
+            label_by_evidence[key] == EvidenceLabel.HARMFUL.value for key in evidence_keys
         )
         required_found = len(set(specification.required_source_ids) & retrieved_source_ids)
-        sufficient_found = bool(
-            set(specification.sufficient_source_ids) & retrieved_source_ids
-        )
+        sufficient_found = bool(set(specification.sufficient_source_ids) & retrieved_source_ids)
         if specification.insufficiency_candidate or run.status.value != "complete":
             complete = False
         elif specification.required_source_ids:
@@ -143,28 +138,73 @@ def summarize_path_outcomes(
         summary[domain][path_id] = {
             "question_path_count": count,
             "evidence_complete_count": sum(row.evidence_complete for row in rows),
-            "evidence_completeness_rate": sum(row.evidence_complete for row in rows)
-            / count,
+            "evidence_completeness_rate": sum(row.evidence_complete for row in rows) / count,
             "harmful_expansion_count": sum(row.harmful_expansion for row in rows),
-            "harmful_expansion_rate": sum(row.harmful_expansion for row in rows)
-            / count,
-            "combined_path_success_count": sum(
-                row.combined_path_success for row in rows
-            ),
-            "combined_path_success_rate": sum(
-                row.combined_path_success for row in rows
-            )
-            / count,
-            "mean_neural_model_calls": sum(row.neural_model_calls for row in rows)
-            / count,
-            "mean_graph_targets_inserted": sum(
-                row.graph_targets_inserted for row in rows
-            )
-            / count,
-            "mean_context_items_attached": sum(
-                row.context_items_attached for row in rows
-            )
-            / count,
+            "harmful_expansion_rate": sum(row.harmful_expansion for row in rows) / count,
+            "combined_path_success_count": sum(row.combined_path_success for row in rows),
+            "combined_path_success_rate": sum(row.combined_path_success for row in rows) / count,
+            "mean_neural_model_calls": sum(row.neural_model_calls for row in rows) / count,
+            "mean_graph_targets_inserted": sum(row.graph_targets_inserted for row in rows) / count,
+            "mean_context_items_attached": sum(row.context_items_attached for row in rows) / count,
             "mean_runtime_ms": sum(row.runtime_ms for row in rows) / count,
         }
     return dict(summary)
+
+
+def brier_score(probabilities: Sequence[float], labels: Sequence[int | bool]) -> float:
+    """Return mean squared probabilistic error with strict alignment checks."""
+    if len(probabilities) == 0 or len(probabilities) != len(labels):
+        raise ValueError("probabilities and labels must be non-empty and aligned")
+    if any(not 0.0 <= value <= 1.0 for value in probabilities):
+        raise ValueError("probabilities must lie in [0, 1]")
+    return sum(
+        (float(probability) - float(label)) ** 2
+        for probability, label in zip(probabilities, labels, strict=True)
+    ) / len(probabilities)
+
+
+def frozen_bin_ece(
+    probabilities: Sequence[float],
+    labels: Sequence[int | bool],
+    bin_edges: Sequence[float] = tuple(index / 10 for index in range(11)),
+) -> float:
+    """Compute ECE using the protocol-frozen ten equal-width bins."""
+    if len(probabilities) == 0 or len(probabilities) != len(labels):
+        raise ValueError("probabilities and labels must be non-empty and aligned")
+    if tuple(bin_edges) != tuple(index / 10 for index in range(11)):
+        raise ValueError("the frozen Pilot requires ten equal-width bins")
+    if any(not 0.0 <= value <= 1.0 for value in probabilities):
+        raise ValueError("probabilities must lie in [0, 1]")
+    total = len(probabilities)
+    error = 0.0
+    for index, (lower, upper) in enumerate(zip(bin_edges[:-1], bin_edges[1:], strict=True)):
+        members = [
+            item
+            for item, probability in enumerate(probabilities)
+            if lower <= probability < upper
+            or (index == len(bin_edges) - 2 and probability == upper)
+        ]
+        if members:
+            confidence = sum(probabilities[item] for item in members) / len(members)
+            accuracy = sum(float(labels[item]) for item in members) / len(members)
+            error += len(members) / total * abs(accuracy - confidence)
+    return error
+
+
+def selective_metrics(
+    accepted: Sequence[bool], successes: Sequence[bool]
+) -> dict[str, float | int | None]:
+    """Report explicit all-question and accepted-decision denominators."""
+    if len(accepted) == 0 or len(accepted) != len(successes):
+        raise ValueError("accepted and success flags must be non-empty and aligned")
+    accepted_successes = [
+        success for keep, success in zip(accepted, successes, strict=True) if keep
+    ]
+    count = len(accepted_successes)
+    return {
+        "question_count": len(accepted),
+        "accepted_count": count,
+        "coverage": count / len(accepted),
+        "abstention_rate": 1 - count / len(accepted),
+        "accepted_failure_rate": (1 - sum(accepted_successes) / count if count else None),
+    }
