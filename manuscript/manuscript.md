@@ -38,17 +38,17 @@ valid answer may depend on a heading that fixes the applicable scope, a parent
 clause that identifies the responsible party, a table that supplies a numeric
 threshold, or a cited provision that defines a term. Retrieval-augmented
 systems provide external evidence and provenance for knowledge-intensive
-tasks [2], but a fixed retrieval strategy cannot assume that every question
+tasks [1], but a fixed retrieval strategy cannot assume that every question
 needs the same amount or type of expansion.
 
 Modern pipelines commonly combine a lexical first stage with dense retrieval
-or neural reranking [3-5]. Adaptive retrieval methods instead decide when to
-retrieve or which reasoning strategy to use [6-8]. Hierarchical methods also
-recover context at several levels of a document [9]. These approaches motivate
+or neural reranking [2-4]. Adaptive retrieval methods instead decide when to
+retrieve or which reasoning strategy to use [5-7]. Hierarchical methods also
+recover context at several levels of a document [8]. These approaches motivate
 more flexible regulatory retrieval, but they do not remove a basic risk:
 additional evidence can be irrelevant, conflicting, or deceptively close to
 the correct rule. Prior work has shown that excessive or counterfactual
-context can reduce downstream accuracy [10,11]. In a regulatory setting, a
+context can reduce downstream accuracy [9,10]. In a regulatory setting, a
 passage about the wrong standard version, product, jurisdiction, threshold, or
 exception can do more harm than ordinary topical noise.
 
@@ -89,24 +89,24 @@ evaluation.**
 ### 2.1 Sparse retrieval and neural reranking
 
 BM25 remains a strong and interpretable lexical baseline derived from the
-probabilistic relevance framework [1]. Dense Passage Retrieval demonstrated
+probabilistic relevance framework [11]. Dense Passage Retrieval demonstrated
 that learned dual encoders can outperform lexical retrieval on several
-open-domain question-answering benchmarks [3]. The BEIR benchmark later found
+open-domain question-answering benchmarks [2]. The BEIR benchmark later found
 that BM25 remained robust across heterogeneous zero-shot tasks, while
 reranking and late-interaction methods improved average effectiveness at
-higher computational cost [5]. Sequence-to-sequence rerankers provide another
-strong second stage over a bounded candidate set [4]. Our design follows this
+higher computational cost [4]. Sequence-to-sequence rerankers provide another
+strong second stage over a bounded candidate set [3]. Our design follows this
 multi-stage pattern but fixes BM25 as the first stage so that later path
 differences remain attributable.
 
 ### 2.2 Adaptive and structured evidence retrieval
 
 Active Retrieval Augmented Generation retrieves during long-form generation
-when predicted content appears uncertain [6]. Self-RAG learns retrieval and
-critique decisions through reflection tokens [7], and Adaptive-RAG selects
+when predicted content appears uncertain [5]. Self-RAG learns retrieval and
+critique decisions through reflection tokens [6], and Adaptive-RAG selects
 among no-retrieval, single-step, and multi-step strategies using predicted
-question complexity [8]. RAPTOR organizes document evidence hierarchically to
-retrieve at different levels of abstraction [9]. Our task differs in two
+question complexity [7]. RAPTOR organizes document evidence hierarchically to
+retrieve at different levels of abstraction [8]. Our task differs in two
 ways. It routes among fixed evidence-assembly paths before generation, and it
 uses lightweight tabular models rather than training a language-model
 controller. This narrower setting suits a small labeled Pilot and permits
@@ -115,14 +115,14 @@ explicit path-stage comparisons.
 ### 2.3 Evidence quality, noise, and abstention
 
 RAG evaluation frameworks distinguish context relevance from answer
-faithfulness and answer relevance [13,14]. We stop before answer generation
+faithfulness and answer relevance [12,13]. We stop before answer generation
 and label the retrieved package directly. This avoids using one language
 model to judge another and allows annotators to identify evidence that changes
 the regulatory interpretation. Studies of detrimental and counterfactual
 contexts show why this distinction matters: more retrieved text can lower
 answering performance, and relevant-looking conflict can mislead a model
-[10,11]. Multilingual relevance assessment also shows that systems struggle
-to recognize when supplied passages do not support an answer [12].
+[9,10]. Multilingual relevance assessment also shows that systems struggle
+to recognize when supplied passages do not support an answer [14].
 
 Confidence calibration asks whether a predicted probability matches empirical
 correctness [15]. Selective prediction extends this problem by allowing a
@@ -237,7 +237,7 @@ category-stratified sample of 30 complete questions received independent
 duplicate annotation across all six outputs and every associated evidence
 unit. Across 901 visible duplicate rows, exact agreement was 71.48% (95%
 question-cluster bootstrap interval, 66.11% to 76.85%), and Cohen's kappa was
-0.556 (95% interval, 0.470 to 0.637) [21]. The adjudication queue contained
+0.556 (95% interval, 0.470 to 0.637) [20]. The adjudication queue contained
 279 disagreements or harmful-reason differences, corresponding to 837 final
 path-level occurrences. Both original labels and the adjudication record were
 preserved.
@@ -295,7 +295,7 @@ graph targets, retrieved text overlap, and any post-execution measurement.
 
 The learned models were L2 Logistic Regression with C = 1 and XGBoost with 100
 depth-3 trees, learning rate 0.05, subsample 0.8, column subsample 0.8, and L2
-regularization 1 [20]. We conducted no model or hyperparameter search.
+regularization 1 [21]. We conducted no model or hyperparameter search.
 
 ### 4.4 Splits, calibration, and abstention
 
@@ -479,7 +479,7 @@ Adding heading, parent, and table sidecars to BM25 nearly doubled pooled
 combined success, from 17.50% to 33.33%,
 without a neural call. The gain came mainly from questions whose answer scope
 was structurally separated from the retrieved leaf text. This pattern aligns
-with hierarchical retrieval research [9], but the present result concerns
+with hierarchical retrieval research [8], but the present result concerns
 attributable source context rather than generated summaries.
 
 Pharmaceutical parent and table questions benefited much more than their
@@ -495,7 +495,7 @@ P5 retrieved the most complete evidence but did not improve combined success
 over P2. Reranking raised completeness while also raising the rate of harmful
 evidence, especially in the chemical domain. These findings resemble prior
 reports that detrimental or conflicting context can reduce downstream
-performance [10,11]. Our endpoint is stricter because one harmful unit causes
+performance [9,10]. Our endpoint is stricter because one harmful unit causes
 path failure. The strict rule suits high-risk evidence delivery, but readers
 should examine completeness and harm separately when applying the findings to
 lower-risk tasks.

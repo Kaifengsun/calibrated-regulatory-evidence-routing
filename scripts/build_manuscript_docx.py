@@ -368,7 +368,7 @@ def add_references(doc):
         p.paragraph_format.first_line_indent = Inches(-0.28)
         p.paragraph_format.space_after = Pt(5)
         p.paragraph_format.line_spacing = 1.0
-        run = p.add_run(f"{number}. ")
+        run = p.add_run(f"[{number}] ")
         set_run_font(run, size=9.5, bold=True)
         add_inline(p, ref, base_size=9.5)
 
