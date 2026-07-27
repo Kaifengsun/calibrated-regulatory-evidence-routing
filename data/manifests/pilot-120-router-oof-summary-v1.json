@@ -1,0 +1,29 @@
+{
+  "batch_id": "pilot-120-v1",
+  "models": {
+    "logistic_regression": {
+      "accepted_count": 11,
+      "accepted_failure_rate": 0.6363636363636364,
+      "accepted_success_count": 4,
+      "coverage": 0.09166666666666666,
+      "force_abstain_fold_count": 4,
+      "no_abstention_success_count": 39,
+      "no_abstention_success_rate": 0.325,
+      "question_count": 120
+    },
+    "xgboost": {
+      "accepted_count": 0,
+      "accepted_failure_rate": null,
+      "accepted_success_count": 0,
+      "coverage": 0.0,
+      "force_abstain_fold_count": 5,
+      "no_abstention_success_count": 38,
+      "no_abstention_success_rate": 0.31666666666666665,
+      "question_count": 120
+    }
+  },
+  "private_output_sha256": "72d022a988b65ab451f42b8aca1f4d836b228b116f42bb5387e3bf315e9168df",
+  "private_prediction_rows_committed": false,
+  "schema_version": "1.0",
+  "status": "pooled_oof_complete"
+}

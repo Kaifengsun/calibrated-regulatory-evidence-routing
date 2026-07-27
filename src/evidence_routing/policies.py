@@ -11,6 +11,15 @@ from typing import Any
 
 from evidence_routing.metrics import PathOutcome
 
+_FROZEN_PATH_BUDGETS = {
+    "P0": (0, 0, 0),
+    "P1": (1, 0, 0),
+    "P2": (0, 0, 15),
+    "P3": (0, 5, 0),
+    "P4": (1, 0, 15),
+    "P5": (1, 5, 15),
+}
+
 
 @dataclass(frozen=True)
 class PathCost:
@@ -48,23 +57,19 @@ class RouteDecision:
 
 
 def derive_path_costs(outcomes: Sequence[PathOutcome]) -> dict[str, PathCost]:
-    """Derive frozen path profiles from all executed paths, never labels alone."""
+    """Combine frozen module budgets with label-free median runtime."""
     by_path: dict[str, list[PathOutcome]] = defaultdict(list)
     for outcome in outcomes:
         by_path[outcome.path_id].append(outcome)
     costs: dict[str, PathCost] = {}
     for path_id, rows in by_path.items():
-        neural_calls = {row.neural_model_calls for row in rows}
-        if len(neural_calls) != 1:
-            raise ValueError(f"path has non-static neural call cost: {path_id}")
+        if path_id not in _FROZEN_PATH_BUDGETS:
+            raise ValueError(f"unknown frozen path: {path_id}")
+        neural_calls, graph_budget, context_budget = _FROZEN_PATH_BUDGETS[path_id]
         costs[path_id] = PathCost(
-            neural_model_calls=neural_calls.pop(),
-            graph_targets_inserted=statistics.median(
-                row.graph_targets_inserted for row in rows
-            ),
-            context_items_attached=statistics.median(
-                row.context_items_attached for row in rows
-            ),
+            neural_model_calls=neural_calls,
+            graph_targets_inserted=graph_budget,
+            context_items_attached=context_budget,
             median_runtime_ms=statistics.median(row.runtime_ms for row in rows),
             path_id=path_id,
         )

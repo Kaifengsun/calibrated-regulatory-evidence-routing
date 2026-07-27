@@ -2,6 +2,7 @@ from evidence_routing.metrics import PathOutcome
 from evidence_routing.policies import (
     all_modules_policy,
     bm25_policy,
+    derive_path_costs,
     frozen_heuristic_policy,
     normalized_bm25_ambiguity_gap,
     oracle_policy,
@@ -63,3 +64,10 @@ def test_oracle_abstains_when_no_path_succeeds_and_uses_lowest_cost() -> None:
     assert decisions["Q1"].routable is True
     assert decisions["Q2"].abstained is True
     assert decisions["Q2"].routable is False
+
+
+def test_cost_profiles_use_frozen_budgets_not_observed_insertions() -> None:
+    outcome = _outcome("Q1", "P5", True, calls=1)
+    costs = derive_path_costs([outcome])
+    assert costs["P5"].graph_targets_inserted == 5
+    assert costs["P5"].context_items_attached == 15

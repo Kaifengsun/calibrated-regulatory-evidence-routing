@@ -259,14 +259,14 @@ Completion criteria:
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-041 | Implement `src/evidence_routing/features.py::build_route_time_features` using only query, BM25, bounded graph metadata, path identity, and static cost fields available before downstream execution. |  |  |
+| TASK-041 | Implement `src/evidence_routing/features.py::build_route_time_features` using only query, BM25, bounded graph metadata, path identity, and static cost fields available before downstream execution. | ✅ | 2026-07-27 |
 | TASK-042 | Implement `features.py::build_diagnostic_features` separately; mark reranker agreement, executed-method overlap, and retrieved-target properties as non-deployable diagnostics. |  |  |
-| TASK-043 | Implement `src/evidence_routing/splits.py::assign_grouped_folds` using stable document-group hashing and the rotation rule from the approved design; add explicit leakage assertions. |  |  |
-| TASK-044 | Implement `src/evidence_routing/policies.py::bm25_policy`, `all_modules_policy`, `frozen_heuristic_policy`, and `oracle_policy`, including oracle abstention and routable-only cost/harm comparison masks. |  |  |
-| TASK-045 | Implement `src/evidence_routing/models.py::fit_logistic_router` and `fit_xgboost_router` with frozen hyperparameters and one success-probability estimate per question-path pair. |  |  |
-| TASK-046 | Implement `src/evidence_routing/calibration.py::fit_fold_calibrator`, `select_abstention_threshold`, `select_no_abstention_route`, and `apply_abstention_policy`; force all-fold abstention when no calibration threshold satisfies the frozen risk and minimum-decision constraints. |  |  |
+| TASK-043 | Implement `src/evidence_routing/splits.py::assign_grouped_folds` using stable document-group hashing and the rotation rule from the approved design; add explicit leakage assertions. | ✅ | 2026-07-27 |
+| TASK-044 | Implement `src/evidence_routing/policies.py::bm25_policy`, `all_modules_policy`, `frozen_heuristic_policy`, and `oracle_policy`, including oracle abstention and routable-only cost/harm comparison masks. | ✅ | 2026-07-27 |
+| TASK-045 | Implement `src/evidence_routing/models.py::fit_logistic_router` and `fit_xgboost_router` with frozen hyperparameters and one success-probability estimate per question-path pair. | ✅ | 2026-07-27 |
+| TASK-046 | Implement `src/evidence_routing/calibration.py::fit_fold_calibrator`, `select_abstention_threshold`, `select_no_abstention_route`, and `apply_abstention_policy`; force all-fold abstention when no calibration threshold satisfies the frozen risk and minimum-decision constraints. | ✅ | 2026-07-27 |
 | TASK-047 | Implement source-domain out-of-fold calibration and target-domain untouched evaluation in `src/evidence_routing/transfer.py::run_cross_domain_transfer`. |  |  |
-| TASK-048 | Add `tests/test_features.py`, `tests/test_splits.py`, `tests/test_policies.py`, and `tests/test_calibration.py` covering route-time feature restrictions, group leakage, oracle non-routable handling, threshold selection, forced abstention, and unchanged outer-test application. |  |  |
+| TASK-048 | Add `tests/test_features.py`, `tests/test_splits.py`, `tests/test_policies.py`, and `tests/test_calibration.py` covering route-time feature restrictions, group leakage, oracle non-routable handling, threshold selection, forced abstention, and unchanged outer-test application. | ✅ | 2026-07-27 |
 
 Completion criteria:
 
