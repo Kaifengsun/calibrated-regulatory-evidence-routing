@@ -4,13 +4,13 @@ version: 1.0
 date_created: 2026-07-27
 last_updated: 2026-07-27
 owner: Kaifeng Sun
-status: 'In progress'
+status: 'Complete'
 tags: [research, evaluation, manuscript, regulatory-retrieval]
 ---
 
 # Introduction
 
-![Status: In progress](https://img.shields.io/badge/status-In_progress-yellow)
+![Status: Complete](https://img.shields.io/badge/status-Complete-green)
 
 This plan converts the completed 120-question Pilot into the approved
 diagnostic study without expanding the dataset or changing frozen results.
@@ -69,11 +69,11 @@ and the report does not overstate router or abstention performance.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-010 | Verify current primary-source literature and create the manuscript bibliography with validated metadata. |  |  |
-| TASK-011 | Draft the manuscript in full prose using the structure frozen in `docs/superpowers/specs/2026-07-27-diagnostic-evidence-path-study-design.md`. |  |  |
-| TASK-012 | Generate `output/word/When_Does_Evidence_Expansion_Help.docx` with embedded tables and figures. |  |  |
-| TASK-013 | Render the Word file to page images, inspect every page, and correct layout, captions, references, and pagination. |  |  |
-| TASK-014 | Run a final claim-to-result audit, citation audit, privacy scan, and repository test suite. |  |  |
+| TASK-010 | Verify current primary-source literature and create the manuscript bibliography with validated metadata. | Yes | 2026-07-27 |
+| TASK-011 | Draft the manuscript in full prose using the structure frozen in `docs/superpowers/specs/2026-07-27-diagnostic-evidence-path-study-design.md`. | Yes | 2026-07-27 |
+| TASK-012 | Generate `output/word/When_Does_Evidence_Expansion_Help.docx` with embedded tables and figures. | Yes | 2026-07-27 |
+| TASK-013 | Render the Word file to page images, inspect every page, and correct layout, captions, references, and pagination. | Yes | 2026-07-27 |
+| TASK-014 | Run a final claim-to-result audit, citation audit, privacy scan, and repository test suite. | Yes | 2026-07-27 |
 
 Completion criteria: the final editable Word manuscript is visually verified,
 all claims match frozen results, and no private evidence text is embedded.
