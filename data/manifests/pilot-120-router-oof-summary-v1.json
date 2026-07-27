@@ -7,6 +7,8 @@
       "accepted_success_count": 4,
       "coverage": 0.09166666666666666,
       "force_abstain_fold_count": 4,
+      "no_abstention_brier_score": 0.19968257350476742,
+      "no_abstention_ece": 0.09761405031689242,
       "no_abstention_success_count": 39,
       "no_abstention_success_rate": 0.325,
       "question_count": 120
@@ -17,12 +19,14 @@
       "accepted_success_count": 0,
       "coverage": 0.0,
       "force_abstain_fold_count": 5,
+      "no_abstention_brier_score": 0.2889745778795477,
+      "no_abstention_ece": 0.2643090026832931,
       "no_abstention_success_count": 38,
       "no_abstention_success_rate": 0.31666666666666665,
       "question_count": 120
     }
   },
-  "private_output_sha256": "72d022a988b65ab451f42b8aca1f4d836b228b116f42bb5387e3bf315e9168df",
+  "private_output_sha256": "58770da1ae45ee5ffd23c7419e82be803b6ce68680d2d22f7305b12caae19811",
   "private_prediction_rows_committed": false,
   "schema_version": "1.0",
   "status": "pooled_oof_complete"

@@ -1,0 +1,560 @@
+{
+  "batch_id": "pilot-120-v1",
+  "diagnostics": {
+    "feature_use_prohibited": true,
+    "path_outcomes": {
+      "chemical": {
+        "citation_dependency": {
+          "P0": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.3333333333333333,
+            "harmful_expansion_rate": 0.6666666666666666,
+            "question_count": 12
+          },
+          "P1": {
+            "combined_path_success_rate": 0.25,
+            "evidence_completeness_rate": 0.5833333333333334,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P2": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.4166666666666667,
+            "harmful_expansion_rate": 0.6666666666666666,
+            "question_count": 12
+          },
+          "P3": {
+            "combined_path_success_rate": 0.25,
+            "evidence_completeness_rate": 0.5,
+            "harmful_expansion_rate": 0.6666666666666666,
+            "question_count": 12
+          },
+          "P4": {
+            "combined_path_success_rate": 0.25,
+            "evidence_completeness_rate": 0.5833333333333334,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P5": {
+            "combined_path_success_rate": 0.3333333333333333,
+            "evidence_completeness_rate": 0.75,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          }
+        },
+        "direct_clause": {
+          "P0": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.8333333333333334,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 12
+          },
+          "P1": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.9166666666666666,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P2": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.8333333333333334,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 12
+          },
+          "P3": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.8333333333333334,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 12
+          },
+          "P4": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.9166666666666666,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P5": {
+            "combined_path_success_rate": 0.5,
+            "evidence_completeness_rate": 0.9166666666666666,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          }
+        },
+        "evidence_insufficient": {
+          "P0": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P1": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          },
+          "P2": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P3": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P4": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          },
+          "P5": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          }
+        },
+        "parent_heading_context": {
+          "P0": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.3333333333333333,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P1": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.6666666666666666,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          },
+          "P2": {
+            "combined_path_success_rate": 0.25,
+            "evidence_completeness_rate": 0.4166666666666667,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P3": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.3333333333333333,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P4": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.75,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          },
+          "P5": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.75,
+            "harmful_expansion_rate": 0.8333333333333334,
+            "question_count": 12
+          }
+        },
+        "table_related": {
+          "P0": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P1": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P2": {
+            "combined_path_success_rate": 0.16666666666666666,
+            "evidence_completeness_rate": 0.5833333333333334,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P3": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.5,
+            "question_count": 12
+          },
+          "P4": {
+            "combined_path_success_rate": 0.08333333333333333,
+            "evidence_completeness_rate": 0.5,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          },
+          "P5": {
+            "combined_path_success_rate": 0.08333333333333333,
+            "evidence_completeness_rate": 0.5,
+            "harmful_expansion_rate": 0.5833333333333334,
+            "question_count": 12
+          }
+        }
+      },
+      "pharmaceutical": {
+        "direct_clause": {
+          "P0": {
+            "combined_path_success_rate": 0.7333333333333333,
+            "evidence_completeness_rate": 0.9333333333333333,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          },
+          "P1": {
+            "combined_path_success_rate": 0.8,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          },
+          "P2": {
+            "combined_path_success_rate": 0.7333333333333333,
+            "evidence_completeness_rate": 0.9333333333333333,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          },
+          "P3": {
+            "combined_path_success_rate": 0.7333333333333333,
+            "evidence_completeness_rate": 0.9333333333333333,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          },
+          "P4": {
+            "combined_path_success_rate": 0.8,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          },
+          "P5": {
+            "combined_path_success_rate": 0.8,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.2,
+            "question_count": 15
+          }
+        },
+        "evidence_insufficient": {
+          "P0": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P1": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P2": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P3": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P4": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.4,
+            "question_count": 15
+          },
+          "P5": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.4,
+            "question_count": 15
+          }
+        },
+        "parent_heading_context": {
+          "P0": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.26666666666666666,
+            "question_count": 15
+          },
+          "P1": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P2": {
+            "combined_path_success_rate": 0.7333333333333333,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.26666666666666666,
+            "question_count": 15
+          },
+          "P3": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.26666666666666666,
+            "question_count": 15
+          },
+          "P4": {
+            "combined_path_success_rate": 0.6666666666666666,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          },
+          "P5": {
+            "combined_path_success_rate": 0.6666666666666666,
+            "evidence_completeness_rate": 1.0,
+            "harmful_expansion_rate": 0.3333333333333333,
+            "question_count": 15
+          }
+        },
+        "table_related": {
+          "P0": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.4,
+            "question_count": 15
+          },
+          "P1": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.4666666666666667,
+            "question_count": 15
+          },
+          "P2": {
+            "combined_path_success_rate": 0.3333333333333333,
+            "evidence_completeness_rate": 0.6666666666666666,
+            "harmful_expansion_rate": 0.5333333333333333,
+            "question_count": 15
+          },
+          "P3": {
+            "combined_path_success_rate": 0.0,
+            "evidence_completeness_rate": 0.0,
+            "harmful_expansion_rate": 0.4,
+            "question_count": 15
+          },
+          "P4": {
+            "combined_path_success_rate": 0.3333333333333333,
+            "evidence_completeness_rate": 0.7333333333333333,
+            "harmful_expansion_rate": 0.5333333333333333,
+            "question_count": 15
+          },
+          "P5": {
+            "combined_path_success_rate": 0.3333333333333333,
+            "evidence_completeness_rate": 0.7333333333333333,
+            "harmful_expansion_rate": 0.5333333333333333,
+            "question_count": 15
+          }
+        }
+      }
+    },
+    "stage_rescues": {
+      "chemical": {
+        "citation_dependency": {
+          "context_P2_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "context_P4_minus_P1": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 1
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 12,
+            "rescued_count": 1
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 1
+          }
+        },
+        "direct_clause": {
+          "context_P2_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "context_P4_minus_P1": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 1
+          }
+        },
+        "evidence_insufficient": {
+          "context_P2_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "context_P4_minus_P1": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          }
+        },
+        "parent_heading_context": {
+          "context_P2_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 1
+          },
+          "context_P4_minus_P1": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          }
+        },
+        "table_related": {
+          "context_P2_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 2
+          },
+          "context_P4_minus_P1": {
+            "question_count": 12,
+            "rescued_count": 1
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 12,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 12,
+            "rescued_count": 0
+          }
+        }
+      },
+      "pharmaceutical": {
+        "direct_clause": {
+          "context_P2_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "context_P4_minus_P1": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 1
+          }
+        },
+        "evidence_insufficient": {
+          "context_P2_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "context_P4_minus_P1": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          }
+        },
+        "parent_heading_context": {
+          "context_P2_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 11
+          },
+          "context_P4_minus_P1": {
+            "question_count": 15,
+            "rescued_count": 10
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          }
+        },
+        "table_related": {
+          "context_P2_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 5
+          },
+          "context_P4_minus_P1": {
+            "question_count": 15,
+            "rescued_count": 5
+          },
+          "graph_P3_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "graph_P5_minus_P4": {
+            "question_count": 15,
+            "rescued_count": 0
+          },
+          "reranking_P1_minus_P0": {
+            "question_count": 15,
+            "rescued_count": 0
+          }
+        }
+      }
+    }
+  },
+  "schema_version": "1.0",
+  "status": "construction_diagnostics_complete"
+}

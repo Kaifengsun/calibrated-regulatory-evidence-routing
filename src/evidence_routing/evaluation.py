@@ -38,6 +38,8 @@ class OOFDecision:
     threshold: float | None
     force_abstain: bool
     calibration_partition_hash: str
+    selected_path_probability: float | None
+    no_abstention_probability: float
 
     def model_dump(self) -> dict[str, Any]:
         return asdict(self)
@@ -157,6 +159,14 @@ def run_pooled_oof(
                     threshold=threshold.threshold,
                     force_abstain=threshold.force_abstain,
                     calibration_partition_hash=partition_hash,
+                    selected_path_probability=(
+                        None
+                        if selected.abstained
+                        else test_probabilities[question_id][selected.selected_path_id]
+                    ),
+                    no_abstention_probability=test_probabilities[question_id][
+                        no_abstention.selected_path_id
+                    ],
                 )
             )
     if len(decisions) != len(assignments):
