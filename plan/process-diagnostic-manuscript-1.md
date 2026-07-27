@@ -55,10 +55,10 @@ all tests, formatting checks, and privacy scans pass.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-006 | Generate privacy-safe pooled, domain, stage, policy, calibration, transfer, and uncertainty manifests under `data/manifests/`. |  |  |
-| TASK-007 | Generate publication tables under `artifacts/pilot-v1/tables/` from tracked aggregate manifests. |  |  |
-| TASK-008 | Generate publication figures under `artifacts/pilot-v1/figures/` with accessible labels and consistent colors. |  |  |
-| TASK-009 | Write `docs/results/pilot-v1-feasibility-report.md` with all three qualitative gates, five quantitative signals, limitations, and the frozen `NO-GO` expansion decision. |  |  |
+| TASK-006 | Generate privacy-safe pooled, domain, stage, policy, calibration, transfer, and uncertainty manifests under `data/manifests/`. | ✅ | 2026-07-27 |
+| TASK-007 | Generate publication tables under `artifacts/pilot-v1/tables/` from tracked aggregate manifests. | ✅ | 2026-07-27 |
+| TASK-008 | Generate publication figures under `artifacts/pilot-v1/figures/` with accessible labels and consistent colors. | ✅ | 2026-07-27 |
+| TASK-009 | Write `docs/results/pilot-v1-feasibility-report.md` with all three qualitative gates, five quantitative signals, limitations, and the frozen `NO-GO` expansion decision. | ✅ | 2026-07-27 |
 
 Completion criteria: every reported number has a reproducible aggregate source
 and the report does not overstate router or abstention performance.

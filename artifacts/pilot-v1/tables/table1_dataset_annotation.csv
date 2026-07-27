@@ -1,0 +1,12 @@
+﻿item,value
+Pilot questions,120
+Chemical questions,60
+Pharmaceutical questions,60
+Question-path outputs,720
+Final evidence labels,10385
+Duplicate-annotated questions,30
+Visible duplicate evidence rows,901
+Exact duplicate agreement (%),71.48
+Cohen kappa,0.556
+Adjudicated label occurrences,837
+Manual corpus searches,27

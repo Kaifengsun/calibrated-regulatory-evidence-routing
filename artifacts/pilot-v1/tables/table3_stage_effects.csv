@@ -1,0 +1,6 @@
+﻿comparison,difference_pp,ci95_lower_pp,ci95_upper_pp,rescued_only_by_added_stage,lost_only_after_added_stage,mcnemar_exact_p,holm_adjusted_p
+context_P2_minus_P0,15.83,9.17,22.5,19,0,3.814697265625e-06,1.9073486328125e-05
+context_P4_minus_P1,13.33,7.5,20.0,16,0,3.0517578125e-05,0.0001220703125
+graph_P3_minus_P0,0.83,0.0,2.5,1,0,1.0,1.0
+graph_P5_minus_P4,0.83,0.0,2.5,1,0,1.0,1.0
+reranking_P1_minus_P0,1.67,-1.67,5.0,3,1,0.625,1.0

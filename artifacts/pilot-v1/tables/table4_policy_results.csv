@@ -1,0 +1,7 @@
+﻿policy,combined_success_pct,mean_neural_calls,coverage_pct,accepted_failure_pct,brier,ece
+BM25-only,17.5,0,100,,,
+All modules,33.33,1,100,,,
+Frozen heuristic,19.17,0.5,100,,,
+logistic_regression,32.5,0.533,9.17,63.64,0.2,0.098
+xgboost,31.67,0.392,0.0,,0.289,0.264
+Oracle (diagnostic),36.67,0.068,36.67,0,,

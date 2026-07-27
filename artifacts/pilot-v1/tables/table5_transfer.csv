@@ -1,0 +1,5 @@
+﻿direction_model,target_n,no_abstention_success_pct,coverage_pct,accepted_failure_pct,brier,ece,forced_full_abstention
+chemical_to_pharmaceutical__logistic_regression,60,45.0,0.0,,0.315,0.348,True
+chemical_to_pharmaceutical__xgboost,60,30.0,0.0,,0.221,0.103,True
+pharmaceutical_to_chemical__logistic_regression,60,21.67,0.0,,0.204,0.192,True
+pharmaceutical_to_chemical__xgboost,60,23.33,0.0,,0.179,0.087,True
