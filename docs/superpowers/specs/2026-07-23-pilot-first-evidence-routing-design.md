@@ -4,6 +4,12 @@ Date: 2026-07-23
 Status: Frozen for Pilot implementation
 Repository: `calibrated-regulatory-evidence-routing`
 
+Amendment notice: the frozen Pilot produced a `NO-GO` decision for full
+dataset expansion. Manuscript completion is governed by
+`2026-07-27-diagnostic-evidence-path-study-design.md`. This original design
+remains authoritative for the frozen Pilot data, paths, labels, splits,
+thresholds, and decision rules.
+
 ## 1. Purpose
 
 This repository will support a bounded research study on calibrated, query-adaptive evidence routing for regulatory retrieval. The study will test whether a lightweight router can select the least costly evidence path that still retrieves complete evidence, and abstain when no evaluated path is likely to be sufficient.
