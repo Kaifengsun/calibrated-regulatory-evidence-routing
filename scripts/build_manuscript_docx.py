@@ -155,15 +155,15 @@ def add_inline(paragraph, text, base_size=11):
         if match.start() > pos:
             run = paragraph.add_run(text[pos : match.start()])
             set_run_font(run, size=base_size)
-        token = match.group(0)
-        if token.startswith("**"):
-            run = paragraph.add_run(token[2:-2])
+        markup_fragment = match.group(0)
+        if markup_fragment.startswith("**"):
+            run = paragraph.add_run(markup_fragment[2:-2])
             set_run_font(run, size=base_size, bold=True)
-        elif token.startswith("*"):
-            run = paragraph.add_run(token[1:-1])
+        elif markup_fragment.startswith("*"):
+            run = paragraph.add_run(markup_fragment[1:-1])
             set_run_font(run, size=base_size, italic=True)
         else:
-            run = paragraph.add_run(token[1:-1])
+            run = paragraph.add_run(markup_fragment[1:-1])
             set_run_font(run, name="Consolas", size=base_size - 0.5)
         pos = match.end()
     if pos < len(text):

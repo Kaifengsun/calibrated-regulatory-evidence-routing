@@ -71,7 +71,7 @@ and the report does not overstate router or abstention performance.
 |------|-------------|-----------|------|
 | TASK-010 | Verify current primary-source literature and create the manuscript bibliography with validated metadata. | Yes | 2026-07-27 |
 | TASK-011 | Draft the manuscript in full prose using the structure frozen in `docs/superpowers/specs/2026-07-27-diagnostic-evidence-path-study-design.md`. | Yes | 2026-07-27 |
-| TASK-012 | Generate `output/word/When_Does_Evidence_Expansion_Help.docx` with embedded tables and figures. | Yes | 2026-07-27 |
+| TASK-012 | Generate the Word manuscript with embedded tables and figures; the retained submission-review version is `output/word/When_Does_Evidence_Expansion_Help_Revised.docx`. | Yes | 2026-07-27 |
 | TASK-013 | Render the Word file to page images, inspect every page, and correct layout, captions, references, and pagination. | Yes | 2026-07-27 |
 | TASK-014 | Run a final claim-to-result audit, citation audit, privacy scan, and repository test suite. | Yes | 2026-07-27 |
 
@@ -109,7 +109,7 @@ all claims match frozen results, and no private evidence text is embedded.
 - **FILE-006**: `docs/results/pilot-v1-feasibility-report.md`.
 - **FILE-007**: `artifacts/pilot-v1/tables/`.
 - **FILE-008**: `artifacts/pilot-v1/figures/`.
-- **FILE-009**: `output/word/When_Does_Evidence_Expansion_Help.docx`.
+- **FILE-009**: `output/word/When_Does_Evidence_Expansion_Help_Revised.docx` (authoritative retained Word manuscript; the earlier filename was superseded).
 
 ## 6. Testing
 

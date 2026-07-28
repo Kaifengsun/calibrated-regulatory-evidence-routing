@@ -56,3 +56,8 @@ tmp/
 .vscode/
 .DS_Store
 Thumbs.db
+~$*.docx
+
+# Regenerated manuscript QA
+artifacts/**/docx-qa-*/
+artifacts/**/lo-temp-*/
