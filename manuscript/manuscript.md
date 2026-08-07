@@ -362,7 +362,8 @@ The pharmaceutical graph stage inserted no eligible target, so P3 matched P0
 and P5 matched P4 except for negligible execution overhead.
 
 **Figure 3. Pooled evidence completeness, harmful expansion, and combined
-success across P0-P5.**
+success across P0-P5. (a) Evidence completeness; (b) harmful expansion; and
+(c) combined path success.**
 
 ![Pooled path outcomes](../artifacts/pilot-v1/figures/figure1_path_outcomes.png)
 
